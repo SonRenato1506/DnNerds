@@ -1,0 +1,185 @@
+:root {
+    /* Cores principais */
+    --roxo1: #4b0b51c7;
+    --roxo2: #6a1d72;
+    --roxoEscuro: #2e002e;
+    --texto: orange;
+
+    /* Cores adicionais */
+    --preto: #000000;
+    --cinza-escuro: #242525;
+    --cinza-medio: #4D524E;
+    --cinza-claro: #cccccc;
+}
+
+/* Reset */
+* {
+    margin: 0;
+    padding: 0;
+}
+
+/* Corpo */
+body {
+    background-color: var(--cinza-escuro);
+}
+
+/* Principal */
+main {
+    background-size: cover;
+    background-position: center;
+    font-family: Arial, Helvetica, sans-serif;
+    padding-top: 10px;
+    height: 84.5vh;
+}
+
+/* Cor dos textos */
+h1,
+h2,
+p,
+a {
+    color: var(--texto);
+}
+
+/* Container do login */
+#login {
+    background: linear-gradient(
+        90deg,
+        var(--cinza-escuro) 0%,
+        var(--cinza-medio) 50%,
+        var(--cinza-escuro) 100%
+    );
+    border: 1px solid var(--preto);
+    border-radius: 15px;
+    color: var(--texto);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    width: 32vw;
+    max-height: 62vh;
+    margin: 100px auto 35px auto;
+    padding: 40px;
+    font-size: 25px;
+    font-family: "Anonymous Pro", serif;
+}
+
+/* Título dentro do login */
+#login h1 {
+    grid-column: span 2;
+    text-align: center;
+    font-size: 56px;
+    margin-bottom: 20px;
+    color: var(--texto);
+    font-family: "Anonymous Pro", serif;
+}
+
+/* Rótulos */
+label {
+    text-shadow: 0 0 5px var(--texto);
+}
+
+/* Agrupamento de inputs */
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+/* Botões */
+.form-button {
+    grid-column: span 2;
+    text-align: center;
+    text-decoration: none;
+}
+
+/* Botão de entrar */
+#btn-entrar {
+    padding: 10px 20px;
+    font-size: 20px;
+    background-color: var(--cinza-escuro);
+    color: var(--texto);
+    border: none;
+    border-radius: 40px;
+    cursor: pointer;
+    transition: background-color 0.5s;
+    width: 50%;
+}
+
+#btn-entrar a {
+    text-decoration: none;
+}
+
+/* Efeito hover do botão */
+#btn-entrar:hover {
+    background-color: var(--roxoEscuro);
+}
+
+/* Labels */
+#login label {
+    color: var(--texto);
+    font-family: "Anonymous Pro", serif;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+/* Inputs */
+#login input {
+    height: 40px;
+    width: 100%;
+    border-radius: 10px;
+    font-size: 15px;
+    padding-left: 10px;
+    font-family: "Anonymous Pro", serif;
+    border: 1px solid var(--cinza-claro);
+    box-sizing: border-box;
+}
+
+/* Tablets */
+@media (max-width: 1115px) {
+    main {
+        max-width: 90%;
+        padding: 20px;
+    }
+
+    #login {
+        width: 50vw;
+    }
+
+    h1 {
+        font-size: 2rem;
+    }
+
+    #btn-entrar {
+        width: 100%;
+    }
+}
+
+/* Celulares */
+@media (max-width: 750px) {
+    main {
+        padding: 15px;
+    }
+
+    h1 {
+        font-size: 1.8rem;
+    }
+
+    #login {
+        width: 75vw;
+        gap: 15px;
+    }
+
+    #btn-entrar {
+        font-size: 1rem;
+        padding: 10px;
+        width: 100%;
+    }
+}
+
+/* Celulares pequenos */
+@media (max-width: 460px) {
+    #login {
+        width: 90vw;
+        margin: 0;
+        padding: 10px;
+    }
+}

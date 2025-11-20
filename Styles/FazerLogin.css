@@ -1,0 +1,189 @@
+/* ===================== */
+/* 🎨 Cores */
+:root {
+    --roxo1: #4b0b51c7;
+    --roxo2: #6a1d72;
+    --roxoEscuro: #2e002e;
+    --roxo-hover: #270b2b;
+    --texto: orange;
+    --texto-secundario: #ffcc00;
+    --preto: #000000;
+    --cinza-escuro: #242525;
+    --cinza-medio: #4D524E;
+    --cinza-claro: #cccccc;
+}
+
+/* ===================== */
+/* 🔤 Fontes */
+@font-face {
+    font-family: "Anonymous Pro";
+    src: local(Anonymous Pro),
+         url("C:/Users/John/Desktop/YARNEY/Fontes/Anonymous_Pro/AnonymousPro-Regular.ttf");
+}
+
+/* ===================== */
+/* 🌐 Geral */
+* {
+    margin: 0;
+    padding: 0;
+}
+
+/* ===================== */
+/* 🧍 Corpo */
+body {
+    background-color: var(--cinza-escuro);
+    background-size: cover;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+/* ===================== */
+/* 📝 Textos */
+h1,
+h2,
+p,
+a {
+    color: var(--texto);
+}
+
+/* Título principal */
+h1 {
+    text-align: center;
+    font-size: 66px;
+}
+
+/* Subtítulo */
+p {
+    text-align: center;
+    font-size: 19px;
+    margin-top: -1vh;
+    margin-bottom: 60px;
+    text-decoration: none;
+}
+
+/* Links dentro do parágrafo */
+p a {
+    text-decoration: none;
+}
+
+p a:hover {
+    text-decoration: underline;
+}
+
+/* ===================== */
+/* 🔒 Formulário */
+#login {
+    background: linear-gradient(
+        90deg,
+        var(--cinza-escuro) 0%,
+        var(--cinza-medio) 50%,
+        var(--cinza-escuro) 100%
+    );
+    border: 1px solid var(--preto);
+    border-radius: 15px;
+    margin: 130px auto;
+    width: 40vw;
+    font-size: 25px;
+    font-family: "Anonymous Pro", serif;
+    text-align: center;
+    padding: 15px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Labels */
+#login label {
+    color: var(--texto);
+    font-family: "Anonymous Pro", serif;
+}
+
+/* Inputs */
+#login input {
+    height: 5vh;
+    width: 15vw;
+    border-radius: 10px;
+    font-size: 15px;
+    padding-left: 10px;
+    font-family: "Anonymous Pro", serif;
+    margin-bottom: 20px;
+    border: 1px solid var(--cinza-claro);
+}
+
+/* Esqueci minha senha */
+#login a {
+    text-decoration: none;
+    text-align: center;
+    font-size: 20px;
+    margin-top: 70px;
+}
+
+#login a:hover {
+    text-decoration: underline;
+}
+
+/* ===================== */
+/* 🔘 Botão Entrar */
+#btn-entrar {
+    background-color: var(--cinza-escuro);
+    color: var(--texto-secundario);
+    border: none;
+    padding: 10px;
+    border-radius: 25px;
+    cursor: pointer;
+    font-size: 16px;
+    width: 12vw;
+    height: 6vh;
+    margin: 35px auto 0;
+    font-family: "Anonymous Pro", serif;
+    text-decoration: none;
+    display: block;
+    transition: background-color 0.7s;
+}
+
+#btn-entrar a {
+    text-decoration: none;
+}
+
+/* Hover do botão */
+#btn-entrar:hover {
+    background-color: var(--roxo-hover);
+}
+
+/* ===================== */
+/* 📱 Responsividade */
+@media (max-width: 1115px) {
+    #login {
+        width: 50vw;
+    }
+
+    #login input {
+        min-width: 250px;
+    }
+
+    #btn-entrar {
+        min-width: 70px;
+    }
+}
+
+@media (max-width: 850px) {
+    #login {
+        width: 65vw;
+    }
+}
+
+@media (max-width: 625px) {
+    #login {
+        width: 80vw;
+    }
+}
+
+@media (max-width: 540px) {
+    .btn-navbar {
+        display: none;
+    }
+
+    h1 {
+        font-size: 30px;
+    }
+}

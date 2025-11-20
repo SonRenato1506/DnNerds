@@ -1,0 +1,152 @@
+Header
+<header>
+        <!--Navegar-->
+        <nav class="navbar">
+            <h2 class="title">DnNerds <img src="../Imagens/favicon.png?v=2?v=2" alt=""></h2>
+            <!--img da logo aqui-->
+
+            <ul>
+
+
+                <li>
+                    <!--Notícias-->
+                    <a href="../HTML/noticias.php">Notícias</a>
+                </li>
+                <li>
+                    <!--Tier List-->
+                    <a href="">NerdList</a>
+                </li>
+                <li>
+                    <!--Quizzes-->
+                    <a href="">Quizzes</a>
+                </li>
+                <li>
+                    <!--Copinha-->
+                    <a href="">IA</a>
+                </li>
+
+            </ul>
+
+
+            <!-- Botão para criar a conta -->
+            <button class="btn-navbar"><a href="../HTML/CriarConta.php">Criar Conta</a></button>
+        </nav>
+
+    </header>
+ 
+
+ QUIZZES
+
+INSERT INTO quizzes (imagem, titulo, descricao, categoria)
+VALUES ( 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/Icon_test.svg/1200px-Icon_test.svg.png',
+    'Quiz de Teste',
+    'Um quiz simples para verificar se tudo está funcionando corretamente.',
+    'Variados'
+);
+
+SET @quiz_id = LAST_INSERT_ID();
+
+INSERT INTO perguntas (texto, quizz_id) VALUES
+('Qual é a capital do Brasil?', @quiz_id),
+('Qual planeta é conhecido como o Planeta Vermelho?', @quiz_id),
+('Quem pintou a Mona Lisa?', @quiz_id);
+
+SET @p1 = LAST_INSERT_ID();      
+SET @p2 = @p1 + 1;                   -- ID da segunda
+SET @p3 = @p1 + 2;                   -- ID da terceira
+
+INSERT INTO respostas (texto, pergunta_id, correta) VALUES
+
+('Brasília', @p1, TRUE),
+('Rio de Janeiro', @p1, FALSE),
+('São Paulo', @p1, FALSE),
+('Salvador', @p1, FALSE),
+
+('Marte', @p2, TRUE),
+('Vênus', @p2, FALSE),
+('Júpiter', @p2, FALSE),
+('Saturno', @p2, FALSE),
+
+('Leonardo da Vinci', @p3, TRUE),
+('Michelangelo', @p3, FALSE),
+('Pablo Picasso', @p3, FALSE),
+('Claude Monet', @p3, FALSE);
+
+
+QUIZ PERSONALIDADE
+
+START TRANSACTION;
+
+INSERT INTO personalidade (titulo, descricao, imagem, categoria)
+VALUES ('Qual casa de Hogwarts você seria?', 'Descubra qual das quatro casas combina com sua personalidade.', 'hogwarts.jpg', 'Livros');
+
+SET @personalidade_id = LAST_INSERT_ID();
+
+INSERT INTO personalidade_resultados (personalidade_id, titulo, descricao, imagem) VALUES
+(@personalidade_id, 'Grifinória', 'Coragem, determinação e bravura definem você.', 'grifinoria.jpg'),
+(@personalidade_id, 'Sonserina', 'Ambição, astúcia e liderança são seus pontos fortes.', 'sonserina.jpg'),
+(@personalidade_id, 'Corvinal', 'Inteligência, criatividade e lógica movem você.', 'corvinal.jpg'),
+(@personalidade_id, 'Lufa-Lufa', 'Lealdade, bondade e trabalho duro são suas marcas.', 'lufalufa.jpg');
+
+SET @res_grif = (SELECT id FROM personalidade_resultados WHERE titulo='Grifinória' AND personalidade_id=@personalidade_id);
+SET @res_sons = (SELECT id FROM personalidade_resultados WHERE titulo='Sonserina' AND personalidade_id=@personalidade_id);
+SET @res_corv = (SELECT id FROM personalidade_resultados WHERE titulo='Corvinal' AND personalidade_id=@personalidade_id);
+SET @res_lufa = (SELECT id FROM personalidade_resultados WHERE titulo='Lufa-Lufa' AND personalidade_id=@personalidade_id);
+
+INSERT INTO personalidade_perguntas (personalidade_id, texto) VALUES
+(@personalidade_id, 'Qual qualidade mais se destaca em você?'),
+(@personalidade_id, 'Qual dessas criaturas mágicas você escolheria como companheira?'),
+(@personalidade_id, 'O que você mais valoriza em um amigo?');
+
+SET @p1 = (SELECT id FROM personalidade_perguntas WHERE texto='Qual qualidade mais se destaca em você?' AND personalidade_id=@personalidade_id);
+SET @p2 = (SELECT id FROM personalidade_perguntas WHERE texto='Qual dessas criaturas mágicas você escolheria como companheira?' AND personalidade_id=@personalidade_id);
+SET @p3 = (SELECT id FROM personalidade_perguntas WHERE texto='O que você mais valoriza em um amigo?' AND personalidade_id=@personalidade_id);
+
+INSERT INTO personalidade_respostas (pergunta_id, texto) VALUES
+(@p1, 'Coragem'),
+(@p1, 'Ambição'),
+(@p1, 'Inteligência'),
+(@p1, 'Lealdade'),
+
+(@p2, 'Hipogrifo'),
+(@p2, 'Basilisco'),
+(@p2, 'Coruja'),
+(@p2, 'Esquilo voador mágico'),
+
+(@p3, 'Lealdade'),
+(@p3, 'Determinação'),
+(@p3, 'Criatividade'),
+(@p3, 'Esperteza');
+
+SET @r1_1 = (SELECT id FROM personalidade_respostas WHERE texto='Coragem' AND pergunta_id=@p1);
+SET @r1_2 = (SELECT id FROM personalidade_respostas WHERE texto='Ambição' AND pergunta_id=@p1);
+SET @r1_3 = (SELECT id FROM personalidade_respostas WHERE texto='Inteligência' AND pergunta_id=@p1);
+SET @r1_4 = (SELECT id FROM personalidade_respostas WHERE texto='Lealdade' AND pergunta_id=@p1);
+
+SET @r2_1 = (SELECT id FROM personalidade_respostas WHERE texto='Hipogrifo' AND pergunta_id=@p2);
+SET @r2_2 = (SELECT id FROM personalidade_respostas WHERE texto='Basilisco' AND pergunta_id=@p2);
+SET @r2_3 = (SELECT id FROM personalidade_respostas WHERE texto='Coruja' AND pergunta_id=@p2);
+SET @r2_4 = (SELECT id FROM personalidade_respostas WHERE texto='Esquilo voador mágico' AND pergunta_id=@p2);
+
+SET @r3_1 = (SELECT id FROM personalidade_respostas WHERE texto='Lealdade' AND pergunta_id=@p3);
+SET @r3_2 = (SELECT id FROM personalidade_respostas WHERE texto='Determinação' AND pergunta_id=@p3);
+SET @r3_3 = (SELECT id FROM personalidade_respostas WHERE texto='Criatividade' AND pergunta_id=@p3);
+SET @r3_4 = (SELECT id FROM personalidade_respostas WHERE texto='Esperteza' AND pergunta_id=@p3);
+
+INSERT INTO personalidade_respostas_pontuacao (resposta_id, resultado_id, pontos) VALUES
+(@r1_1, @res_grif, 3),
+(@r1_2, @res_sons, 3),
+(@r1_3, @res_corv, 3),
+(@r1_4, @res_lufa, 3),
+
+(@r2_1, @res_grif, 2),
+(@r2_2, @res_sons, 2),
+(@r2_3, @res_corv, 2),
+(@r2_4, @res_lufa, 2),
+
+(@r3_1, @res_lufa, 3),
+(@r3_2, @res_grif, 3),
+(@r3_3, @res_corv, 3),
+(@r3_4, @res_sons, 3);
+
+COMMIT;

@@ -1,0 +1,412 @@
+/* Cores */
+:root {
+    --background: rgb(109, 0, 109);
+    --background2: rgb(75, 0, 75);
+    --roxo1: #4b0b51c7;
+    --roxo2: #6a1d72;
+    --texto: orange;
+}
+
+/* 
+Fontes
+@font-face {
+    font-family: "Anonymous Pro";
+    src: local(Anonymous Pro), url(C:\Users\John\Desktop\YARNEY\Fontes\Anonymous_Pro\AnonymousPro-Regular.ttf);
+} */
+
+/* Geral */
+* {
+    margin: 0;
+    padding: 0;
+}
+
+/* Corpo */
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: #242525;
+
+}
+
+
+/* Principal */
+main {
+    text-align: center;
+    background-size: cover;
+    height: 90%;
+    padding-top: 100px;
+    padding-bottom: 40vh;
+    border: 1px solid black;
+
+}
+
+
+/* Titulo */
+h1 {
+    font-size: 30px;
+    margin-top: 5px;
+    margin-left: 10px;
+    color: var(--texto);
+    text-shadow: 0 0 3px var(--texto);
+
+}
+
+h2 {
+    color: var(--texto);
+    font-family: "Bitcount Grid Single", system-ui;
+    font-size: 32px;
+    text-transform: uppercase;
+    text-shadow: 0 0 1px var(--texto);
+
+}
+
+
+
+.classe {
+    box-sizing: border-box;
+    margin-top: 40px;
+    width: 98.7vw;
+    padding-left: 2%;
+    padding-bottom: 5px;
+    display: flex;
+    justify-content: space-between;
+    /* border-bottom: 1px solid var(--texto); */
+    align-items: center;
+    flex-direction: row;
+
+}
+
+#caixa {
+    position: relative;
+    height: 200px;
+    width: 200px;
+    margin-left: 2.5vw;
+    margin-top: 2vw;
+    border-radius: 10px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+#caixa img {
+    height: 100%;
+    width: 100%;
+    border-radius: 10px;
+    object-fit: cover;
+    display: block;
+    transition: 0.3s ease;
+}
+
+
+a {
+    text-decoration: none;
+}
+
+#caixa:hover p {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+
+#caixa:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 30px var(--roxo2);
+}
+
+
+#caixa p {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: rgba(75, 0, 75, 0.9);
+    /* fundo roxo translúcido */
+    color: orange;
+    font-size: 18px;
+    text-transform: uppercase;
+    padding: 10px;
+    border-radius: 0 0 10px 10px;
+    opacity: 0;
+    transform: translateY(100%);
+    transition: all 0.4s ease;
+}
+
+#caixa img {
+    height: 100%;
+    width: 100%;
+    border-radius: 10px;
+    object-fit: cover;
+    display: block;
+    transition: 0.3s ease;
+}
+
+.flex {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+/*botão ver mais*/
+.btn-VerMais {
+    border-radius: 40px;
+    border: none;
+    background-color: var(--background);
+    width: 5vw;
+    height: 3vh;
+    margin-top: -1vh;
+}
+
+.btn-VerMais:hover {
+    background-color: var(--background2);
+    transition: 0.7s;
+    cursor: pointer;
+}
+
+.carousel-container {
+    position: relative;
+    width: 98%;
+    margin: 0 auto 30px;
+    overflow: hidden;
+    padding: 8px 0;
+}
+
+.carousel {
+    display: flex;
+    gap: 20px;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    flex-wrap: nowrap;
+    /* importante: não quebrar em várias linhas */
+    padding-bottom: 6px;
+}
+
+/* esconde a barra de rolagem no WebKit */
+.carousel::-webkit-scrollbar {
+    display: none;
+}
+
+.carousel-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0, 0, 0, 0.35);
+    color: #fff;
+    border: none;
+    width: 44px;
+    height: 44px;
+    font-size: 22px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 10;
+    transition: background .2s;
+}
+
+.carousel::-webkit-scrollbar {
+    display: none;
+    /* Oculta a barra de rolagem */
+}
+
+.carousel-btn:hover {
+    background: rgba(0, 0, 0, 0.6);
+}
+
+.carousel-btn.left {
+    left: 8px;
+}
+
+.carousel-btn.right {
+    right: 8px;
+}
+
+.carousel-btn:disabled {
+    opacity: 0.35;
+    cursor: default;
+}
+
+/* --- NOTÍCIA DESTAQUE --- */
+#noticia-destaque {
+    position: relative;
+    width: 100%;
+    margin: 60px auto 40px;
+    overflow: hidden;
+    color: white;
+}
+
+#noticia-destaque h2 {
+    color: var(--texto);
+    text-align: center;
+    font-family: "Bitcount Grid Single", system-ui;
+    font-size: 36px;
+    margin-bottom: 15px;
+    text-transform: uppercase;
+}
+
+.destaque-container {
+    position: relative;
+    width: 95%;
+    margin: 0 auto;
+    overflow: hidden;
+    border-radius: 20px;
+}
+
+.destaque-carousel {
+    display: flex;
+    transition: transform 0.7s ease-in-out;
+}
+
+.destaque-item {
+    min-width: 100%;
+    position: relative;
+}
+
+.destaque-item img {
+    width: 100%;
+    height: 450px;
+    object-fit: cover;
+    border-radius: 20px;
+}
+
+.destaque-texto {
+    position: absolute;
+    bottom: 0;
+    background: linear-gradient(transparent, rgba(0, 0, 0, 0.85));
+    color: white;
+    padding: 30px;
+    width: 100%;
+    border-radius: 0 0 20px 20px;
+    text-align: left;
+}
+
+
+.destaque-texto h3 {
+    font-size: 28px;
+    color: orange;
+    text-shadow: 0 0 40px black;
+    margin-bottom: 10px;
+}
+
+.destaque-texto p {
+    font-size: 16px;
+    color: #f1f1f1;
+}
+
+.destaque-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0, 0, 0, 0.4);
+    color: #fff;
+    border: none;
+    width: 50px;
+    height: 50px;
+    font-size: 24px;
+    border-radius: 50%;
+    cursor: pointer;
+    z-index: 10;
+}
+
+.destaque-btn.left {
+    left: 15px;
+}
+
+.destaque-btn.right {
+    right: 15px;
+}
+
+.destaque-btn:hover {
+    background: rgba(0, 0, 0, 0.7);
+}
+
+/* Responsivo */
+@media (max-width: 800px) {
+    .destaque-item img {
+        height: 300px;
+    }
+
+    .destaque-texto h3 {
+        font-size: 22px;
+    }
+
+    .destaque-texto p {
+        font-size: 14px;
+    }
+}
+
+#tipoQuiz {
+    margin: auto;
+    margin-top: 40px;
+}
+
+#tipoQuiz>* {
+    margin: 30px;
+}
+
+
+
+@media (max-width: 700px) {
+    .flex {
+        flex-direction: column;
+    }
+
+    #caixa {
+        width: 90vw;
+        height: 160px;
+        margin-left: 3vw;
+    }
+}
+
+@media (max-width: 900px) {
+    .flex {
+        grid-template-columns: repeat(2, 1fr);
+
+        /* 2 colunas em tablets */
+    }
+
+    #caixa {
+        height: auto;
+        width: 90vw;
+    }
+
+    #caixa img {
+        width: 100%;
+        height: 160px;
+        border-radius: 10px;
+    }
+
+    #caixa p {
+        position: static;
+        opacity: 1;
+        transform: none;
+        background: none;
+        margin-top: 10px;
+        color: rgb(223, 223, 223);
+        text-align: center;
+        border-radius: 0;
+    }
+
+    #caixa:hover {
+        transform: none;
+        /* box-shadow: 0 0 20px var(--roxo2); */
+    }
+
+}
+
+@media (max-width: 600px) {
+    #tipoQuiz>* {
+        margin: 10px;
+    }
+}
+
+@media (max-width: 500px) {
+    .flex {
+        grid-template-columns: repeat(1, 1fr);
+        /* 1 coluna em celular */
+    }
+    #tipoQuiz>* {
+        margin: 3px;
+    }
+}
