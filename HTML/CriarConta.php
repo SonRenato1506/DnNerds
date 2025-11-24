@@ -28,10 +28,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt->bind_param("sss", $nome, $email, $senhaHash);
 
     if ($stmt->execute()) {
-        echo "✅ Usuário cadastrado com sucesso!";
+        header("Location: FazerLogin.php");
+        exit;
     } else {
         echo "❌ Erro: " . $stmt->error;
     }
+
 }
 ?>
 

@@ -2,34 +2,45 @@
 session_start();
 include_once("config.php");
 
-
-
 if (isset($_POST['email']) && isset($_POST['senha'])) {
     $email = $_POST['email'];
     $senha = $_POST['senha'];
 
-    // Verifica se o usuário existe
-    $sql = "SELECT * FROM usuarios WHERE email = '$email' AND senha = '$senha' LIMIT 1";
-    $result = $conexao->query($sql);
+    // Busca usuário pelo email
+    $sql = "SELECT * FROM usuarios WHERE email = ? LIMIT 1";
+    $stmt = $conexao->prepare($sql);
+    $stmt->bind_param("s", $email);
+    $stmt->execute();
+    $result = $stmt->get_result();
 
     if ($result->num_rows > 0) {
-        // Usuário encontrado
-        $usuario = $result->fetch_assoc();
-        $_SESSION['id'] = $usuario['id'];
-        $_SESSION['nome'] = $usuario['nome'];
-        $_SESSION['email'] = $usuario['email'];
 
-        // Redireciona para página inicial
-        header("Location: ../HTML/noticias.php");
-        exit;
+        $usuario = $result->fetch_assoc();
+
+        // Verifica senha
+        if (password_verify($senha, $usuario['senha'])) {
+
+            // Cria sessão
+            $_SESSION['id'] = $usuario['id'];
+            $_SESSION['nome'] = $usuario['nome'];
+            $_SESSION['email'] = $usuario['email'];
+
+            // Redireciona para notícias
+            header("Location: ../HTML/noticias.php");
+            exit;
+
+        } else {
+            echo "<script>alert('❌ Senha incorreta!'); window.location.href='FazerLogin.php';</script>";
+            exit;
+        }
+
     } else {
-        // Usuário ou senha inválidos
-        echo "❌ Email ou senha incorretos!";
+        echo "<script>alert('❌ Usuário não encontrado!'); window.location.href='FazerLogin.php';</script>";
+        exit;
     }
-} else {
-    // echo "Preencha todos os campos!";
 }
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
