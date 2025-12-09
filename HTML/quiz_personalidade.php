@@ -191,7 +191,7 @@ function mostrarResultado() {
         <h2>${r.titulo}</h2>
         <img src="${r.imagem}" class="quiz_img" style="max-width:300px;border-radius:20px;">
         <p>${r.descricao}</p>
-        <a href="Quizzes.php" class="btn-voltar">Voltar</a>
+        <button onclick="location.reload()">Refazer o quiz</button>  <button onclick="history.back()">Voltar</button>
     `;
 }
 
