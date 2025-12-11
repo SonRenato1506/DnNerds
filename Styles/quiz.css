@@ -22,42 +22,6 @@ body {
     font-family: "Poppins", sans-serif;
 }
 
-/* ===========================
-   Header e Navbar
-=========================== */
-
-header {
-    width: 100%;
-    border-bottom: 1px solid #000;
-}
-
-.navbar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 10px 20px;
-}
-
-.navbar ul {
-    list-style: none;
-    display: flex;
-    gap: 20px;
-    margin: 0;
-    padding: 0;
-}
-
-.navbar li a {
-    text-decoration: none;
-    font-weight: 600;
-}
-
-.btn-navbar a {
-    text-decoration: none;
-    padding: 8px 16px;
-    border: 1px solid #000;
-    border-radius: 4px;
-    display: inline-block;
-}
 
 /* ===========================
    Conteúdo principal
@@ -129,11 +93,9 @@ header {
 
 #quiz-container button {
     position: relative;
-    /* permite posicionar o símbolo */
     overflow: hidden;
     display: flex;
     justify-content: center;
-    /* texto centralizado */
     align-items: center;
 
     width: 100%;
@@ -148,15 +110,12 @@ header {
     color: #fff;
 }
 
-/* Força todos os símbolos à extrema esquerda */
 #quiz-container button::before {
     position: absolute;
     left: 12px;
-    /* distância da borda */
     top: 0;
     bottom: 0;
     margin: auto 0;
-    /* centraliza verdadeiramente no eixo vertical */
     height: fit-content;
 
 }

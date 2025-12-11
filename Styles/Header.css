@@ -92,7 +92,7 @@ h2 {
 }
 
 /* Efeito hover nos links da navbar */
-.navbar a:hover,
+
 .navbar ul li a:hover {
     background-color: var(--texto);
     color: var(--preto);

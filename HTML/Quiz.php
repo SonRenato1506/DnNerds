@@ -70,8 +70,8 @@ if ($resultPerguntas && $resultPerguntas->num_rows > 0) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php echo htmlspecialchars($quiz['titulo']); ?> - DnNerds</title>
-    <link rel="stylesheet" href="../Styles/quiz.css?v=6">
-    <link rel="stylesheet" href="../Styles/Header.css?v=27">
+    <link rel="stylesheet" href="../Styles/quiz.css?v=7">
+    <link rel="stylesheet" href="../Styles/Header.css?v=28">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link

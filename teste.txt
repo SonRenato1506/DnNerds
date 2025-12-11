@@ -78,75 +78,106 @@ QUIZ PERSONALIDADE
 START TRANSACTION;
 
 INSERT INTO personalidade (titulo, descricao, imagem, categoria)
-VALUES ('Qual casa de Hogwarts você seria?', 'Descubra qual das quatro casas combina com sua personalidade.', 'hogwarts.jpg', 'Livros');
+VALUES ('Qual membro dos Thunderbolts você seria?', 'Descubra qual dos integrantes dos Thunderbolts mais combina com você.', '../Imagens/thunderbolts.jpeg', 'Filmes');
 
 SET @personalidade_id = LAST_INSERT_ID();
 
 INSERT INTO personalidade_resultados (personalidade_id, titulo, descricao, imagem) VALUES
-(@personalidade_id, 'Grifinória', 'Coragem, determinação e bravura definem você.', 'grifinoria.jpg'),
-(@personalidade_id, 'Sonserina', 'Ambição, astúcia e liderança são seus pontos fortes.', 'sonserina.jpg'),
-(@personalidade_id, 'Corvinal', 'Inteligência, criatividade e lógica movem você.', 'corvinal.jpg'),
-(@personalidade_id, 'Lufa-Lufa', 'Lealdade, bondade e trabalho duro são suas marcas.', 'lufalufa.jpg');
+(@personalidade_id, 'Yelena Belova', 'Ágil, sarcástica, leal e extremamente eficiente em qualquer missão.', '../Imagens/yelena.jpeg'),
+(@personalidade_id, 'Fantasma', 'Reservada, instável, intensa e movida por sobrevivência.', '../Imagens/fantasma.jpeg'),
+(@personalidade_id, 'Guardião Vermelho', 'Orgulhoso, impulsivo, divertido e sempre pronto para provar seu valor.', '../Imagens/guardiao_vermelho.jpeg'),
+(@personalidade_id, 'Bucky Barnes', 'Experiente, calmo, forte e sempre lutando para fazer o certo.', '../Imagens/bucky.jpeg'),
+(@personalidade_id, 'Sentinela', 'Poder extremo, dualidade emocional e um lado sombrio difícil de controlar.', '../Imagens/sentinela.jpeg'),
+(@personalidade_id, 'Capitão América da Deep Web', 'Determinado, rígido, intenso e com um forte senso distorcido de justiça.', '../Imagens/usagent.jpeg');
 
-SET @res_grif = (SELECT id FROM personalidade_resultados WHERE titulo='Grifinória' AND personalidade_id=@personalidade_id);
-SET @res_sons = (SELECT id FROM personalidade_resultados WHERE titulo='Sonserina' AND personalidade_id=@personalidade_id);
-SET @res_corv = (SELECT id FROM personalidade_resultados WHERE titulo='Corvinal' AND personalidade_id=@personalidade_id);
-SET @res_lufa = (SELECT id FROM personalidade_resultados WHERE titulo='Lufa-Lufa' AND personalidade_id=@personalidade_id);
+SET @res_yelena = (SELECT id FROM personalidade_resultados WHERE titulo='Yelena Belova' AND personalidade_id=@personalidade_id);
+SET @res_fantasma = (SELECT id FROM personalidade_resultados WHERE titulo='Fantasma' AND personalidade_id=@personalidade_id);
+SET @res_guardiao = (SELECT id FROM personalidade_resultados WHERE titulo='Guardião Vermelho' AND personalidade_id=@personalidade_id);
+SET @res_bucky = (SELECT id FROM personalidade_resultados WHERE titulo='Bucky Barnes' AND personalidade_id=@personalidade_id);
+SET @res_sentinela = (SELECT id FROM personalidade_resultados WHERE titulo='Sentinela' AND personalidade_id=@personalidade_id);
+SET @res_usagent = (SELECT id FROM personalidade_resultados WHERE titulo='Capitão América da Deep Web' AND personalidade_id=@personalidade_id);
 
 INSERT INTO personalidade_perguntas (personalidade_id, texto) VALUES
-(@personalidade_id, 'Qual qualidade mais se destaca em você?'),
-(@personalidade_id, 'Qual dessas criaturas mágicas você escolheria como companheira?'),
-(@personalidade_id, 'O que você mais valoriza em um amigo?');
+(@personalidade_id, 'Como você enfrenta uma missão difícil?'),
+(@personalidade_id, 'O que mais define sua personalidade?'),
+(@personalidade_id, 'Qual atitude combina mais com você em equipe?');
 
-SET @p1 = (SELECT id FROM personalidade_perguntas WHERE texto='Qual qualidade mais se destaca em você?' AND personalidade_id=@personalidade_id);
-SET @p2 = (SELECT id FROM personalidade_perguntas WHERE texto='Qual dessas criaturas mágicas você escolheria como companheira?' AND personalidade_id=@personalidade_id);
-SET @p3 = (SELECT id FROM personalidade_perguntas WHERE texto='O que você mais valoriza em um amigo?' AND personalidade_id=@personalidade_id);
+SET @p1 = (SELECT id FROM personalidade_perguntas WHERE texto='Como você enfrenta uma missão difícil?' AND personalidade_id=@personalidade_id);
+SET @p2 = (SELECT id FROM personalidade_perguntas WHERE texto='O que mais define sua personalidade?' AND personalidade_id=@personalidade_id);
+SET @p3 = (SELECT id FROM personalidade_perguntas WHERE texto='Qual atitude combina mais com você em equipe?' AND personalidade_id=@personalidade_id);
 
 INSERT INTO personalidade_respostas (pergunta_id, texto) VALUES
-(@p1, 'Coragem'),
-(@p1, 'Ambição'),
-(@p1, 'Inteligência'),
-(@p1, 'Lealdade'),
+-- P1
+(@p1, 'Uso minha agilidade e estratégia'),
+(@p1, 'Ajo por instinto e necessidade'),
+(@p1, 'Vou com tudo, mesmo sem pensar muito'),
+(@p1, 'Mantenho calma e experiência'),
+(@p1, 'Confio no meu poder bruto'),
+(@p1, 'Sigo regras e imponho autoridade'),
 
-(@p2, 'Hipogrifo'),
-(@p2, 'Basilisco'),
-(@p2, 'Coruja'),
-(@p2, 'Esquilo voador mágico'),
+-- P2
+(@p2, 'Sarcasmo e eficiência'),
+(@p2, 'Intensidade e mistério'),
+(@p2, 'Orgulho e impulsividade'),
+(@p2, 'Maturidade e autocontrole'),
+(@p2, 'Dualidade e instabilidade'),
+(@p2, 'Determinação rígida e força'),
 
-(@p3, 'Lealdade'),
-(@p3, 'Determinação'),
-(@p3, 'Criatividade'),
-(@p3, 'Esperteza');
+-- P3
+(@p3, 'Lealdade acima de tudo'),
+(@p3, 'Evito laços, mas ajudo quando preciso'),
+(@p3, 'Tento provar meu valor sempre'),
+(@p3, 'Faço o que é certo, mesmo em silêncio'),
+(@p3, 'Sou imprevisível, mas poderoso'),
+(@p3, 'Quero comandar e liderar o time');
 
-SET @r1_1 = (SELECT id FROM personalidade_respostas WHERE texto='Coragem' AND pergunta_id=@p1);
-SET @r1_2 = (SELECT id FROM personalidade_respostas WHERE texto='Ambição' AND pergunta_id=@p1);
-SET @r1_3 = (SELECT id FROM personalidade_respostas WHERE texto='Inteligência' AND pergunta_id=@p1);
-SET @r1_4 = (SELECT id FROM personalidade_respostas WHERE texto='Lealdade' AND pergunta_id=@p1);
+-- IDs das respostas P1
+SET @r1_1 = (SELECT id FROM personalidade_respostas WHERE texto='Uso minha agilidade e estratégia' AND pergunta_id=@p1);
+SET @r1_2 = (SELECT id FROM personalidade_respostas WHERE texto='Ajo por instinto e necessidade' AND pergunta_id=@p1);
+SET @r1_3 = (SELECT id FROM personalidade_respostas WHERE texto='Vou com tudo, mesmo sem pensar muito' AND pergunta_id=@p1);
+SET @r1_4 = (SELECT id FROM personalidade_respostas WHERE texto='Mantenho calma e experiência' AND pergunta_id=@p1);
+SET @r1_5 = (SELECT id FROM personalidade_respostas WHERE texto='Confio no meu poder bruto' AND pergunta_id=@p1);
+SET @r1_6 = (SELECT id FROM personalidade_respostas WHERE texto='Sigo regras e imponho autoridade' AND pergunta_id=@p1);
 
-SET @r2_1 = (SELECT id FROM personalidade_respostas WHERE texto='Hipogrifo' AND pergunta_id=@p2);
-SET @r2_2 = (SELECT id FROM personalidade_respostas WHERE texto='Basilisco' AND pergunta_id=@p2);
-SET @r2_3 = (SELECT id FROM personalidade_respostas WHERE texto='Coruja' AND pergunta_id=@p2);
-SET @r2_4 = (SELECT id FROM personalidade_respostas WHERE texto='Esquilo voador mágico' AND pergunta_id=@p2);
+-- IDs das respostas P2
+SET @r2_1 = (SELECT id FROM personalidade_respostas WHERE texto='Sarcasmo e eficiência' AND pergunta_id=@p2);
+SET @r2_2 = (SELECT id FROM personalidade_respostas WHERE texto='Intensidade e mistério' AND pergunta_id=@p2);
+SET @r2_3 = (SELECT id FROM personalidade_respostas WHERE texto='Orgulho e impulsividade' AND pergunta_id=@p2);
+SET @r2_4 = (SELECT id FROM personalidade_respostas WHERE texto='Maturidade e autocontrole' AND pergunta_id=@p2);
+SET @r2_5 = (SELECT id FROM personalidade_respostas WHERE texto='Dualidade e instabilidade' AND pergunta_id=@p2);
+SET @r2_6 = (SELECT id FROM personalidade_respostas WHERE texto='Determinação rígida e força' AND pergunta_id=@p2);
 
-SET @r3_1 = (SELECT id FROM personalidade_respostas WHERE texto='Lealdade' AND pergunta_id=@p3);
-SET @r3_2 = (SELECT id FROM personalidade_respostas WHERE texto='Determinação' AND pergunta_id=@p3);
-SET @r3_3 = (SELECT id FROM personalidade_respostas WHERE texto='Criatividade' AND pergunta_id=@p3);
-SET @r3_4 = (SELECT id FROM personalidade_respostas WHERE texto='Esperteza' AND pergunta_id=@p3);
+-- IDs das respostas P3
+SET @r3_1 = (SELECT id FROM personalidade_respostas WHERE texto='Lealdade acima de tudo' AND pergunta_id=@p3);
+SET @r3_2 = (SELECT id FROM personalidade_respostas WHERE texto='Evito laços, mas ajudo quando preciso' AND pergunta_id=@p3);
+SET @r3_3 = (SELECT id FROM personalidade_respostas WHERE texto='Tento provar meu valor sempre' AND pergunta_id=@p3);
+SET @r3_4 = (SELECT id FROM personalidade_respostas WHERE texto='Faço o que é certo, mesmo em silêncio' AND pergunta_id=@p3);
+SET @r3_5 = (SELECT id FROM personalidade_respostas WHERE texto='Sou imprevisível, mas poderoso' AND pergunta_id=@p3);
+SET @r3_6 = (SELECT id FROM personalidade_respostas WHERE texto='Quero comandar e liderar o time' AND pergunta_id=@p3);
 
 INSERT INTO personalidade_respostas_pontuacao (resposta_id, resultado_id, pontos) VALUES
-(@r1_1, @res_grif, 3),
-(@r1_2, @res_sons, 3),
-(@r1_3, @res_corv, 3),
-(@r1_4, @res_lufa, 3),
+-- P1
+(@r1_1, @res_yelena, 3),
+(@r1_2, @res_fantasma, 3),
+(@r1_3, @res_guardiao, 3),
+(@r1_4, @res_bucky, 3),
+(@r1_5, @res_sentinela, 3),
+(@r1_6, @res_usagent, 3),
 
-(@r2_1, @res_grif, 2),
-(@r2_2, @res_sons, 2),
-(@r2_3, @res_corv, 2),
-(@r2_4, @res_lufa, 2),
+-- P2
+(@r2_1, @res_yelena, 2),
+(@r2_2, @res_fantasma, 2),
+(@r2_3, @res_guardiao, 2),
+(@r2_4, @res_bucky, 2),
+(@r2_5, @res_sentinela, 2),
+(@r2_6, @res_usagent, 2),
 
-(@r3_1, @res_lufa, 3),
-(@r3_2, @res_grif, 3),
-(@r3_3, @res_corv, 3),
-(@r3_4, @res_sons, 3);
+-- P3
+(@r3_1, @res_yelena, 3),
+(@r3_2, @res_fantasma, 3),
+(@r3_3, @res_guardiao, 3),
+(@r3_4, @res_bucky, 3),
+(@r3_5, @res_sentinela, 3),
+(@r3_6, @res_usagent, 3);
 
 COMMIT;
