@@ -10,7 +10,7 @@ Header
 
                 <li>
                     <!--Notícias-->
-                    <a href="../HTML/noticias.php">Notícias</a>
+                    <a href="../PHP/noticias.php">Notícias</a>
                 </li>
                 <li>
                     <!--Tier List-->
@@ -29,7 +29,7 @@ Header
 
 
             <!-- Botão para criar a conta -->
-            <button class="btn-navbar"><a href="../HTML/CriarConta.php">Criar Conta</a></button>
+            <button class="btn-navbar"><a href="../PHP/CriarConta.php">Criar Conta</a></button>
         </nav>
 
     </header>

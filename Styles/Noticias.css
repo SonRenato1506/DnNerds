@@ -32,12 +32,12 @@ body {
 main {
     text-align: center;
     background-size: cover;
-    height: 90%;
-    padding-top: 100px;
-    padding-bottom: 40vh;
-    border: 1px solid black;
-
+    padding-top: 120px; /* espaço da navbar fixa */
+    padding-bottom: 80px;
+    position: relative;
+    z-index: 1;
 }
+
 
 
 /* Titulo */
@@ -201,7 +201,7 @@ a {
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    z-index: 10;
+    z-index: 50;
     transition: background .2s;
 }
 
@@ -247,7 +247,7 @@ a {
 
 .destaque-container {
     position: relative;
-    width: 95%;
+    width: 85%;
     margin: 0 auto;
     overflow: hidden;
     border-radius: 20px;
@@ -306,7 +306,7 @@ a {
     font-size: 24px;
     border-radius: 50%;
     cursor: pointer;
-    z-index: 10;
+    z-index: 50;
 }
 
 .destaque-btn.left {
@@ -394,6 +394,9 @@ a {
     }
 
 }
+
+
+
 
 @media (max-width: 600px) {
     #tipoQuiz>* {

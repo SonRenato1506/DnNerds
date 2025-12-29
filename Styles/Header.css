@@ -128,55 +128,50 @@ h2 {
 
 /* ===================== */
 /* 🔍 Barra de Pesquisa */
+/* 🔍 Barra de Pesquisa */
 .search-container {
     display: flex;
-    justify-content: center;
     align-items: center;
-    width: 25vw;
-}
-
-.search-container form {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    width: 100%;
-}
-
-.search-container input {
-    padding: 6px 10px;
-    border-radius: 8px;
-    border: 1px solid var(--borda-cinza);
     background-color: var(--branco);
+    border-radius: 10px;
+    overflow: hidden;
+    /* border: 1px solid var(--borda-preta); */
+    width: 25vw;
+    min-width: 220px;
+    max-width: 420px;
 }
 
-.search-container button {
-    padding: 6px 10px;
-    border-radius: 8px;
+/* Botão da lupa */
+.btn-lupa {
     background-color: var(--roxo2);
     color: var(--branco);
     border: none;
+    padding: 8px 12px;
     cursor: pointer;
+    font-size: 18px;
 }
 
-#lupa {
-    width: 35px;
-    height: 35px;
-    border: 1px solid var(--borda-preta);
-    border-right: none;
-    display: inline-block;
+/* Hover da lupa */
+.btn-lupa:hover {
+    /* background-color: var(--roxo-hover); */
 }
 
-input[type="search"] {
-    width: 565px;
-    height: 37px;
-    background-color: var(--branco);
-    border: 1px solid var(--borda-preta);
-    border-left: none;
-    padding: 5px;
-    box-sizing: border-box;
+/* Input de busca */
+.search-container input[type="search"] {
+    flex: 1;
+    border: none;
+    padding: 8px 10px;
+    font-size: 14px;
     outline: none;
-    border-radius: 10px;
+    background-color: transparent;
 }
+
+.search-container:focus-within {
+    box-shadow: 0 0 10px var(--roxo-hover);
+}
+
+
+
 
 /* ===================== */
 /* ⚙️ Rodapé */
@@ -211,6 +206,31 @@ input[type="search"] {
 .footer-links a img:hover {
     transform: scale(1.15);
 }
+
+/* Logo DnNerds */
+.title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 32px;
+    letter-spacing: 1px;
+}
+
+.logo-destaque {
+    color: var(--texto-secundario);
+    text-shadow:
+        0 0 2.5px var(--texto-secundario),
+        0 0 5px var(--texto),
+        0 0 10px var(--laranja-hover);
+    font-weight: bold;
+}
+
+/* Ícone ao lado do logo */
+.title img {
+    width: 32px;
+    height: 32px;
+}
+
 
 /* ===================== */
 /* 📱 Responsividade */
