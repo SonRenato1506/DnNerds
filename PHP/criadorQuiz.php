@@ -6,171 +6,38 @@
 <head>
     <meta charset="UTF-8">
     <title>Criar Quiz - DnNerds</title>
-    <style>
-        * {
-            box-sizing: border-box;
-        }
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        body {
-            font-family: 'Segoe UI', Tahoma, sans-serif;
-            background: linear-gradient(135deg, #220f2cff, #4b0b51c7, #6a1d72);
-            color: #fff;
-            margin: 0;
-            padding: 0;
-            min-height: 100vh;
-        }
-
-        h1 {
-            text-align: center;
-            margin-bottom: 25px;
-            font-weight: 600;
-        }
-
-        form {
-            max-width: 800px;
-            margin: auto;
-            background: rgba(0, 0, 0, 0.6);
-            padding: 25px;
-            border-radius: 12px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-        }
-
-        label {
-            font-weight: 600;
-            margin-top: 15px;
-            display: block;
-        }
-
-        input,
-        textarea,
-        select {
-            width: 100%;
-            padding: 10px;
-            margin-top: 6px;
-            border-radius: 6px;
-            border: none;
-            background: #1e1e1e;
-            color: #fff;
-            outline: none;
-        }
-
-        textarea {
-            resize: vertical;
-            min-height: 80px;
-        }
-
-        input::placeholder {
-            color: #aaa;
-        }
-
-        hr {
-            margin: 30px 0;
-            border: none;
-            height: 1px;
-            background: #444;
-        }
-
-        .pergunta {
-            background: #161616;
-            border-radius: 10px;
-            padding: 15px;
-            margin-top: 20px;
-            border-left: 5px solid #00c6ff;
-            animation: fadeIn 0.3s ease-in-out;
-        }
-
-        .pergunta h3 {
-            margin-top: 0;
-            color: #00c6ff;
-        }
-
-        .pergunta input[type="radio"] {
-            width: auto;
-            margin-right: 6px;
-        }
-
-        .pergunta input[type="text"] {
-            margin-bottom: 5px;
-        }
-
-        button {
-            width: 100%;
-            padding: 12px;
-            border-radius: 8px;
-            border: none;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-
-        button[type="button"] {
-            background: linear-gradient(135deg, #00c6ff, #0072ff);
-            color: #fff;
-            margin-top: 10px;
-        }
-
-        button[type="submit"] {
-            background: linear-gradient(135deg, #34ac4cff, #137428ff);
-            color: #000;
-            margin-top: 20px;
-        }
-
-        button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
-        }
-
-        .btn-remover {
-            background: linear-gradient(135deg, #ff416c, #ff4b2b);
-            color: #fff;
-            border: none;
-            padding: 6px 14px;
-            border-radius: 20px;
-            font-size: 13px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.25s ease;
-            box-shadow: 0 4px 12px rgba(255, 65, 108, 0.4);
-        }
-
-        .btn-remover:hover {
-            transform: scale(1.05);
-            box-shadow: 0 6px 18px rgba(255, 65, 108, 0.6);
-        }
-
-        .btn-remover:active {
-            transform: scale(0.97);
-        }
-
-        .btn-remover::before {
-            content: "⚠ ";
-        }
-
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(10px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @media (max-width: 600px) {
-            form {
-                padding: 15px;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="../Styles/Header.css">
+    <link rel="stylesheet" href="../Styles/Criador.css">
 </head>
 
 <body>
 
-    <h1>Criar Quiz</h1>
+<header>
+    <nav class="navbar">
+        <h2 class="title">
+            DnNerds <img src="../Imagens/anfitriao.png?v=2" alt="DnNerds">
+        </h2>
+        <ul>
+            <li><a href="Noticias.php">Notícias</a></li>
+            <li><a href="nerdlists.php">NerdList</a></li>
+            <li><a href="Quizzes.php">Quizzes</a></li>
+            <li><a href="#">IA</a></li>
+        </ul>
+        <button class="btn-navbar">
+            <a href="FazerLogin.php">Fazer Login</a>
+        </button>
+    </nav>
+</header>
+
+<!-- ===================== -->
+<!-- 🧠 Criador de Quiz -->
+<!-- ===================== -->
+
+<div class="container">
+
+    <h2>🧠 Criar Novo Quiz</h2>
 
     <form action="salvarQuiz.php" method="POST">
 
@@ -181,59 +48,84 @@
         <textarea name="descricao" required></textarea>
 
         <label>Categoria</label>
-        <select name="categoria">
+        <select name="categoria" required>
+            <option value="">Selecione</option>
             <option value="Games">Games</option>
             <option value="Anime">Anime</option>
             <option value="Series">Séries</option>
             <option value="Filmes">Filmes</option>
             <option value="Livros">Livros</option>
             <option value="Variados">Variados</option>
-
         </select>
 
         <label>Imagem (URL ou caminho)</label>
-        <input type="text" name="imagem">
+        <input type="text" name="imagem" placeholder="https://site.com/imagem.jpg">
 
         <hr>
 
+        <!-- Perguntas -->
         <div id="perguntas"></div>
 
         <button type="button" onclick="addPergunta()">➕ Adicionar Pergunta</button>
-        <br><br>
+
         <button type="submit">🚀 Salvar Quiz</button>
 
     </form>
 
-    <script>
-        let count = 0;
+</div>
 
-        function addPergunta() {
-            count++;
+<script>
+let count = 0;
 
-            const div = document.createElement("div");
-            div.className = "pergunta";
+function addPergunta() {
+    count++;
 
-            div.innerHTML = `
+    const div = document.createElement("div");
+    div.className = "pergunta";
+
+    div.innerHTML = `
         <h3>Pergunta ${count}</h3>
+
+                <div class="opcao">
         <input type="text" name="perguntas[${count}][texto]" placeholder="Pergunta" required>
+        </div>
 
-        <input type="text" name="perguntas[${count}][respostas][0][texto]" placeholder="Resposta A" required>
-        <input type="radio" name="perguntas[${count}][correta]" value="0"> Correta
+        <div class="opcao">
+            <input type="text" name="perguntas[${count}][respostas][0][texto]" placeholder="Resposta A" required>
+            <label><input type="radio" name="perguntas[${count}][correta]" value="0" required> Correta</label>
+        </div>
 
-        <input type="text" name="perguntas[${count}][respostas][1][texto]" placeholder="Resposta B" required>
-        <input type="radio" name="perguntas[${count}][correta]" value="1"> Correta
+        <div class="opcao">
+            <input type="text" name="perguntas[${count}][respostas][1][texto]" placeholder="Resposta B" required>
+            <label><input type="radio" name="perguntas[${count}][correta]" value="1"> Correta</label>
+        </div>
 
-        <input type="text" name="perguntas[${count}][respostas][2][texto]" placeholder="Resposta C" required>
-        <input type="radio" name="perguntas[${count}][correta]" value="2"> Correta
+        <div class="opcao">
+            <input type="text" name="perguntas[${count}][respostas][2][texto]" placeholder="Resposta C" required>
+            <label><input type="radio" name="perguntas[${count}][correta]" value="2"> Correta</label>
+        </div>
 
-        <input type="text" name="perguntas[${count}][respostas][3][texto]" placeholder="Resposta D" required>
-        <input type="radio" name="perguntas[${count}][correta]" value="3"> Correta
+        <div class="opcao">
+            <input type="text" name="perguntas[${count}][respostas][3][texto]" placeholder="Resposta D" required>
+            <label><input type="radio" name="perguntas[${count}][correta]" value="3"> Correta</label>
+        </div>
     `;
 
-            document.getElementById("perguntas").appendChild(div);
-        }
-    </script>
+    document.getElementById("perguntas").appendChild(div);
+}
+</script>
+
+<footer class="footer">
+        <div class="footer-container">
+            <p>2025 DnNerds — Renato Matos, Natalia Macedo, Arthur Simões, Diego Toscano, Yuri Reis, Enzo Niglia </p>
+            <div class="footer-links"> <a href="https://www.youtube.com/" target="_blank" title="YouTube"><img
+                        src="../Imagens/youtube.png" alt="YouTube"></a> <a href="https://www.instagram.com/DnNerds"
+                    target="_blank" title="Instagram"><img src="../Imagens/instagram.jpeg" alt="Instagram"></a> <a
+                    href="https://www.facebook.com/" target="_blank" title="Facebook"><img src="../Imagens/facebook.png"
+                        alt="Facebook"></a> <a href="https://www.tiktok.com/" target="_blank" title="TikTok"><img
+                        src="../Imagens/tiktok.jpeg" alt="TikTok"></a> </div>
+        </div>
+    </footer>
 
 </body>
-
 </html>

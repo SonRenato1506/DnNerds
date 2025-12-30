@@ -195,7 +195,7 @@ if ($tipo === 'personalidade') {
 
     <footer class="footer">
         <div class="footer-container">
-            <p>2025 DnNerds — Renato Matos, Natalia Macedo, Arthur Simões, Diego Toscano, Yuri Rei, Enzo Niglia </p>
+            <p>2025 DnNerds — Renato Matos, Natalia Macedo, Arthur Simões, Diego Toscano, Yuri Reis, Enzo Niglia </p>
             <div class="footer-links"> <a href="https://www.youtube.com/" target="_blank" title="YouTube"><img
                         src="../Imagens/youtube.png" alt="YouTube"></a> <a href="https://www.instagram.com/DnNerds"
                     target="_blank" title="Instagram"><img src="../Imagens/instagram.jpeg" alt="Instagram"></a> <a

@@ -1,0 +1,191 @@
+/* ===================== */
+/* 📰 Criador de Notícia */
+/* ===================== */
+
+.container {
+    max-width: 720px;
+    margin: 140px auto 60px auto;
+    background-color: #1c1d1d;
+    padding: 35px;
+    border-radius: 16px;
+    box-shadow: 0 0 15px var(--roxo2);
+}
+
+/* Título */
+.container h2 {
+    text-align: center;
+    margin-bottom: 30px;
+    color: var(--texto-secundario);
+    text-shadow: 0 0 4px var(--texto);
+}
+
+/* ===================== */
+/* 📋 Formulário */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+/* Labels */
+form label {
+    font-size: 14px;
+    color: var(--texto-secundario);
+    letter-spacing: 1px;
+}
+
+/* Inputs, textarea e select */
+form input,
+form textarea,
+form select {
+    background-color: var(--cinza-medio);
+    border: 1px solid var(--borda-preta);
+    border-radius: 10px;
+    padding: 12px 14px;
+    font-size: 14px;
+    color: var(--branco);
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+/* Placeholder */
+form input::placeholder,
+form textarea::placeholder {
+    color: var(--cinza-claro);
+}
+
+/* Textarea */
+form textarea {
+    resize: vertical;
+    min-height: 140px;
+}
+
+/* Select */
+form select {
+    cursor: pointer;
+}
+
+/* Focus */
+form input:focus,
+form textarea:focus,
+form select:focus {
+    border-color: var(--texto);
+    box-shadow: 0 0 5px var(--texto);
+    background-color: var(--cinza-escuro);
+}
+
+/* ===================== */
+/* 🔘 Botão */
+form button {
+    margin-top: 25px;
+    padding: 14px;
+    background-color: var(--texto);
+    color: var(--preto);
+    border: none;
+    border-radius: 14px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    text-transform: uppercase;
+    box-shadow: 0 0 5px var(--texto);
+    transition: all 0.3s ease;
+}
+
+/* Hover botão */
+form button:hover {
+    background-color: var(--laranja-hover);
+    box-shadow: 0 0 5px var(--laranja-hover);
+    transform: translateY(-2px);
+}
+
+/* ===================== */
+/* 📱 Responsivo */
+@media (max-width: 768px) {
+    .container {
+        margin: 120px 20px 40px 20px;
+        padding: 25px;
+    }
+
+    .container h2 {
+        font-size: 22px;
+    }
+}
+
+
+.pergunta {
+    background-color: #191a1a;
+    border: 1px solid var(--roxo2);
+    border-radius: 14px;
+    padding: 25px;
+    margin-top: 30px;
+    box-shadow: 0 0 15px var(--roxo2);
+    animation: fadeIn 0.4s ease;
+}
+
+/* Título da pergunta */
+.pergunta h3 {
+    margin-bottom: 18px;
+    color: var(--texto-secundario);
+    text-shadow: 0 0 6px var(--texto);
+    font-size: 18px;
+}
+
+/* ===================== */
+/* ✍️ Opções de resposta */
+/* ===================== */
+
+.opcao {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 12px;
+}
+
+/* Input da resposta */
+.opcao input[type="text"] {
+    flex: 1;
+}
+
+/* Radio */
+.opcao input[type="radio"] {
+    transform: scale(1.3);
+    accent-color: var(--texto);
+    cursor: pointer;
+}
+
+/* Label do radio */
+.opcao label {
+    color: var(--texto-secundario);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+}
+
+/* ===================== */
+/* ➖ Separador */
+hr {
+    margin: 35px 0;
+    border: none;
+    height: 1px;
+    background: linear-gradient(
+        to right,
+        transparent,
+        var(--roxo2),
+        transparent
+    );
+}
+
+/* ===================== */
+/* ✨ Animação */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

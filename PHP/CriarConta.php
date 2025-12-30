@@ -101,6 +101,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
         </form>
     </main>
+    <footer class="footer">
+        <div class="footer-container">
+            <p>2025 DnNerds — Renato Matos, Natalia Macedo, Arthur Simões, Diego Toscano, Yuri Reis, Enzo Niglia </p>
+            <div class="footer-links"> <a href="https://www.youtube.com/" target="_blank" title="YouTube"><img
+                        src="../Imagens/youtube.png" alt="YouTube"></a> <a href="https://www.instagram.com/DnNerds"
+                    target="_blank" title="Instagram"><img src="../Imagens/instagram.jpeg" alt="Instagram"></a> <a
+                    href="https://www.facebook.com/" target="_blank" title="Facebook"><img src="../Imagens/facebook.png"
+                        alt="Facebook"></a> <a href="https://www.tiktok.com/" target="_blank" title="TikTok"><img
+                        src="../Imagens/tiktok.jpeg" alt="TikTok"></a> </div>
+        </div>
+    </footer>
 </body>
 
 </html>
