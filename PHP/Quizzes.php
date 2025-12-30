@@ -70,7 +70,7 @@ if ($tipo === 'personalidade') {
 
             <ul>
                 <li><a href="../PHP/Noticias.php">Notícias</a></li>
-                <li><a href="#">NerdList</a></li>
+                <li><a href="nerdlists.php">NerdList</a></li>
                 <li><a href="../PHP/Quizzes.php" class="ativo">Quizzes</a></li>
                 <li><a href="<?= $linkEditor ?>">Editor</a></li>
             </ul>

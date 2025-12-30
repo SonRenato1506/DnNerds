@@ -105,7 +105,7 @@ if ($resultPerguntas && $resultPerguntas->num_rows > 0) {
 
             <ul>
                 <li><a href="Noticias.php">Notícias</a></li>
-                <li><a href="#">NerdList</a></li>
+                <li><a href="nerdlists.php">NerdList</a></li>
                 <li><a href="Quizzes.php" class="ativo">Quizzes</a></li>
                 <li><a href="#">IA</a></li>
             </ul>

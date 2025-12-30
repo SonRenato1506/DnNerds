@@ -181,3 +181,49 @@ INSERT INTO personalidade_respostas_pontuacao (resposta_id, resultado_id, pontos
 (@r3_6, @res_usagent, 3);
 
 COMMIT;
+
+
+NerdList
+START TRANSACTION;
+
+-- ===============================
+-- CRIA A NERDLIST
+-- ===============================
+INSERT INTO nerdlist (titulo, descricao, imagem, categoria)
+VALUES (
+  'Mobs Hostis do Minecraft',
+  'Lista dos mobs mais perigosos do Minecraft, organizados por nível de ameaça.',
+  '../imagens/mobs_hostis.jpeg',
+  'Games'
+);
+
+-- PEGA O ID DA NERDLIST CRIADA
+SET @nerdlist_id = LAST_INSERT_ID();
+
+-- ===============================
+-- CRIA OS TIERS
+-- ===============================
+INSERT INTO nerdlist_tiers (nerdlist_id, nome, cor, ordem) VALUES
+(@nerdlist_id, 'S - Extremamente Perigoso', 'vermelho', 1),
+(@nerdlist_id, 'A - Muito Perigoso', 'laranja', 2),
+(@nerdlist_id, 'B - Perigoso', 'amarelo', 3),
+(@nerdlist_id, 'C - Ameaça Baixa', 'verde', 4);
+
+-- ===============================
+-- CRIA OS ITENS (MOBS)
+-- ===============================
+INSERT INTO nerdlist_itens (nerdlist_id, nome, imagem) VALUES
+(@nerdlist_id, 'Wither', '../imagens/wither.jpeg'),
+(@nerdlist_id, 'Ender Dragon', '../imagens/ender_dragon.jpeg'),
+(@nerdlist_id, 'Warden', '../imagens/warden.jpeg'),
+(@nerdlist_id, 'Elder Guardian', '../imagens/elder_guardian.jpeg'),
+(@nerdlist_id, 'Ravager', '../imagens/ravager.jpeg'),
+(@nerdlist_id, 'Vindicator', '../imagens/vindicator.jpeg'),
+(@nerdlist_id, 'Creeper', '../imagens/creeper.jpeg'),
+(@nerdlist_id, 'Enderman', '../imagens/enderman.jpeg'),
+(@nerdlist_id, 'Blaze', '../imagens/blaze.jpeg'),
+(@nerdlist_id, 'Zombie', '../imagens/zombie.jpeg'),
+(@nerdlist_id, 'Skeleton', '../imagens/skeleton.jpeg'),
+(@nerdlist_id, 'Spider', '../imagens/spider.jpeg');
+
+COMMIT;

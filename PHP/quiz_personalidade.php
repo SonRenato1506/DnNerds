@@ -120,7 +120,7 @@ if ($resultPerguntas && $resultPerguntas->num_rows > 0) {
 
             <ul>
                 <li><a href="Noticias.php">Notícias</a></li>
-                <li><a href="#">NerdList</a></li>
+                <li><a href="nerdlists.php">NerdList</a></li>
                 <li><a href="Quizzes.php" class="ativo">Quizzes</a></li>
                 <li><a href="#">IA</a></li>
             </ul>
@@ -221,7 +221,7 @@ if ($resultPerguntas && $resultPerguntas->num_rows > 0) {
 
     <footer class="footer">
         <div class="footer-container">
-            <p>2025 DnNerds — Renato Matos, Natalia Macedo, Arthur Simões, Diego Toscano, Yuri Rei, Enzo Niglia </p>
+            <p>2025 DnNerds — Renato Matos, Natalia Macedo, Arthur Simões, Diego Toscano, Yuri Reis, Enzo Niglia </p>
             <div class="footer-links"> <a href="https://www.youtube.com/" target="_blank" title="YouTube"><img
                         src="../Imagens/youtube.png" alt="YouTube"></a> <a href="https://www.instagram.com/DnNerds"
                     target="_blank" title="Instagram"><img src="../Imagens/instagram.jpeg" alt="Instagram"></a> <a

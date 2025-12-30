@@ -47,7 +47,7 @@ $resultDestaque = $conexao->query($sqlDestaque);
 
             <ul>
                 <li><a href="../PHP/Noticias.php" class="ativo">Notícias</a></li>
-                <li><a href="#">NerdList</a></li>
+                <li><a href="nerdlists.php">NerdList</a></li>
                 <li><a href="../PHP/Quizzes.php">Quizzes</a></li>
                 <li><a href="criadorNoticias.php">Editor</a></li>
             </ul>

@@ -58,7 +58,7 @@ $relacionadas = $stmtRel->get_result();
             </h2>
             <ul>
                 <li><a href="Noticias.php">Notícias</a></li>
-                <li><a href="#">NerdList</a></li>
+                <li><a href="nerdlists.php">NerdList</a></li>
                 <li><a href="Quizzes.php">Quizzes</a></li>
                 <li><a href="#">IA</a></li>
             </ul>
