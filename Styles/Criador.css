@@ -2,6 +2,10 @@
 /* 📰 Criador de Notícia */
 /* ===================== */
 
+body{
+    padding-top: 100px;
+}
+
 .container {
     max-width: 720px;
     margin: 140px auto 60px auto;
@@ -187,5 +191,136 @@ hr {
     to {
         opacity: 1;
         transform: translateY(0);
+    }
+}
+
+/* ===================== */
+/* 📋 Criador NerdList */
+/* ===================== */
+
+/* Subtítulos */
+.container h3 {
+    margin-top: 35px;
+    margin-bottom: 15px;
+    color: var(--texto-secundario);
+    text-shadow: 0 0 6px var(--texto);
+    font-size: 20px;
+}
+
+/* Bloco de criação (tier / item) */
+.form-bloco {
+    background-color: #171818;
+    border: 1px solid var(--roxo2);
+    border-radius: 14px;
+    padding: 22px;
+    margin-bottom: 25px;
+    box-shadow: 0 0 12px var(--roxo2);
+}
+
+/* Inputs inline (nome + cor) */
+.form-inline {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+.form-inline input[type="color"] {
+    height: 45px;
+    padding: 3px;
+    cursor: pointer;
+    border-radius: 10px;
+}
+
+/* ===================== */
+/* 🎨 Preview de Tiers */
+/* ===================== */
+
+.tier-preview {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+    padding: 12px;
+    border-radius: 10px;
+    background-color: #1d1e1e;
+    box-shadow: 0 0 8px rgba(0,0,0,0.4);
+}
+
+.tier-color {
+    width: 55px;
+    height: 30px;
+    border-radius: 6px;
+    box-shadow: 0 0 8px rgba(0,0,0,0.6);
+}
+
+/* ===================== */
+/* 🧩 Preview de Itens */
+/* ===================== */
+
+.itens-preview {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+}
+
+.item-preview {
+    width: 110px;
+    background-color: #1c1d1d;
+    border-radius: 14px;
+    padding: 10px;
+    text-align: center;
+    box-shadow: 0 0 10px var(--roxo2);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.item-preview:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 0 20px var(--texto);
+}
+
+.item-preview img {
+    width: 90px;
+    height: 90px;
+    object-fit: cover;
+    border-radius: 10px;
+    margin-bottom: 8px;
+}
+
+.item-preview span {
+    font-size: 13px;
+    color: var(--texto-secundario);
+}
+
+/* ===================== */
+/* 🔘 Botões especiais */
+/* ===================== */
+
+.btn-secundario {
+    background-color: transparent;
+    border: 1px solid var(--texto);
+    color: var(--texto);
+    padding: 10px;
+    border-radius: 12px;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: all 0.3s ease;
+}
+
+.btn-secundario:hover {
+    background-color: var(--texto);
+    color: var(--preto);
+    box-shadow: 0 0 12px var(--texto);
+}
+
+/* ===================== */
+/* 📱 Responsivo */
+@media (max-width: 600px) {
+    .form-inline {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .item-preview {
+        width: 100%;
     }
 }

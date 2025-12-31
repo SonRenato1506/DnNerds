@@ -107,7 +107,13 @@ if ($resultPerguntas && $resultPerguntas->num_rows > 0) {
                 <li><a href="Noticias.php">Notícias</a></li>
                 <li><a href="nerdlists.php">NerdList</a></li>
                 <li><a href="Quizzes.php" class="ativo">Quizzes</a></li>
-                <li><a href="EditorQuiz.php">Editor</a></li>
+                <li>
+                    <?php if (isset($quiz_id)): ?>
+                        <a href="EditorQuiz.php?id=<?= $quiz_id ?>">Editar</a>
+                    <?php else: ?>
+                        <a href="EditorQuiz.php">Editor</a>
+                    <?php endif; ?>
+                </li>
             </ul>
 
             <button class="btn-navbar">

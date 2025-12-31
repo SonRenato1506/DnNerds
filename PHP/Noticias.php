@@ -49,7 +49,7 @@ $resultDestaque = $conexao->query($sqlDestaque);
                 <li><a href="../PHP/Noticias.php" class="ativo">Notícias</a></li>
                 <li><a href="nerdlists.php">NerdList</a></li>
                 <li><a href="../PHP/Quizzes.php">Quizzes</a></li>
-                <li><a href="criadorNoticias.php">Editor</a></li>
+                <li><a href="criadorNoticias.php">Criar</a></li>
             </ul>
 
             <form method="GET" action="Noticias.php" class="search-container">

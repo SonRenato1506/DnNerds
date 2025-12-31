@@ -3,7 +3,7 @@ session_start();
 require_once __DIR__ . '/config.php';
 
 /* =====================
-   INICIALIZAÇÃO DO PASSO
+   INICIALIZAÇÃO
 ===================== */
 if (!isset($_SESSION['passo'])) {
     $_SESSION['passo'] = 1;
@@ -12,7 +12,7 @@ if (!isset($_SESSION['passo'])) {
 $passo = $_SESSION['passo'];
 
 /* =====================
-   RESET MANUAL (opcional)
+   RESET DO QUIZ
 ===================== */
 if (isset($_GET['reset'])) {
     session_destroy();
@@ -129,7 +129,7 @@ if (isset($_POST['criar_resposta'])) {
 <html lang="pt-br">
 <head>
 <meta charset="UTF-8">
-<title>Criador de Quiz - DnNerds</title>
+<title>Criador de Quiz de Personalidade - DnNerds</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <link rel="stylesheet" href="../Styles/Header.css">
@@ -139,7 +139,7 @@ if (isset($_POST['criar_resposta'])) {
 <body>
 
 <!-- ===================== -->
-<!-- 🔥 HEADER DNNERDS -->
+<!-- 🔥 HEADER -->
 <!-- ===================== -->
 <header>
     <nav class="navbar">
@@ -159,7 +159,7 @@ if (isset($_POST['criar_resposta'])) {
 </header>
 
 <!-- ===================== -->
-<!-- 🧠 CONTAINER -->
+<!-- 🧠 CONTEÚDO -->
 <!-- ===================== -->
 <div class="container">
 
@@ -239,7 +239,7 @@ $resultados = $conexao->query(
     <label>Pergunta</label>
     <select name="pergunta_id" required>
         <?php while ($p = $perguntas->fetch_assoc()): ?>
-            <option value="<?= $p['id'] ?>"><?= $p['texto'] ?></option>
+            <option value="<?= $p['id'] ?>"><?= htmlspecialchars($p['texto']) ?></option>
         <?php endwhile; ?>
     </select>
 
@@ -250,7 +250,7 @@ $resultados = $conexao->query(
 
     <?php while ($r = $resultados->fetch_assoc()): ?>
         <label>
-            <?= $r['titulo'] ?>
+            <?= htmlspecialchars($r['titulo']) ?>
             <input type="number" name="pontos[<?= $r['id'] ?>]" min="-1" max="3" value="0">
         </label>
     <?php endwhile; ?>
@@ -258,21 +258,21 @@ $resultados = $conexao->query(
     <button name="criar_resposta">Salvar Resposta</button>
 </form>
 
+<hr style="margin:30px 0;">
+
+<a href="criadorPersonalidade.php?reset=1" class="btn-reset">
+    ➕ Criar novo quiz de personalidade
+</a>
+
 <?php endif; ?>
 
 </div>
 
 <footer class="footer">
-        <div class="footer-container">
-            <p>2025 DnNerds — Renato Matos, Natalia Macedo, Arthur Simões, Diego Toscano, Yuri Reis, Enzo Niglia </p>
-            <div class="footer-links"> <a href="https://www.youtube.com/" target="_blank" title="YouTube"><img
-                        src="../Imagens/youtube.png" alt="YouTube"></a> <a href="https://www.instagram.com/DnNerds"
-                    target="_blank" title="Instagram"><img src="../Imagens/instagram.jpeg" alt="Instagram"></a> <a
-                    href="https://www.facebook.com/" target="_blank" title="Facebook"><img src="../Imagens/facebook.png"
-                        alt="Facebook"></a> <a href="https://www.tiktok.com/" target="_blank" title="TikTok"><img
-                        src="../Imagens/tiktok.jpeg" alt="TikTok"></a> </div>
-        </div>
-    </footer>
+    <div class="footer-container">
+        <p>2025 DnNerds — Renato Matos e equipe</p>
+    </div>
+</footer>
 
 </body>
 </html>
