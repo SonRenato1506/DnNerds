@@ -127,152 +127,159 @@ if (isset($_POST['criar_resposta'])) {
 
 <!DOCTYPE html>
 <html lang="pt-br">
-<head>
-<meta charset="UTF-8">
-<title>Criador de Quiz de Personalidade - DnNerds</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<link rel="stylesheet" href="../Styles/Header.css">
-<link rel="stylesheet" href="../Styles/Criador.css">
+<head>
+    <meta charset="UTF-8">
+    <title>Criador de Quiz de Personalidade - DnNerds</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="../Styles/Header.css">
+    <link rel="stylesheet" href="../Styles/Criador.css?v=2">
 </head>
 
 <body>
 
-<!-- ===================== -->
-<!-- 🔥 HEADER -->
-<!-- ===================== -->
-<header>
-    <nav class="navbar">
-        <h2 class="title">
-            DnNerds <img src="../Imagens/anfitriao.png?v=2" alt="DnNerds">
-        </h2>
-        <ul>
-            <li><a href="Noticias.php">Notícias</a></li>
-            <li><a href="nerdlists.php">NerdList</a></li>
-            <li><a href="Quizzes.php">Quizzes</a></li>
-            <li><a href="#">IA</a></li>
-        </ul>
-        <button class="btn-navbar">
-            <a href="FazerLogin.php">Fazer Login</a>
-        </button>
-    </nav>
-</header>
+    <!-- ===================== -->
+    <!-- 🔥 HEADER -->
+    <!-- ===================== -->
+    <header>
+        <nav class="navbar">
+            <h2 class="title">
+                DnNerds <img src="../Imagens/anfitriao.png?v=2" alt="DnNerds">
+            </h2>
+            <ul>
+                <li><a href="Noticias.php">Notícias</a></li>
+                <li><a href="nerdlists.php">NerdList</a></li>
+                <li><a href="Quizzes.php">Quizzes</a></li>
+                <li><a href="#">IA</a></li>
+            </ul>
+            <button class="btn-navbar">
+                <a href="FazerLogin.php">Fazer Login</a>
+            </button>
+        </nav>
+    </header>
 
-<!-- ===================== -->
-<!-- 🧠 CONTEÚDO -->
-<!-- ===================== -->
-<div class="container">
+    <!-- ===================== -->
+    <!-- 🧠 CONTEÚDO -->
+    <!-- ===================== -->
+    <div class="container">
 
-<?php if ($passo == 1): ?>
+        <?php if ($passo == 1): ?>
 
-<h2>🧠 Passo 1 – Criar Quiz</h2>
-<form method="post">
-    <label>Título</label>
-    <input name="titulo" required>
+            <h2>🧠 Passo 1 – Criar Quiz</h2>
+            <form method="post">
+                <label>Título</label>
+                <input name="titulo" required>
 
-    <label>Descrição</label>
-    <textarea name="descricao"></textarea>
+                <label>Descrição</label>
+                <textarea name="descricao"></textarea>
 
-    <label>Imagem</label>
-    <input name="imagem">
+                <label>Imagem</label>
+                <input name="imagem">
 
-    <label>Categoria</label>
-    <select name="categoria" required>
-        <option value="">Selecione</option>
-        <option>Anime</option>
-        <option>Games</option>
-        <option>Filmes</option>
-        <option>Series</option>
-        <option>Livros</option>
-        <option>Variados</option>
-    </select>
+                <label>Categoria</label>
+                <select name="categoria" required>
+                    <option value="">Selecione</option>
+                    <option>Anime</option>
+                    <option>Games</option>
+                    <option>Filmes</option>
+                    <option>Series</option>
+                    <option>Livros</option>
+                    <option>Variados</option>
+                </select>
 
-    <button name="criar_quiz">Próximo</button>
-</form>
+                <button name="criar_quiz">Próximo</button>
+            </form>
 
-<?php elseif ($passo == 2): ?>
+        <?php elseif ($passo == 2): ?>
 
-<h2>🎯 Passo 2 – Resultados</h2>
+            <h2>🎯 Passo 2 – Resultados</h2>
 
-<form method="post">
-    <input name="titulo" placeholder="Título do resultado" required>
-    <textarea name="descricao" placeholder="Descrição"></textarea>
-    <input name="imagem" placeholder="Imagem">
-    <button name="criar_resultado">Adicionar Resultado</button>
-</form>
+            <form method="post">
+                <input name="titulo" placeholder="Título do resultado" required>
+                <textarea name="descricao" placeholder="Descrição"></textarea>
+                <input name="imagem" placeholder="Imagem">
+                <button name="criar_resultado">Salvar esse Resultado</button>
+            </form>
 
-<form method="post">
-    <button name="ir_perguntas">Ir para Perguntas</button>
-</form>
+            <form method="post">
+                <button name="ir_perguntas">Ir para Perguntas</button>
+            </form>
 
-<?php elseif ($passo == 3): ?>
+        <?php elseif ($passo == 3): ?>
 
-<h2>❓ Passo 3 – Perguntas</h2>
+            <h2>❓ Passo 3 – Perguntas</h2>
 
-<form method="post">
-    <input name="texto" placeholder="Digite a pergunta" required>
-    <button name="criar_pergunta">Adicionar Pergunta</button>
-</form>
+            <form method="post">
+                <input name="texto" placeholder="Digite a pergunta" required>
+                <button name="criar_pergunta">Salvar essa Pergunta</button>
+            </form>
 
-<form method="post">
-    <button name="ir_respostas">Ir para Respostas</button>
-</form>
+            <form method="post">
+                <button name="ir_respostas">Ir para Respostas</button>
+            </form>
 
-<?php elseif ($passo == 4): ?>
+        <?php elseif ($passo == 4): ?>
 
-<?php
-$perguntas = $conexao->query(
-    "SELECT id, texto FROM personalidade_perguntas
+            <?php
+            $perguntas = $conexao->query(
+                "SELECT id, texto FROM personalidade_perguntas
      WHERE personalidade_id = {$_SESSION['personalidade_id']}"
-);
+            );
 
-$resultados = $conexao->query(
-    "SELECT id, titulo FROM personalidade_resultados
+            $resultados = $conexao->query(
+                "SELECT id, titulo FROM personalidade_resultados
      WHERE personalidade_id = {$_SESSION['personalidade_id']}"
-);
-?>
+            );
+            ?>
 
-<h2>📝 Passo 4 – Respostas</h2>
+            <h2>📝 Passo 4 – Respostas</h2>
 
-<form method="post">
+            <form method="post">
 
-    <label>Pergunta</label>
-    <select name="pergunta_id" required>
-        <?php while ($p = $perguntas->fetch_assoc()): ?>
-            <option value="<?= $p['id'] ?>"><?= htmlspecialchars($p['texto']) ?></option>
-        <?php endwhile; ?>
-    </select>
+                <h4>Escolha a Pergunta</h4>
+                <div class="lista-perguntas">
+                    <?php while ($p = $perguntas->fetch_assoc()): ?>
+                        <label class="opcao-pergunta">
+                            <input type="radio" name="pergunta_id" value="<?= $p['id'] ?>" required>
+                            <?= htmlspecialchars($p['texto']) ?>
+                            <br>
+                        </label>
+                    <?php endwhile; ?>
+                </div>
 
-    <label>Resposta</label>
-    <input name="texto" required>
 
-    <h4>Pontuação</h4>
+                <label>Resposta</label>
+                <input name="texto" required>
 
-    <?php while ($r = $resultados->fetch_assoc()): ?>
-        <label>
-            <?= htmlspecialchars($r['titulo']) ?>
-            <input type="number" name="pontos[<?= $r['id'] ?>]" min="-1" max="3" value="0">
-        </label>
-    <?php endwhile; ?>
+                <h4>Pontuação</h4>
 
-    <button name="criar_resposta">Salvar Resposta</button>
-</form>
+                <?php while ($r = $resultados->fetch_assoc()): ?>
+                    <label>
+                        <?= htmlspecialchars($r['titulo']) ?>
+                        <input type="number" name="pontos[<?= $r['id'] ?>]" min="-1" max="3" value="0">
+                    </label>
+                <?php endwhile; ?>
 
-<hr style="margin:30px 0;">
+                <button name="criar_resposta">Salvar Resposta</button>
+            </form>
 
-<a href="criadorPersonalidade.php?reset=1" class="btn-reset">
-    ➕ Criar novo quiz de personalidade
-</a>
+            <hr style="margin:30px 0;">
 
-<?php endif; ?>
+            <a href="criadorPersonalidade.php?reset=1" class="btn-reset">
+                ➕ Criar novo quiz de personalidade
+            </a>
 
-</div>
+        <?php endif; ?>
 
-<footer class="footer">
-    <div class="footer-container">
-        <p>2025 DnNerds — Renato Matos e equipe</p>
     </div>
-</footer>
+
+    <footer class="footer">
+        <div class="footer-container">
+            <p>2025 DnNerds — Renato Matos e equipe</p>
+        </div>
+    </footer>
 
 </body>
+
 </html>

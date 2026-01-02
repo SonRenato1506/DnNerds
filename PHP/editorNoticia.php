@@ -173,7 +173,15 @@ $noticia = $result->fetch_assoc();
             <label>Categoria</label>
             <select name="categoria" required>
                 <?php
-                $categorias = ["Animes", "Games", "Filmes", "Series", "Livros", "Variados"];
+                $categorias = [
+                    "Animes",
+                    "Jogos",
+                    "Livros",
+                    "RPG",
+                    "Series/Filmes",
+                    "Tecnologia"
+                ];
+
                 foreach ($categorias as $cat):
                     ?>
                     <option value="<?= $cat ?>" <?= $noticia['categoria'] === $cat ? 'selected' : '' ?>>
