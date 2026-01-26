@@ -83,12 +83,12 @@ h2 {
     justify-content: space-between;
 }
 
-.navbar a {
+.navbar ul a {
     text-decoration: none;
     padding: 16px;
     display: block;
     margin: 0 10px;
-    font-size: 16px;
+    font-size: 14px;
 }
 
 /* Efeito hover nos links da navbar */
@@ -108,7 +108,8 @@ h2 {
     color: var(--preto);
     border: none;
     border-radius: 10px;
-    font-size: 16px;
+    font-size: 11px;
+    padding: 5px;
     cursor: pointer;
     height: 50px;
     margin-right: 45px;
@@ -136,7 +137,7 @@ h2 {
     border-radius: 10px;
     overflow: hidden;
     /* border: 1px solid var(--borda-preta); */
-    width: 25vw;
+    width: 20vw;
     min-width: 220px;
     max-width: 420px;
 }

@@ -33,8 +33,8 @@ $resultDestaque = $conexao->query($sqlDestaque);
     <title>DnNerds</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <link rel="stylesheet" href="../Styles/Noticias.css?v=27">
-    <link rel="stylesheet" href="../Styles/Header.css?v=32">
+    <link rel="stylesheet" href="../Styles/Noticias.css?v=28">
+    <link rel="stylesheet" href="../Styles/Header.css?v=35">
 </head>
 
 <body>
@@ -50,6 +50,7 @@ $resultDestaque = $conexao->query($sqlDestaque);
                 <li><a href="nerdlists.php">NerdList</a></li>
                 <li><a href="../PHP/Quizzes.php">Quizzes</a></li>
                 <li><a href="criadorNoticias.php">Criar</a></li>
+                <li><a href="copinhas.php">Copinhas</a></li>
             </ul>
 
             <form method="GET" action="Noticias.php" class="search-container">

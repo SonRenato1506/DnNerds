@@ -4,14 +4,7 @@ include_once('config.php');
 /* ===============================
    CATEGORIAS
 ================================ */
-$categorias = [
-    'Games' => 'Games',
-    'Anime' => 'Anime',
-    'Series' => 'Séries',
-    'Filmes' => 'Filmes',
-    'Livros' => 'Livros',
-    'Variados' => 'Variados'
-];
+
 
 /* ===============================
    TIPO DE QUIZ
@@ -19,25 +12,70 @@ $categorias = [
 $tipo = $_GET['tipo'] ?? 'normal';
 
 switch ($tipo) {
+
     case 'personalidade':
         $tabela = 'personalidade';
         $paginaQuiz = 'quiz_personalidade.php';
+        $categorias = [
+            'Games' => 'Games',
+            'Anime' => 'Anime',
+            'Series' => 'Séries',
+            'Filmes' => 'Filmes',
+            'Livros' => 'Livros',
+            'Variados' => 'Variados'
+        ];
         break;
+
+    case 'rank':
+        $tabela = 'quizzes_rank';
+        $paginaQuiz = 'quizRank.php';
+        $categorias = [
+            'jogos' => 'Jogos',
+            'animes' => 'Animes',
+            'filmes/series' => 'Filmes / Séries',
+            'futebol' => 'Futebol',
+            'basquete' => 'Basquete',
+            'variados' => 'Variados'
+        ];
+        break;
+
     case 'list':
         $tabela = 'quizzes_list';
         $paginaQuiz = 'quiz_list.php';
+        $categorias = [
+            'Games' => 'Games',
+            'Anime' => 'Anime',
+            'Series' => 'Séries',
+            'Filmes' => 'Filmes',
+            'Livros' => 'Livros',
+            'Variados' => 'Variados'
+        ];
         break;
+
     default:
         $tabela = 'quizzes';
         $paginaQuiz = 'quiz.php';
+        $categorias = [
+            'Games' => 'Games',
+            'Anime' => 'Anime',
+            'Series' => 'Séries',
+            'Filmes' => 'Filmes',
+            'Livros' => 'Livros',
+            'Variados' => 'Variados'
+        ];
         break;
 }
 
+
+
 if ($tipo === 'personalidade') {
     $linkEditor = 'criadorPersonalidade.php';
+} elseif ($tipo === 'rank') {
+    $linkEditor = 'criadorQuizRank.php';
 } else {
     $linkEditor = 'criadorQuiz.php';
 }
+
 
 ?>
 <!DOCTYPE html>
@@ -50,7 +88,7 @@ if ($tipo === 'personalidade') {
 
     <!-- CSS -->
     <link rel="stylesheet" href="../Styles/Noticias.css?v=28">
-    <link rel="stylesheet" href="../Styles/Header.css?v=32">
+    <link rel="stylesheet" href="../Styles/Header.css?v=33">
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -73,6 +111,8 @@ if ($tipo === 'personalidade') {
                 <li><a href="nerdlists.php">NerdList</a></li>
                 <li><a href="../PHP/Quizzes.php" class="ativo">Quizzes</a></li>
                 <li><a href="<?= $linkEditor ?>">Criar</a></li>
+                <li><a href="copinhas.php">Copinha</a></li>
+
             </ul>
 
             <form method="GET" action="Noticias.php" class="search-container">
@@ -97,7 +137,12 @@ if ($tipo === 'personalidade') {
             <a href="Quizzes.php?tipo=personalidade" class="tipo-link <?= $tipo === 'personalidade' ? 'ativo' : '' ?>">
                 Quiz de Personalidade
             </a>
+
+            <a href="Quizzes.php?tipo=rank" class="tipo-link <?= $tipo === 'rank' ? 'ativo' : '' ?>">
+                Quiz Rank
+            </a>
         </div>
+
 
         <?php
         /* ===============================

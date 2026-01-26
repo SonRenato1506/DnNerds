@@ -1,0 +1,131 @@
+body {
+    padding-top: 150px;
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+/* TÍTULOS */
+h1 {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+/* ÁREA DA BATALHA */
+.batalha {
+    margin-top: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 30px;
+    flex-wrap: wrap;
+}
+
+/* VS */
+.batalha > h1 {
+    margin: 0;
+    font-size: 2.5rem;
+}
+
+/* OPÇÕES */
+.opcao1,
+.opcao2 {
+    background: none;
+    border: none;
+    cursor: pointer;
+    text-align: center;
+    transition: transform 0.2s ease, filter 0.2s ease;
+}
+
+/* EFEITO HOVER */
+.opcao1:hover,
+.opcao2:hover {
+    transform: scale(1.05);
+    filter: brightness(1.1);
+}
+
+/* IMAGENS */
+.batalha img {
+    width: 30vw;
+    max-width: 420px;
+    min-width: 220px;
+    max-height: 250px;
+    border-radius: 12px;
+    object-fit: cover;
+}
+
+/* NOME DO ITEM */
+.batalha h2 {
+    margin-top: 12px;
+    font-size: 1.2rem;
+}
+
+/* CAMPEÃO */
+.campeao {
+    text-align: center;
+}
+
+.campeao img {
+    width: 300px;
+    border-radius: 16px;
+    margin-top: 20px;
+}
+
+/* Container dos botões finais */
+main > div:last-of-type {
+    margin-bottom: 40px;
+}
+
+/* Botões Refazer e Voltar */
+main > div:last-of-type button {
+    padding: 12px 26px;
+
+    font-size: 1rem;
+    font-weight: 600;
+
+    color: #fff;
+    background: linear-gradient(135deg, #2a2a2a, #1c1c1c);
+
+    border: 2px solid #f5c542;
+    border-radius: 12px;
+
+    cursor: pointer;
+    transition: all 0.25s ease;
+
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.5);
+}
+
+/* Hover */
+main > div:last-of-type button:hover {
+    background: linear-gradient(135deg, #f5c542, #e0ad1f);
+    color: #111;
+
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(245, 197, 66, 0.5);
+}
+
+/* Clique */
+main > div:last-of-type button:active {
+    transform: scale(0.96);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.6);
+}
+
+/* Remove estilo padrão do link */
+main > div:last-of-type a {
+    text-decoration: none;
+}
+
+
+/* RESPONSIVO */
+@media (max-width: 768px) {
+    .batalha {
+        flex-direction: column;
+    }
+
+    .batalha > h1 {
+        margin: 20px 0;
+    }
+
+    .batalha img {
+        width: 80vw;
+    }
+}
