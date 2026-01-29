@@ -88,11 +88,8 @@ if ($resultPerguntas && $resultPerguntas->num_rows > 0) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <link rel="stylesheet" href="../Styles/quiz.css?v=7">
-    <link rel="stylesheet" href="../Styles/Header.css?v=28">
+    <link rel="stylesheet" href="../Styles/Header.css?v=29">
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Anonymous+Pro&family=Poppins&display=swap" rel="stylesheet">
 </head>
 
 <body>
@@ -114,6 +111,8 @@ if ($resultPerguntas && $resultPerguntas->num_rows > 0) {
                         <a href="EditorQuiz.php">Editor</a>
                     <?php endif; ?>
                 </li>
+                <li><a href="copinhas.php" class="ativo">Copinhas</a></li>
+
             </ul>
 
             <button class="btn-navbar">

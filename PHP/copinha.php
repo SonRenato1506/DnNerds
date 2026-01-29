@@ -35,8 +35,8 @@ while ($row = $resItens->fetch_assoc()) {
     <title><?= htmlspecialchars($copinha['titulo']) ?></title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <link rel="stylesheet" href="../Styles/Header.css?v=35">
-    <link rel="stylesheet" href="../Styles/copinha.css?v=3">
+    <link rel="stylesheet" href="../Styles/Header.css">
+    <link rel="stylesheet" href="../Styles/copinha.css?v=2">
 </head>
 
 <body>
@@ -52,7 +52,7 @@ while ($row = $resItens->fetch_assoc()) {
                 <li><a href="nerdlists.php">NerdList</a></li>
                 <li><a href="Quizzes.php">Quizzes</a></li>
                 <li><a href="copinhas.php" class="ativo">Copinhas</a></li>
-                <li><a href="editorCopinhas.php" class="ativo">Editor</a></li>
+                <li><a href="EditorCopinha.php?id=<?= (int) $_GET['id'] ?>">Editor</a></li>
             </ul>
 
             <button class="btn-navbar">
@@ -109,17 +109,52 @@ while ($row = $resItens->fetch_assoc()) {
             return (n & (n - 1)) === 0;
         }
 
-        function nomeDaRodada(qtd) {
+        /* ===============================
+           YOUTUBE / IMAGEM
+        ================================ */
+        function isYouTube(url) {
+            return url.includes('youtube.com') || url.includes('youtu.be');
+        }
 
+        function getYouTubeEmbed(url) {
+            let id = '';
+
+            if (url.includes('youtu.be')) {
+                id = url.split('youtu.be/')[1];
+            } else if (url.includes('watch?v=')) {
+                id = url.split('watch?v=')[1];
+            }
+
+            return id ? `https://www.youtube.com/embed/${id.split('&')[0]}` : '';
+        }
+
+        function renderMidia(p) {
+            if (isYouTube(p.imagem)) {
+                return `
+            <iframe 
+                src="${getYouTubeEmbed(p.imagem)}"
+                allowfullscreen
+            ></iframe>
+            <h2>${p.nome}</h2>
+        `;
+            } else {
+                return `
+            <img src="${p.imagem}" alt="${p.nome}">
+            <h2>${p.nome}</h2>
+        `;
+            }
+        }
+
+        /* ===============================
+           TEXTO DA RODADA
+        ================================ */
+        function nomeDaRodada(qtd) {
             if (qtd <= 16 && qtd >= 9) return 'Oitavas de Final';
             if (qtd <= 8 && qtd >= 5) return 'Quartas de Final';
             if (qtd <= 4 && qtd >= 3) return 'Semifinal';
             if (qtd === 2) return 'Final';
-
-            // Só acima de 16 aparece número de participantes
             return `Rodada inicial (${qtd} participantes)`;
         }
-
 
         /* ===============================
            INICIAR
@@ -132,7 +167,7 @@ while ($row = $resItens->fetch_assoc()) {
 
             document.getElementById('titulo').innerHTML = `
         ${COPINHA_TITULO}
-        <br><small id="rodada"></small>
+        (<small id="rodada"></small>)
     `;
 
             rodadaAtual = [...jogadores];
@@ -144,7 +179,7 @@ while ($row = $resItens->fetch_assoc()) {
         }
 
         /* ===============================
-           RODADA DE AJUSTE (SEM REPETIR)
+           AJUSTE
         ================================ */
         function iniciarRodadaAjuste() {
             filaAjuste = [...rodadaAtual];
@@ -167,7 +202,6 @@ while ($row = $resItens->fetch_assoc()) {
             let p1, p2;
 
             if (fase === 'ajuste') {
-
                 if (filaAjuste.length < 2) {
 
                     rodadaAtual = [...rodadaAtual, ...filaAjuste];
@@ -176,8 +210,6 @@ while ($row = $resItens->fetch_assoc()) {
                     if (ehPotenciaDe2(rodadaAtual.length)) {
                         fase = 'mata-mata';
                         shuffle(rodadaAtual);
-                        atualizarRodada();
-
                     } else {
                         iniciarRodadaAjuste();
                     }
@@ -190,50 +222,37 @@ while ($row = $resItens->fetch_assoc()) {
                 p2 = filaAjuste.shift();
 
             } else {
-                p1 = rodadaAtual[0];
-                p2 = rodadaAtual[1];
+                p1 = rodadaAtual.shift();
+                p2 = rodadaAtual.shift();
             }
 
             const btn1 = document.getElementById('btn1');
             const btn2 = document.getElementById('btn2');
 
-            btn1.innerHTML = `<img src="${p1.imagem}"><h2>${p1.nome}</h2>`;
-            btn2.innerHTML = `<img src="${p2.imagem}"><h2>${p2.nome}</h2>`;
+            btn1.innerHTML = renderMidia(p1);
+            btn2.innerHTML = renderMidia(p2);
 
-            btn1.onclick = () => escolher(p1, p2);
-            btn2.onclick = () => escolher(p2, p1);
+            btn1.onclick = () => escolher(p1);
+            btn2.onclick = () => escolher(p2);
         }
 
         /* ===============================
            ESCOLHER
         ================================ */
-        function escolher(vencedor, perdedor) {
-
-            if (fase === 'ajuste') {
-                rodadaAtual.push(vencedor);
-            } else {
-                rodadaAtual.shift();
-                rodadaAtual.shift();
-                rodadaAtual.push(vencedor);
-            }
-
+        function escolher(vencedor) {
+            rodadaAtual.push(vencedor);
             render();
         }
 
         /* ===============================
-           TEXTO DA RODADA
+           RODADA
         ================================ */
         function atualizarRodada() {
+            const total = fase === 'ajuste'
+                ? filaAjuste.length + rodadaAtual.length
+                : rodadaAtual.length;
 
-            const total =
-                fase === 'ajuste'
-                    ? filaAjuste.length + rodadaAtual.length
-                    : rodadaAtual.length;
-
-            const faseTexto = ehPotenciaDe2(total) ? 'mata-mata' : fase;
-
-            document.getElementById('rodada').innerText =
-                nomeDaRodada(total, faseTexto);
+            document.getElementById('rodada').innerText = nomeDaRodada(total);
         }
 
         /* ===============================
@@ -243,10 +262,17 @@ while ($row = $resItens->fetch_assoc()) {
             document.getElementById('batalha').style.display = 'none';
             const div = document.getElementById('campeao');
             div.style.display = 'block';
+
+            let midia = isYouTube(c.imagem)
+                ? `<iframe src="${getYouTubeEmbed(c.imagem)}" allowfullscreen></iframe>`
+                : `<img src="${c.imagem}">`;
+
+           
+
             div.innerHTML = `
         <h1>🏆 CAMPEÃO 🏆</h1>
         <h2>${c.nome}</h2>
-        <img src="${c.imagem}">
+        ${midia}
     `;
         }
 

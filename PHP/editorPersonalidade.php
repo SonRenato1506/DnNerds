@@ -134,6 +134,7 @@ while ($row = $res->fetch_assoc()) {
 
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <title>Editar Quiz de Personalidade</title>
@@ -152,6 +153,7 @@ while ($row = $res->fetch_assoc()) {
                 <li><a href="Noticias.php">Notícias</a></li>
                 <li><a href="nerdlists.php">NerdList</a></li>
                 <li><a href="Quizzes.php">Quizzes</a></li>
+                <li><a href="copinhas.php" class="ativo">Copinhas</a></li>
                 <li><a href="editorNoticia.php?id=<?= $noticia['id'] ?>" class="btn-editar-noticia">Editor</a></li>
             </ul>
             <button class="btn-navbar">
@@ -161,65 +163,60 @@ while ($row = $res->fetch_assoc()) {
     </header>
 
 
-<div class="container">
+    <div class="container">
 
-<h2>Editar Quiz: <?= htmlspecialchars($quiz['titulo']) ?></h2>
+        <h2>Editar Quiz: <?= htmlspecialchars($quiz['titulo']) ?></h2>
 
-<form method="POST">
-    <input type="hidden" name="salvar_quiz">
+        <form method="POST">
+            <input type="hidden" name="salvar_quiz">
 
-    <label>Título</label>
-    <input type="text" name="titulo" value="<?= $quiz['titulo'] ?>">
+            <label>Título</label>
+            <input type="text" name="titulo" value="<?= $quiz['titulo'] ?>">
 
-    <label>Descrição</label>
-    <textarea name="descricao"><?= $quiz['descricao'] ?></textarea>
+            <label>Descrição</label>
+            <textarea name="descricao"><?= $quiz['descricao'] ?></textarea>
 
-    <label>Imagem</label>
-    <input type="text" name="imagem" value="<?= $quiz['imagem'] ?>">
+            <label>Imagem</label>
+            <input type="text" name="imagem" value="<?= $quiz['imagem'] ?>">
 
-    <button>Salvar Quiz</button>
-</form>
+            <button>Salvar Quiz</button>
+        </form>
 
-<hr>
+        <hr>
 
-<form method="POST">
-<input type="hidden" name="salvar_perguntas">
+        <form method="POST">
+            <input type="hidden" name="salvar_perguntas">
 
-<?php foreach ($perguntas as $pid => $p): ?>
-<div class="pergunta">
+            <?php foreach ($perguntas as $pid => $p): ?>
+                <div class="pergunta">
 
-    <input class="input-pergunta"
-           type="text"
-           name="pergunta[<?= $pid ?>]"
-           value="<?= $p['texto'] ?>">
+                    <input class="input-pergunta" type="text" name="pergunta[<?= $pid ?>]" value="<?= $p['texto'] ?>">
 
-    <?php foreach ($p['respostas'] as $rid => $r): ?>
-    <div class="opcao-personalidade">
+                    <?php foreach ($p['respostas'] as $rid => $r): ?>
+                        <div class="opcao-personalidade">
 
-        <input type="text"
-               name="resposta[<?= $pid ?>][<?= $rid ?>]"
-               value="<?= $r['texto'] ?>">
+                            <input type="text" name="resposta[<?= $pid ?>][<?= $rid ?>]" value="<?= $r['texto'] ?>">
 
-        <div class="pontos-container">
-            <?php foreach ($resultados as $res): ?>
-            <div class="pontuacao-linha">
-                <span><?= $res['titulo'] ?></span>
-                <input type="number"
-                       name="pontos[<?= $pid ?>][<?= $rid ?>][<?= $res['id'] ?>]"
-                       value="<?= $r['pontos'][$res['id']] ?? 0 ?>">
-            </div>
+                            <div class="pontos-container">
+                                <?php foreach ($resultados as $res): ?>
+                                    <div class="pontuacao-linha">
+                                        <span><?= $res['titulo'] ?></span>
+                                        <input type="number" name="pontos[<?= $pid ?>][<?= $rid ?>][<?= $res['id'] ?>]"
+                                            value="<?= $r['pontos'][$res['id']] ?? 0 ?>">
+                                    </div>
+                                <?php endforeach; ?>
+                            </div>
+
+                        </div>
+                    <?php endforeach; ?>
+
+                </div>
             <?php endforeach; ?>
-        </div>
+
+            <button>Salvar Perguntas</button>
+        </form>
 
     </div>
-    <?php endforeach; ?>
-
-</div>
-<?php endforeach; ?>
-
-<button>Salvar Perguntas</button>
-</form>
-
-</div>
 </body>
+
 </html>

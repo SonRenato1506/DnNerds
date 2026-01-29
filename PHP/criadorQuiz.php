@@ -14,76 +14,77 @@
 
 <body>
 
-<header>
-    <nav class="navbar">
-        <h2 class="title">
-            DnNerds <img src="../Imagens/anfitriao.png?v=2" alt="DnNerds">
-        </h2>
-        <ul>
-            <li><a href="Noticias.php">Notícias</a></li>
-            <li><a href="nerdlists.php">NerdList</a></li>
-            <li><a href="Quizzes.php">Quizzes</a></li>
-            <li><a href="#">IA</a></li>
-        </ul>
-        <button class="btn-navbar">
-            <a href="FazerLogin.php">Fazer Login</a>
-        </button>
-    </nav>
-</header>
+    <header>
+        <nav class="navbar">
+            <h2 class="title">
+                DnNerds <img src="../Imagens/anfitriao.png?v=2" alt="DnNerds">
+            </h2>
+            <ul>
+                <li><a href="Noticias.php">Notícias</a></li>
+                <li><a href="nerdlists.php">NerdList</a></li>
+                <li><a href="Quizzes.php">Quizzes</a></li>
+                <li><a href="copinhas.php" class="ativo">Copinhas</a></li>
 
-<!-- ===================== -->
-<!-- 🧠 Criador de Quiz -->
-<!-- ===================== -->
+            </ul>
+            <button class="btn-navbar">
+                <a href="FazerLogin.php">Fazer Login</a>
+            </button>
+        </nav>
+    </header>
 
-<div class="container">
+    <!-- ===================== -->
+    <!-- 🧠 Criador de Quiz -->
+    <!-- ===================== -->
 
-    <h2>🧠 Criar Novo Quiz</h2>
+    <div class="container">
 
-    <form action="salvarQuiz.php" method="POST">
+        <h2>🧠 Criar Novo Quiz</h2>
 
-        <label>Título do Quiz</label>
-        <input type="text" name="titulo" required>
+        <form action="salvarQuiz.php" method="POST">
 
-        <label>Descrição</label>
-        <textarea name="descricao" required></textarea>
+            <label>Título do Quiz</label>
+            <input type="text" name="titulo" required>
 
-        <label>Categoria</label>
-        <select name="categoria" required>
-            <option value="">Selecione</option>
-            <option value="Games">Games</option>
-            <option value="Anime">Anime</option>
-            <option value="Series">Séries</option>
-            <option value="Filmes">Filmes</option>
-            <option value="Livros">Livros</option>
-            <option value="Variados">Variados</option>
-        </select>
+            <label>Descrição</label>
+            <textarea name="descricao" required></textarea>
 
-        <label>Imagem (URL ou caminho)</label>
-        <input type="text" name="imagem" placeholder="https://site.com/imagem.jpg">
+            <label>Categoria</label>
+            <select name="categoria" required>
+                <option value="">Selecione</option>
+                <option value="Games">Games</option>
+                <option value="Anime">Anime</option>
+                <option value="Series">Séries</option>
+                <option value="Filmes">Filmes</option>
+                <option value="Livros">Livros</option>
+                <option value="Variados">Variados</option>
+            </select>
 
-        <hr>
+            <label>Imagem (URL ou caminho)</label>
+            <input type="text" name="imagem" placeholder="https://site.com/imagem.jpg">
 
-        <!-- Perguntas -->
-        <div id="perguntas"></div>
+            <hr>
 
-        <button type="button" onclick="addPergunta()">➕ Adicionar Pergunta</button>
+            <!-- Perguntas -->
+            <div id="perguntas"></div>
 
-        <button type="submit">🚀 Salvar Quiz</button>
+            <button type="button" onclick="addPergunta()">➕ Adicionar Pergunta</button>
 
-    </form>
+            <button type="submit">🚀 Salvar Quiz</button>
 
-</div>
+        </form>
 
-<script>
-let count = 0;
+    </div>
 
-function addPergunta() {
-    count++;
+    <script>
+        let count = 0;
 
-    const div = document.createElement("div");
-    div.className = "pergunta";
+        function addPergunta() {
+            count++;
 
-    div.innerHTML = `
+            const div = document.createElement("div");
+            div.className = "pergunta";
+
+            div.innerHTML = `
         <h3>Pergunta ${count}</h3>
 
                 <div class="opcao">
@@ -111,11 +112,11 @@ function addPergunta() {
         </div>
     `;
 
-    document.getElementById("perguntas").appendChild(div);
-}
-</script>
+            document.getElementById("perguntas").appendChild(div);
+        }
+    </script>
 
-<footer class="footer">
+    <footer class="footer">
         <div class="footer-container">
             <p>2025 DnNerds — Renato Matos, Natalia Macedo, Arthur Simões, Diego Toscano, Yuri Reis, Enzo Niglia </p>
             <div class="footer-links"> <a href="https://www.youtube.com/" target="_blank" title="YouTube"><img
@@ -128,4 +129,5 @@ function addPergunta() {
     </footer>
 
 </body>
+
 </html>

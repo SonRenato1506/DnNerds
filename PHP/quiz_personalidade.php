@@ -129,6 +129,8 @@ if ($resultPerguntas && $resultPerguntas->num_rows > 0) {
                         <a href="EditorPersonalidade.php">Editor</a>
                     <?php endif; ?>
                 </li>
+                            <li><a href="copinhas.php" class="ativo">Copinhas</a></li>
+
             </ul>
 
             <button class="btn-navbar">

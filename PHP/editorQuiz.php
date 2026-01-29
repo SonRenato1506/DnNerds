@@ -121,6 +121,7 @@ if ($result && $result->num_rows > 0) {
                 <li><a href="Noticias.php">Notícias</a></li>
                 <li><a href="nerdlists.php">NerdList</a></li>
                 <li><a href="Quizzes.php">Quizzes</a></li>
+                <li><a href="copinhas.php" class="ativo">Copinhas</a></li>
                 <li><a href="editorNoticia.php?id=<?= $noticia['id'] ?>" class="btn-editar-noticia">Editor</a></li>
             </ul>
             <button class="btn-navbar">

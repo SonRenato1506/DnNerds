@@ -65,7 +65,6 @@ $itens = $conexao->query($sqlItens);
             </button>
         </nav>
     </header>
-
     <main class="tierlist-container">
 
         <h1><?= htmlspecialchars($nerdlist['titulo']) ?></h1>
@@ -73,13 +72,31 @@ $itens = $conexao->query($sqlItens);
 
         <!-- TIERS -->
         <?php while ($tier = $tiers->fetch_assoc()): ?>
-            <div class="tier">
-                <div class="tier-title" style="background: <?= htmlspecialchars($tier['cor']) ?>" contenteditable="true"
-                    data-tier-id="<?= $tier['id'] ?>" onblur="salvarNomeTier(this)">
+            <div class="tier" data-tier-id="<?= $tier['id'] ?>">
+
+                <div class="tier-title" style="background: <?= htmlspecialchars($tier['cor']) ?>;" contenteditable="true"
+                    onblur="salvarNomeTier(this)">
                     <?= htmlspecialchars($tier['nome']) ?>
                 </div>
 
-                <div class="tier-drop" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+                <div class="tier-drop" data-tier-id="<?= $tier['id'] ?>" ondrop="drop(event)" ondragover="allowDrop(event)">
+                </div>
+
+                <div class="settings-panel">
+                    <div class="settings" onclick="openSettings(this)">
+                        <img src="../Imagens/Settings.jpeg" alt="Settings">
+                    </div>
+
+                    <div class="move-buttons">
+                        <div class="up" onclick="moveTierUp(this)">
+                            <img src="../Imagens/move-up.jpeg" alt="Mover para cima">
+                        </div>
+                        <div class="down" onclick="moveTierDown(this)">
+                            <img src="../Imagens/move-down.jpeg" alt="Mover para baixo">
+                        </div>
+                    </div>
+                </div>
+
             </div>
         <?php endwhile; ?>
 
@@ -87,17 +104,128 @@ $itens = $conexao->query($sqlItens);
         <h2 style="margin-top:30px;">Arraste os itens</h2>
 
         <div class="itens-pool" ondrop="drop(event)" ondragover="allowDrop(event)">
+
             <?php while ($item = $itens->fetch_assoc()): ?>
-                <div class="item" draggable="true" ondragstart="drag(event)" id="item<?= $item['id'] ?>">
-                    <img src="<?= htmlspecialchars($item['imagem']) ?>" alt="<?= htmlspecialchars($item['nome']) ?>"
-                        title="<?= htmlspecialchars($item['nome']) ?>">
+
+                <div class="item" draggable="true" id="item<?= $item['id'] ?>" ondragstart="drag(event)">
+
+                    <img src="<?= htmlspecialchars($item['imagem']) ?>" alt="">
                 </div>
+
             <?php endwhile; ?>
+        </div>
+
+        <!-- ADD ITEM AREA -->
+        <div class="add-item-area" ondragover="allowDrop(event)" ondrop="dropAddItem(event)">
+
+            <span>Arraste a imagem aqui</span>
+            <input type="file" id="uploadImagem" accept="image/*" hidden>
         </div>
 
     </main>
 
+    <!-- SETTINGS MODAL (ÚNICO) -->
+    <div id="settings-overlay" onclick="closeSettings(event)">
+        <div id="settings-modal" onclick="event.stopPropagation()">
+
+            <h3>Tier Settings</h3>
+
+            <button onclick="deleteRow()">Delete row</button>
+            <button onclick="clearRowImages()">Clear row images</button>
+            <button onclick="addRowAbove()">Add row above</button>
+            <button onclick="addRowBelow()">Add row below</button>
+
+            <label>
+                Label color
+                <input type="color" onchange="changeTierColor(this)">
+            </label>
+
+            <button class="close-btn" onclick="closeSettings()">Close</button>
+        </div>
+    </div>
+
     <script>
+        let activeTier = null;
+
+        /* =====================
+           SETTINGS MODAL
+        ===================== */
+        function openSettings(btn) {
+            activeTier = btn.closest('.tier');
+            document.getElementById('settings-overlay').style.display = 'flex';
+        }
+
+        function closeSettings(e) {
+            if (!e || e.target.id === 'settings-overlay') {
+                document.getElementById('settings-overlay').style.display = 'none';
+                activeTier = null;
+            }
+        }
+
+        /* =====================
+           TIER ACTIONS
+        ===================== */
+        function deleteRow() {
+            if (!activeTier) return;
+            activeTier.remove();
+            closeSettings();
+        }
+
+        function clearRowImages() {
+            if (!activeTier) return;
+            activeTier.querySelector('.tier-drop').innerHTML = '';
+        }
+
+        function addRowAbove() {
+            if (!activeTier) return;
+            const clone = activeTier.cloneNode(true);
+            resetTier(clone);
+            activeTier.parentNode.insertBefore(clone, activeTier);
+        }
+
+        function addRowBelow() {
+            if (!activeTier) return;
+            const clone = activeTier.cloneNode(true);
+            resetTier(clone);
+            activeTier.parentNode.insertBefore(clone, activeTier.nextSibling);
+        }
+
+        function changeTierColor(input) {
+            if (!activeTier) return;
+            activeTier.querySelector('.tier-title').style.background = input.value;
+        }
+
+        /* =====================
+           MOVE TIERS
+        ===================== */
+        function moveTierUp(btn) {
+            const tier = btn.closest('.tier');
+            const prev = tier?.previousElementSibling;
+            if (prev && prev.classList.contains('tier')) {
+                tier.parentNode.insertBefore(tier, prev);
+            }
+        }
+
+        function moveTierDown(btn) {
+            const tier = btn.closest('.tier');
+            const next = tier?.nextElementSibling;
+            if (next && next.classList.contains('tier')) {
+                tier.parentNode.insertBefore(next, tier);
+            }
+        }
+
+        /* =====================
+           HELPERS
+        ===================== */
+        function resetTier(tier) {
+            tier.querySelector('.tier-title').textContent = 'New Tier';
+            tier.querySelector('.tier-title').style.background = '#666';
+            tier.querySelector('.tier-drop').innerHTML = '';
+        }
+
+        /* =====================
+           DRAG & DROP
+        ===================== */
         function allowDrop(ev) {
             ev.preventDefault();
         }
@@ -108,42 +236,117 @@ $itens = $conexao->query($sqlItens);
 
         function drop(ev) {
             ev.preventDefault();
-
             const id = ev.dataTransfer.getData("text/plain");
             const item = document.getElementById(id);
+            if (!item) return;
 
             let destino = ev.target;
-
-            // garante que sempre seja um container válido
-            while (destino &&
+            while (
+                destino &&
                 !destino.classList.contains('tier-drop') &&
-                !destino.classList.contains('itens-pool')) {
+                !destino.classList.contains('itens-pool')
+            ) {
                 destino = destino.parentElement;
             }
 
-            if (destino) {
-                destino.appendChild(item);
-            }
+            if (destino) destino.appendChild(item);
         }
 
-        document.addEventListener('dragover', function (e) {
-            const margem = 100; // distância da borda
-            const velocidade = 10;
+        /* =====================
+           ADD ITEM DROPZONE
+        ===================== */
+        const dropzone = document.querySelector(".add-item-area");
 
-            if (e.clientY < margem) {
-                window.scrollBy(0, -velocidade);
-            } else if (window.innerHeight - e.clientY < margem) {
-                window.scrollBy(0, velocidade);
-            }
+        if (dropzone) {
+            dropzone.addEventListener("dragover", ev => {
+                ev.preventDefault();
+                dropzone.classList.add("dragover");
+            });
+
+            dropzone.addEventListener("dragleave", () => {
+                dropzone.classList.remove("dragover");
+            });
+        }
+
+        function dropAddItem(ev) {
+            ev.preventDefault();
+            dropzone?.classList.remove("dragover");
+
+            const file = ev.dataTransfer.files[0];
+            if (!file || !file.type.startsWith("image/")) return;
+
+            const reader = new FileReader();
+
+            reader.onload = e => {
+                const pool = document.querySelector(".itens-pool");
+                if (!pool) return;
+
+                const div = document.createElement("div");
+                div.className = "item";
+                div.draggable = true;
+                div.id = "item_" + crypto.randomUUID();
+                div.addEventListener("dragstart", drag);
+
+                const img = document.createElement("img");
+                img.src = e.target.result;
+
+                div.appendChild(img);
+                pool.appendChild(div);
+            };
+
+            reader.readAsDataURL(file);
+        }
+
+        /* =====================
+           UPLOAD VIA INPUT
+        ===================== */
+        function abrirUpload() {
+            document.getElementById("uploadImagem")?.click();
+        }
+
+        const uploadInput = document.getElementById("uploadImagem");
+
+        if (uploadInput) {
+            uploadInput.addEventListener("change", function () {
+                const file = this.files[0];
+                if (!file || !file.type.startsWith("image/")) return;
+
+                const reader = new FileReader();
+
+                reader.onload = e => {
+                    const pool = document.querySelector(".itens-pool");
+                    const addItem = document.querySelector(".additem");
+                    if (!pool) return;
+
+                    const div = document.createElement("div");
+                    div.className = "item";
+                    div.draggable = true;
+                    div.id = "item_" + crypto.randomUUID();
+                    div.addEventListener("dragstart", drag);
+
+                    const img = document.createElement("img");
+                    img.src = e.target.result;
+
+                    div.appendChild(img);
+                    pool.insertBefore(div, addItem || null);
+                };
+
+                reader.readAsDataURL(file);
+            });
+        }
+
+        /* =====================
+           UX EXTRA
+        ===================== */
+        document.addEventListener("keydown", e => {
+            if (e.key === "Escape") closeSettings();
         });
     </script>
 
-
-
-
     <footer class="footer">
         <div class="footer-container">
-            <p>2025 DnNerds — Renato Matos e equipe</p>
+            <p>2025 DnNerds — Arthur Gonzaga, Diego Toscano, Enzo Pereira Niglia, Natália Macedo Pontes, Renato Matos e
+                Yuri da Silva Reis</p>
         </div>
     </footer>
 

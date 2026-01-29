@@ -2,6 +2,7 @@
 
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <title>Criar Quiz Rank - DnNerds</title>
@@ -13,68 +14,69 @@
 
 <body>
 
-<header>
-    <nav class="navbar">
-        <h2 class="title">
-            DnNerds <img src="../Imagens/anfitriao.png" alt="">
-        </h2>
-        <ul>
-            <li><a href="Noticias.php">Notícias</a></li>
-            <li><a href="nerdlists.php">NerdList</a></li>
-            <li><a href="Quizzes.php?tipo=rank">QuizRank</a></li>
-        </ul>
-    </nav>
-</header>
+    <header>
+        <nav class="navbar">
+            <h2 class="title">
+                DnNerds <img src="../Imagens/anfitriao.png" alt="">
+            </h2>
+            <ul>
+                <li><a href="Noticias.php">Notícias</a></li>
+                <li><a href="nerdlists.php">NerdList</a></li>
+                <li><a href="Quizzes.php?tipo=rank">QuizRank</a></li>
+                <li><a href="copinhas.php" class="ativo">Copinhas</a></li>
+            </ul>
+        </nav>
+    </header>
 
-<div class="container">
+    <div class="container">
 
-    <h2>🏆 Criar Quiz Rank</h2>
+        <h2>🏆 Criar Quiz Rank</h2>
 
-    <form action="salvarQuizRank.php" method="POST">
+        <form action="salvarQuizRank.php" method="POST">
 
-        <label>Título</label>
-        <input type="text" name="titulo" required>
+            <label>Título</label>
+            <input type="text" name="titulo" required>
 
-        <label>Descrição</label>
-        <textarea name="descricao" required></textarea>
+            <label>Descrição</label>
+            <textarea name="descricao" required></textarea>
 
-        <label>Categoria</label>
-        <select name="categoria" required>
-            <option value="">Selecione</option>
-            <option value="jogos">Jogos</option>
-            <option value="animes">Animes</option>
-            <option value="filmes/series">Filmes / Séries</option>
-            <option value="futebol">Futebol</option>
-            <option value="basquete">Basquete</option>
-            <option value="variados">Variados</option>
-        </select>
+            <label>Categoria</label>
+            <select name="categoria" required>
+                <option value="">Selecione</option>
+                <option value="jogos">Jogos</option>
+                <option value="animes">Animes</option>
+                <option value="filmes/series">Filmes / Séries</option>
+                <option value="futebol">Futebol</option>
+                <option value="basquete">Basquete</option>
+                <option value="variados">Variados</option>
+            </select>
 
-        <label>Imagem</label>
-        <input type="text" name="imagem" placeholder="../Imagens/quizdefault.jpg">
+            <label>Imagem</label>
+            <input type="text" name="imagem" placeholder="../Imagens/quizdefault.jpg">
 
-        <hr>
+            <hr>
 
-        <h3>📋 Itens do Rank</h3>
+            <h3>📋 Itens do Rank</h3>
 
-        <div id="itens"></div>
+            <div id="itens"></div>
 
-        <button type="button" onclick="addItem()">➕ Adicionar Item</button>
-        <button type="submit">🚀 Salvar Quiz Rank</button>
+            <button type="button" onclick="addItem()">➕ Adicionar Item</button>
+            <button type="submit">🚀 Salvar Quiz Rank</button>
 
-    </form>
+        </form>
 
-</div>
+    </div>
 
-<script>
-let posicao = 0;
+    <script>
+        let posicao = 0;
 
-function addItem() {
-    posicao++;
+        function addItem() {
+            posicao++;
 
-    const div = document.createElement("div");
-    div.className = "pergunta";
+            const div = document.createElement("div");
+            div.className = "pergunta";
 
-    div.innerHTML = `
+            div.innerHTML = `
         <h4>#${posicao}</h4>
 
         <input type="hidden" name="itens[${posicao}][posicao]" value="${posicao}">
@@ -88,9 +90,10 @@ function addItem() {
         <hr>
     `;
 
-    document.getElementById("itens").appendChild(div);
-}
-</script>
+            document.getElementById("itens").appendChild(div);
+        }
+    </script>
 
 </body>
+
 </html>

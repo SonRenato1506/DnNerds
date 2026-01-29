@@ -72,21 +72,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 
                 <li>
-                    <!--Notícias-->
+                    
                     <a href="../PHP/noticias.php">Notícias</a>
                 </li>
                 <li>
-                    <!--Tier List-->
+                    
                     <a href="">NerdList</a>
                 </li>
                 <li>
-                    <!--Quizzes-->
+                    
                     <a href="Quizzes.php">Quizzes</a>
                 </li>
-                <li>
-                    <!--Copinha-->
-                    <a href="">IA</a>
-                </li>
+                <li><a href="nerdlists.php">NerdList</a></li>
+                <li><a href="copinhas.php" class="ativo">Copinhas</a></li>
 
             </ul>
 

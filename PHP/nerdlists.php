@@ -30,12 +30,6 @@ $busca = $_GET['q'] ?? '';
     <link rel="stylesheet" href="../Styles/Noticias.css?v=28">
     <link rel="stylesheet" href="../Styles/Header.css?v=32">
 
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Bitcount+Grid+Single&family=Anonymous+Pro&family=Poppins&display=swap"
-        rel="stylesheet">
 </head>
 
 <body>

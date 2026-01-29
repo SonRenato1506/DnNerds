@@ -88,14 +88,9 @@ if ($tipo === 'personalidade') {
 
     <!-- CSS -->
     <link rel="stylesheet" href="../Styles/Noticias.css?v=28">
-    <link rel="stylesheet" href="../Styles/Header.css?v=33">
+    <link rel="stylesheet" href="../Styles/Header.css?v=34">
 
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Bitcount+Grid+Single&family=Anonymous+Pro&family=Poppins&display=swap"
-        rel="stylesheet">
+   
 </head>
 
 <body>

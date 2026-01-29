@@ -141,6 +141,8 @@ $resultItens = $conexao->query($sqlItens);
                 <li>
                     <a href="EditorQuizRank.php?id=<?= $quiz_id ?>">Editar</a>
                 </li>
+                <li><a href="copinhas.php" class="ativo">Copinhas</a></li>
+
 
             </ul>
 
