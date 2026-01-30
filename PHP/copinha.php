@@ -36,7 +36,7 @@ while ($row = $resItens->fetch_assoc()) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <link rel="stylesheet" href="../Styles/Header.css">
-    <link rel="stylesheet" href="../Styles/copinha.css?v=2">
+    <link rel="stylesheet" href="../Styles/copinha.css?v=3">
 </head>
 
 <body>
@@ -44,7 +44,7 @@ while ($row = $resItens->fetch_assoc()) {
     <header>
         <nav class="navbar">
             <h2 class="title">
-                DnNerds <img src="../Imagens/anfitriao.png" alt="">
+                DnNerds <img src="../Imagens/anfitriao.png?v=2" alt="">
             </h2>
 
             <ul>
@@ -52,7 +52,14 @@ while ($row = $resItens->fetch_assoc()) {
                 <li><a href="nerdlists.php">NerdList</a></li>
                 <li><a href="Quizzes.php">Quizzes</a></li>
                 <li><a href="copinhas.php" class="ativo">Copinhas</a></li>
-                <li><a href="EditorCopinha.php?id=<?= (int) $_GET['id'] ?>">Editor</a></li>
+                <li>
+                    <?php if (isset($copinha_id)): ?>
+                        <a href="editorCopinha.php?id=<?= $copinha_id ?>">Editar</a>
+                    <?php else: ?>
+                        <a href="EditorCopinha.php">Editor</a>
+                    <?php endif; ?>
+                </li>
+
             </ul>
 
             <button class="btn-navbar">
@@ -64,14 +71,15 @@ while ($row = $resItens->fetch_assoc()) {
     <main>
 
         <h1 id="titulo"></h1>
+        <h2 id="rodada"></h2>
 
         <div class="batalha" id="batalha">
-            <button class="opcao1" id="btn1"></button>
+            <button id="btn1"></button>
             <h1>VS</h1>
-            <button class="opcao2" id="btn2"></button>
+            <button id="btn2"></button>
         </div>
 
-        <div class="campeao" id="campeao" style="display:none;"></div>
+        <div id="campeao" style="display:none;"></div>
 
         <div style="display:flex; justify-content:center; gap:20px; margin-top:30px;">
             <button onclick="reiniciar()">🔁 Refazer</button>
@@ -81,23 +89,16 @@ while ($row = $resItens->fetch_assoc()) {
     </main>
 
     <script>
-        /* ===============================
-           DADOS
-        ================================ */
-        const COPINHA_TITULO = <?= json_encode($copinha['titulo']) ?>;
-        const PARTICIPANTES = <?= json_encode($itens) ?>;
+        const TITULO = <?= json_encode($copinha['titulo']) ?>;
+        const ITENS = <?= json_encode($itens) ?>;
 
-        /* ===============================
-           VARIÁVEIS
-        ================================ */
-        let jogadores = [];
-        let rodadaAtual = [];
-        let filaAjuste = [];
-        let fase = 'ajuste';
+        let fila = [];
+        let vencedores = [];
+        let fase = 'primeira';
+        let confrontosIniciais = 0;
+        let indiceInicial = 0;
 
-        /* ===============================
-           UTIL
-        ================================ */
+        /* UTIL */
         function shuffle(arr) {
             for (let i = arr.length - 1; i > 0; i--) {
                 const j = Math.floor(Math.random() * (i + 1));
@@ -105,189 +106,151 @@ while ($row = $resItens->fetch_assoc()) {
             }
         }
 
-        function ehPotenciaDe2(n) {
-            return (n & (n - 1)) === 0;
+        function maiorPotenciaDe2(n) {
+            let p = 1;
+            while (p * 2 <= n) p *= 2;
+            return p;
         }
 
-        /* ===============================
-           YOUTUBE / IMAGEM
-        ================================ */
+        /* MIDIA */
         function isYouTube(url) {
             return url.includes('youtube.com') || url.includes('youtu.be');
         }
 
-        function getYouTubeEmbed(url) {
-            let id = '';
-
-            if (url.includes('youtu.be')) {
-                id = url.split('youtu.be/')[1];
-            } else if (url.includes('watch?v=')) {
-                id = url.split('watch?v=')[1];
-            }
-
-            return id ? `https://www.youtube.com/embed/${id.split('&')[0]}` : '';
+        function getEmbed(url) {
+            if (url.includes('youtu.be'))
+                return url.split('youtu.be/')[1].split('?')[0];
+            return url.split('watch?v=')[1].split('&')[0];
         }
 
         function renderMidia(p) {
-            if (isYouTube(p.imagem)) {
-                return `
-            <iframe 
-                src="${getYouTubeEmbed(p.imagem)}"
-                allowfullscreen
-            ></iframe>
-            <h2>${p.nome}</h2>
-        `;
-            } else {
-                return `
-            <img src="${p.imagem}" alt="${p.nome}">
-            <h2>${p.nome}</h2>
-        `;
-            }
+            return isYouTube(p.imagem)
+                ? `<iframe src="https://www.youtube.com/embed/${getEmbed(p.imagem)}" allowfullscreen></iframe><h2>${p.nome}</h2>`
+                : `<img src="${p.imagem}"><h2>${p.nome}</h2>`;
         }
 
-        /* ===============================
-           TEXTO DA RODADA
-        ================================ */
-        function nomeDaRodada(qtd) {
-            if (qtd <= 16 && qtd >= 9) return 'Oitavas de Final';
-            if (qtd <= 8 && qtd >= 5) return 'Quartas de Final';
-            if (qtd <= 4 && qtd >= 3) return 'Semifinal';
-            if (qtd === 2) return 'Final';
-            return `Rodada inicial (${qtd} participantes)`;
-        }
-
-        /* ===============================
-           INICIAR
-        ================================ */
+        /* INICIAR */
         function iniciar() {
-            jogadores = [...PARTICIPANTES];
-            shuffle(jogadores);
+            fila = [...ITENS];
+            shuffle(fila);
 
-            fase = ehPotenciaDe2(jogadores.length) ? 'mata-mata' : 'ajuste';
+            vencedores = [];
+            indiceInicial = 0;
+
+            const pot = maiorPotenciaDe2(fila.length);
+            confrontosIniciais = fila.length - pot;
+
+            fase = confrontosIniciais > 0 ? 'primeira' : 'mata';
+            c = 1
+            console.log(fila.length)
+            console.log(pot)
+            console.log(confrontosIniciais)
+
 
             document.getElementById('titulo').innerHTML = `
-        ${COPINHA_TITULO}
-        (<small id="rodada"></small>)
+        ${TITULO}
+        <small>${fase === 'primeira' ? `Rodada com ${String(fila.length)}` : 'Mata-mata'}</small>
+    
     `;
 
-            rodadaAtual = [...jogadores];
-
-            if (fase === 'ajuste') iniciarRodadaAjuste();
-
-            atualizarRodada();
             render();
         }
 
-        /* ===============================
-           AJUSTE
-        ================================ */
-        function iniciarRodadaAjuste() {
-            filaAjuste = [...rodadaAtual];
-            shuffle(filaAjuste);
-            rodadaAtual = [];
-        }
-
-        /* ===============================
-           RENDER
-        ================================ */
+        /* RENDER */
         function render() {
 
-            if (fase === 'mata-mata' && rodadaAtual.length <= 1) {
-                mostrarCampeao(rodadaAtual[0]);
+
+            if (fila.length === 1) {
+                mostrarCampeao(fila[0]);
                 return;
             }
 
-            atualizarRodada();
+            // terminou rodada inicial
+            if (fase === 'primeira' && vencedores.length === confrontosIniciais) {
+                const resto = fila.slice(confrontosIniciais * 2);
+
+                // junta quem não lutou + vencedores
+                fila = [...resto, ...vencedores];
+
+                // 🔀 EMBARALHA ANTES DO MATA-MATA
+                shuffle(fila);
+
+                vencedores = [];
+                fase = 'mata';
+
+                document.querySelector('#titulo small').innerText = 'Mata-mata';
+                c = 1;
+                totalConfrontos = fila.length / 2;
+            }
+
 
             let p1, p2;
 
-            if (fase === 'ajuste') {
-                if (filaAjuste.length < 2) {
-
-                    rodadaAtual = [...rodadaAtual, ...filaAjuste];
-                    filaAjuste = [];
-
-                    if (ehPotenciaDe2(rodadaAtual.length)) {
-                        fase = 'mata-mata';
-                        shuffle(rodadaAtual);
-                    } else {
-                        iniciarRodadaAjuste();
-                    }
-
-                    render();
-                    return;
-                }
-
-                p1 = filaAjuste.shift();
-                p2 = filaAjuste.shift();
-
+            if (fase === 'primeira') {
+                document.getElementById('rodada').innerHTML = String(c) + "/" + confrontosIniciais
+                c++;
+                // ORDEM FIXA: 1x2, 3x4, 5x6...
+                p1 = fila[indiceInicial];
+                p2 = fila[indiceInicial + 1];
             } else {
-                p1 = rodadaAtual.shift();
-                p2 = rodadaAtual.shift();
+                document.getElementById('rodada').innerHTML = `${c}/${totalConfrontos}`;
+                c++
+                // MATA-MATA: DE TRÁS PRA FRENTE
+                p1 = fila.pop();
+                p2 = fila.pop();
             }
 
-            const btn1 = document.getElementById('btn1');
-            const btn2 = document.getElementById('btn2');
 
-            btn1.innerHTML = renderMidia(p1);
-            btn2.innerHTML = renderMidia(p2);
+            document.getElementById('btn1').innerHTML = renderMidia(p1);
+            document.getElementById('btn2').innerHTML = renderMidia(p2);
 
-            btn1.onclick = () => escolher(p1);
-            btn2.onclick = () => escolher(p2);
+            document.getElementById('btn1').onclick = () => escolher(p1);
+            document.getElementById('btn2').onclick = () => escolher(p2);
         }
 
-        /* ===============================
-           ESCOLHER
-        ================================ */
-        function escolher(vencedor) {
-            rodadaAtual.push(vencedor);
+        /* ESCOLHER */
+        function escolher(v) {
+            vencedores.push(v);
+
+            if (fase === 'primeira') {
+                indiceInicial += 2;
+            }
+
+            if (fase === 'mata' && vencedores.length * 2 === fila.length + vencedores.length * 2) {
+                fila = [...vencedores];
+                vencedores = [];
+                totalConfrontos = fila.length / 2;
+                c = 1;
+            }
+
             render();
         }
 
-        /* ===============================
-           RODADA
-        ================================ */
-        function atualizarRodada() {
-            const total = fase === 'ajuste'
-                ? filaAjuste.length + rodadaAtual.length
-                : rodadaAtual.length;
-
-            document.getElementById('rodada').innerText = nomeDaRodada(total);
-        }
-
-        /* ===============================
-           CAMPEÃO
-        ================================ */
+        /* CAMPEÃO */
         function mostrarCampeao(c) {
             document.getElementById('batalha').style.display = 'none';
             const div = document.getElementById('campeao');
             div.style.display = 'block';
 
-            let midia = isYouTube(c.imagem)
-                ? `<iframe src="${getYouTubeEmbed(c.imagem)}" allowfullscreen></iframe>`
-                : `<img src="${c.imagem}">`;
-
-           
-
             div.innerHTML = `
         <h1>🏆 CAMPEÃO 🏆</h1>
         <h2>${c.nome}</h2>
-        ${midia}
+        ${renderMidia(c)}
     `;
         }
 
-        /* ===============================
-           REINICIAR
-        ================================ */
+        /* RESET */
         function reiniciar() {
             document.getElementById('campeao').style.display = 'none';
             document.getElementById('batalha').style.display = 'flex';
             iniciar();
         }
 
-        /* START */
+
+
         iniciar();
     </script>
+
 
 </body>
 

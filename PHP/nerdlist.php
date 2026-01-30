@@ -58,7 +58,14 @@ $itens = $conexao->query($sqlItens);
                 <li><a href="Noticias.php">Notícias</a></li>
                 <li><a href="nerdlists.php">NerdList</a></li>
                 <li><a href="Quizzes.php">Quizzes</a></li>
-                <li><a href="#">Editor</a></li>
+                <li><a href="Copinhas.php">Copinhas</a></li>
+                <li>
+                    <?php if (isset($nerdlist_id)): ?>
+                        <a href="editorNerdList.php?id=<?= $nerdlist_id ?>">Editar</a>
+                    <?php else: ?>
+                        <a href="editorNerdList.php">Editor</a>
+                    <?php endif; ?>
+                </li>
             </ul>
             <button class="btn-navbar">
                 <a href="FazerLogin.php">Fazer Login</a>

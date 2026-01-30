@@ -11,6 +11,10 @@ body {
     font-size: 24px;
 }
 
+#rodada {
+    text-align: center;
+}
+
 /* ÁREA DA BATALHA */
 .batalha {
     

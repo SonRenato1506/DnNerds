@@ -1,55 +1,63 @@
 <?php
-include_once('config.php');
+include_once("config.php");
 
-if (
-    empty($_POST['titulo']) ||
-    empty($_POST['descricao']) ||
-    empty($_POST['categoria'])
-) {
-    echo "Dados inválidos.";
-    exit;
+mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
+
+$titulo    = $_POST['titulo'] ?? '';
+$descricao = $_POST['descricao'] ?? null;
+$imagem    = $_POST['imagem'] ?? null;
+$categoria = $_POST['categoria'] ?? '';
+
+if (!$titulo || !$categoria) {
+    die("Título ou categoria vazios");
 }
 
-$titulo = trim($_POST['titulo']);
-$descricao = trim($_POST['descricao']);
-$categoria = trim($_POST['categoria']);
-$imagem = trim($_POST['imagem'] ?? 'nerdlistdefault.jpg');
+/* 1️⃣ NerdList */
+$sql = "INSERT INTO nerdlist (titulo, descricao, imagem, categoria)
+        VALUES (?, ?, ?, ?)";
 
-/* ===============================
-   INSERE NERDLIST
-================================ */
-$stmt = $conexao->prepare("
-    INSERT INTO nerdlist (titulo, descricao, categoria, imagem)
-    VALUES (?, ?, ?, ?)
-");
-$stmt->bind_param("ssss", $titulo, $descricao, $categoria, $imagem);
+$stmt = $conexao->prepare($sql);
+$stmt->bind_param("ssss", $titulo, $descricao, $imagem, $categoria);
 $stmt->execute();
 
 $nerdlist_id = $stmt->insert_id;
 
-/* ===============================
-   TIERS PADRÃO
-================================ */
-$tiers = [
-    ['S', '#ff4757'],
-    ['A', '#ffa502'],
-    ['B', '#2ed573'],
-    ['C', '#1e90ff'],
-    ['D', '#57606f']
-];
-
-$stmtTier = $conexao->prepare("
-    INSERT INTO nerdlist_tiers (nerdlist_id, nome, cor)
-    VALUES (?, ?, ?)
-");
-
-foreach ($tiers as $tier) {
-    $stmtTier->bind_param("iss", $nerdlist_id, $tier[0], $tier[1]);
-    $stmtTier->execute();
+if (!$nerdlist_id) {
+    die("Erro ao criar NerdList");
 }
 
-/* ===============================
-   REDIRECIONA
-================================ */
+/* 2️⃣ Tiers */
+if (!empty($_POST['tier_nome'])) {
+    foreach ($_POST['tier_nome'] as $i => $nome) {
+        if (!$nome) continue;
+
+        $cor = $_POST['tier_cor'][$i] ?? '#666666';
+
+        $sqlTier = "INSERT INTO nerdlist_tiers (nerdlist_id, nome, cor, ordem)
+                    VALUES (?, ?, ?, ?)";
+
+        $stmtTier = $conexao->prepare($sqlTier);
+        $stmtTier->bind_param("issi", $nerdlist_id, $nome, $cor, $i);
+        $stmtTier->execute();
+    }
+}
+
+/* 3️⃣ Itens */
+if (!empty($_POST['item_nome'])) {
+    foreach ($_POST['item_nome'] as $i => $nome) {
+        if (!$nome) continue;
+
+        $img = $_POST['item_imagem'][$i] ?? '';
+
+        $sqlItem = "INSERT INTO nerdlist_itens (nerdlist_id, nome, imagem)
+                    VALUES (?, ?, ?)";
+
+        $stmtItem = $conexao->prepare($sqlItem);
+        $stmtItem->bind_param("iss", $nerdlist_id, $nome, $img);
+        $stmtItem->execute();
+    }
+}
+
+/* 4️⃣ Redireciona */
 header("Location: nerdlist.php?id=" . $nerdlist_id);
 exit;
