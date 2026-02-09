@@ -95,12 +95,13 @@ body {
     position: relative;
     overflow: hidden;
     display: flex;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
 
     width: 100%;
-    padding: 16px;
+    padding: 16px 20px 16px 64px; /* 👈 espaço extra à esquerda */
     margin: 6px 0;
+
     border-radius: 12px;
     font-size: 18px;
     font-weight: 600;
@@ -110,15 +111,14 @@ body {
     color: #fff;
 }
 
+
 #quiz-container button::before {
     position: absolute;
-    left: 12px;
-    top: 0;
-    bottom: 0;
-    margin: auto 0;
-    height: fit-content;
-
+    left: 18px;   /* distância fixa da borda */
+    top: 50%;
+    transform: translateY(-50%);
 }
+
 
 /* ======== Símbolos coloridos ======== */
 

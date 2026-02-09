@@ -321,6 +321,51 @@ a {
     background: rgba(0, 0, 0, 0.7);
 }
 
+/* ===============================
+   TIPO DE QUIZ – MINIMAL
+================================ */
+
+#tipoQuiz {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    margin-top: 20px;
+    flex-wrap: wrap;
+}
+
+#tipoQuiz .tipo-link {
+    padding: 6px 14px;
+    font-size: 14px;
+    color: #ccc;
+    border-bottom: 2px solid transparent;
+    transition: color 0.2s ease, border-color 0.2s ease;
+    text-transform: uppercase;
+}
+
+/* Hover discreto */
+#tipoQuiz .tipo-link:hover {
+    color: orange;
+}
+
+/* Ativo */
+#tipoQuiz .tipo-link.ativo {
+    color: orange;
+    border-bottom: 2px solid orange;
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+    #tipoQuiz {
+        gap: 10px;
+    }
+
+    #tipoQuiz .tipo-link {
+        font-size: 13px;
+        padding: 5px 10px;
+    }
+}
+
+
 /* Responsivo */
 @media (max-width: 800px) {
     .destaque-item img {
@@ -335,16 +380,6 @@ a {
         font-size: 14px;
     }
 }
-
-#tipoQuiz {
-    margin: auto;
-    margin-top: 40px;
-}
-
-#tipoQuiz>* {
-    margin: 30px;
-}
-
 
 
 @media (max-width: 700px) {

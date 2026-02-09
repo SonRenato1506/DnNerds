@@ -38,10 +38,74 @@ while ($r = $res->fetch_assoc()) {
 }
 
 /* ===============================
-   SALVAR
+   AÇÕES POST
 ================================ */
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
+    /* ===== EXCLUIR QUIZ ===== */
+    if (isset($_POST['excluir_quiz'])) {
+
+        $conexao->query("
+            DELETE prp FROM personalidade_respostas_pontuacao prp
+            JOIN personalidade_respostas r ON r.id = prp.resposta_id
+            JOIN personalidade_perguntas p ON p.id = r.pergunta_id
+            WHERE p.personalidade_id = $quiz_id
+        ");
+
+        $conexao->query("
+            DELETE r FROM personalidade_respostas r
+            JOIN personalidade_perguntas p ON p.id = r.pergunta_id
+            WHERE p.personalidade_id = $quiz_id
+        ");
+
+        $conexao->query("DELETE FROM personalidade_perguntas WHERE personalidade_id = $quiz_id");
+        $conexao->query("DELETE FROM personalidade_resultados WHERE personalidade_id = $quiz_id");
+        $conexao->query("DELETE FROM personalidade WHERE id = $quiz_id");
+
+        header("Location: Quizzes.php");
+        exit;
+    }
+
+    /* ===== EXCLUIR RESULTADO ===== */
+    if (isset($_POST['excluir_resultado'])) {
+        $rid = (int) $_POST['resultado_id'];
+
+        $conexao->query("DELETE FROM personalidade_respostas_pontuacao WHERE resultado_id = $rid");
+        $conexao->query("DELETE FROM personalidade_resultados WHERE id = $rid");
+
+        header("Location: EditorPersonalidade.php?id=$quiz_id");
+        exit;
+    }
+
+    /* ===== EXCLUIR PERGUNTA ===== */
+    if (isset($_POST['excluir_pergunta'])) {
+        $pid = (int) $_POST['pergunta_id'];
+
+        $conexao->query("
+            DELETE prp FROM personalidade_respostas_pontuacao prp
+            JOIN personalidade_respostas r ON r.id = prp.resposta_id
+            WHERE r.pergunta_id = $pid
+        ");
+
+        $conexao->query("DELETE FROM personalidade_respostas WHERE pergunta_id = $pid");
+        $conexao->query("DELETE FROM personalidade_perguntas WHERE id = $pid");
+
+        header("Location: EditorPersonalidade.php?id=$quiz_id");
+        exit;
+    }
+
+    /* ===== EXCLUIR RESPOSTA ===== */
+    if (isset($_POST['excluir_resposta'])) {
+        $rid = (int) $_POST['resposta_id'];
+
+        $conexao->query("DELETE FROM personalidade_respostas_pontuacao WHERE resposta_id = $rid");
+        $conexao->query("DELETE FROM personalidade_respostas WHERE id = $rid");
+
+        header("Location: EditorPersonalidade.php?id=$quiz_id");
+        exit;
+    }
+
+    /* ===== SALVAR QUIZ ===== */
     if (isset($_POST['salvar_quiz'])) {
         $stmt = $conexao->prepare(
             "UPDATE personalidade SET titulo=?, descricao=?, imagem=? WHERE id=?"
@@ -58,6 +122,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     }
 
+    /* ===== SALVAR PERGUNTAS ===== */
     if (isset($_POST['salvar_perguntas'])) {
 
         foreach ($_POST['pergunta'] as $pid => $texto) {
@@ -87,6 +152,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 }
             }
         }
+        header("Location: EditorPersonalidade.php?id=$quiz_id");
         exit;
     }
 }
@@ -134,89 +200,105 @@ while ($row = $res->fetch_assoc()) {
 
 <!DOCTYPE html>
 <html lang="pt-br">
-
 <head>
     <meta charset="UTF-8">
     <title>Editar Quiz de Personalidade</title>
     <link rel="stylesheet" href="../Styles/Header.css">
-    <link rel="stylesheet" href="../Styles/EditorPersonalidade.css">
+    <link rel="stylesheet" href="../Styles/EditorPersonalidade.css?v=2">
 </head>
 
 <body>
 
-    <header>
-        <nav class="navbar">
-            <h2 class="title">
-                DnNerds <img src="../Imagens/favicon.png" alt="DnNerds">
-            </h2>
-            <ul>
-                <li><a href="Noticias.php">Notícias</a></li>
-                <li><a href="nerdlists.php">NerdList</a></li>
-                <li><a href="Quizzes.php">Quizzes</a></li>
-                <li><a href="copinhas.php" class="ativo">Copinhas</a></li>
-                <li><a href="editorNoticia.php?id=<?= $noticia['id'] ?>" class="btn-editar-noticia">Editor</a></li>
-            </ul>
-            <button class="btn-navbar">
-                <a href="FazerLogin.php">Fazer Login</a>
-            </button>
-        </nav>
-    </header>
+<!-- HEADER NÃO FOI ALTERADO -->
 
+<header>
+    <nav class="navbar">
+        <h2 class="title">
+            DnNerds <img src="../Imagens/favicon.png" alt="DnNerds">
+        </h2>
+        <ul>
+            <li><a href="Noticias.php">Notícias</a></li>
+            <li><a href="nerdlists.php">NerdList</a></li>
+            <li><a href="Quizzes.php">Quizzes</a></li>
+            <li><a href="copinhas.php" class="ativo">Copinhas</a></li>
+            <li><a href="editorNoticia.php?id=<?= $noticia['id'] ?>" class="btn-editar-noticia">Editor</a></li>
+        </ul>
+        <button class="btn-navbar">
+            <a href="FazerLogin.php">Fazer Login</a>
+        </button>
+    </nav>
+</header>
 
-    <div class="container">
+<div class="container">
 
-        <h2>Editar Quiz: <?= htmlspecialchars($quiz['titulo']) ?></h2>
+    <h2>Editar Quiz: <?= htmlspecialchars($quiz['titulo']) ?></h2>
 
-        <form method="POST">
-            <input type="hidden" name="salvar_quiz">
+    <form method="POST">
+        <input type="hidden" name="salvar_quiz">
+        <label>Título</label>
+        <input type="text" name="titulo" value="<?= $quiz['titulo'] ?>">
 
-            <label>Título</label>
-            <input type="text" name="titulo" value="<?= $quiz['titulo'] ?>">
+        <label>Descrição</label>
+        <textarea name="descricao"><?= $quiz['descricao'] ?></textarea>
 
-            <label>Descrição</label>
-            <textarea name="descricao"><?= $quiz['descricao'] ?></textarea>
+        <label>Imagem</label>
+        <input type="text" name="imagem" value="<?= $quiz['imagem'] ?>">
 
-            <label>Imagem</label>
-            <input type="text" name="imagem" value="<?= $quiz['imagem'] ?>">
+        <button>Salvar Quiz</button>
+    </form>
 
-            <button>Salvar Quiz</button>
+    <form method="POST" onsubmit="return confirm('Excluir o quiz inteiro?');">
+        <input type="hidden" name="excluir_quiz">
+        <button class="btn-excluir">Excluir Quiz</button>
+    </form>
+
+    <hr>
+
+    <?php foreach ($resultados as $res): ?>
+        <form method="POST" class="resultado-linha">
+            <span><?= $res['titulo'] ?></span>
+            <input type="hidden" name="resultado_id" value="<?= $res['id'] ?>">
+            <button name="excluir_resultado">Excluir Resultado</button>
         </form>
+    <?php endforeach; ?>
 
-        <hr>
+    <hr>
 
-        <form method="POST">
-            <input type="hidden" name="salvar_perguntas">
+    <form method="POST">
+        <input type="hidden" name="salvar_perguntas">
 
-            <?php foreach ($perguntas as $pid => $p): ?>
-                <div class="pergunta">
+        <?php foreach ($perguntas as $pid => $p): ?>
+            <div class="pergunta">
 
-                    <input class="input-pergunta" type="text" name="pergunta[<?= $pid ?>]" value="<?= $p['texto'] ?>">
+                <input type="text" name="pergunta[<?= $pid ?>]" value="<?= $p['texto'] ?>">
 
-                    <?php foreach ($p['respostas'] as $rid => $r): ?>
-                        <div class="opcao-personalidade">
+                <form method="POST">
+                    <input type="hidden" name="pergunta_id" value="<?= $pid ?>">
+                    <button name="excluir_pergunta">Excluir Pergunta</button>
+                </form>
 
-                            <input type="text" name="resposta[<?= $pid ?>][<?= $rid ?>]" value="<?= $r['texto'] ?>">
+                <?php foreach ($p['respostas'] as $rid => $r): ?>
+                    <div class="opcao-personalidade">
+                        <input type="text" name="resposta[<?= $pid ?>][<?= $rid ?>]" value="<?= $r['texto'] ?>">
 
-                            <div class="pontos-container">
-                                <?php foreach ($resultados as $res): ?>
-                                    <div class="pontuacao-linha">
-                                        <span><?= $res['titulo'] ?></span>
-                                        <input type="number" name="pontos[<?= $pid ?>][<?= $rid ?>][<?= $res['id'] ?>]"
-                                            value="<?= $r['pontos'][$res['id']] ?? 0 ?>">
-                                    </div>
-                                <?php endforeach; ?>
-                            </div>
+                        <form method="POST">
+                            <input type="hidden" name="resposta_id" value="<?= $rid ?>">
+                        </form>
 
-                        </div>
-                    <?php endforeach; ?>
+                        <?php foreach ($resultados as $res): ?>
+                            <input type="number"
+                                name="pontos[<?= $pid ?>][<?= $rid ?>][<?= $res['id'] ?>]"
+                                value="<?= $r['pontos'][$res['id']] ?? 0 ?>">
+                        <?php endforeach; ?>
+                    </div>
+                <?php endforeach; ?>
 
-                </div>
-            <?php endforeach; ?>
+            </div>
+        <?php endforeach; ?>
 
-            <button>Salvar Perguntas</button>
-        </form>
+        <button>Salvar Perguntas</button>
+    </form>
 
-    </div>
+</div>
 </body>
-
 </html>

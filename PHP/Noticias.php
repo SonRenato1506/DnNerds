@@ -34,7 +34,7 @@ $resultDestaque = $conexao->query($sqlDestaque);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <link rel="stylesheet" href="../Styles/Noticias.css?v=28">
-    <link rel="stylesheet" href="../Styles/Header.css?v=35">
+    <link rel="stylesheet" href="../Styles/Header.css?v=36">
 </head>
 
 <body>

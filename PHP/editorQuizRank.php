@@ -57,18 +57,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     // Adicionar novo item
-    if (!empty($_POST['novo_nome'])) {
-        $nova_posicao = (int) $_POST['novo_posicao'];
-        $novo_nome = $_POST['novo_nome'];
-        $nova_dica = $_POST['novo_dica'];
+    // Adicionar novos itens (múltiplos)
+    if (!empty($_POST['novo']['nome'])) {
 
-        $stmt = $conexao->prepare("
+        foreach ($_POST['novo']['nome'] as $index => $nome) {
+
+            if (trim($nome) === '') {
+                continue; // ignora campos vazios
+            }
+
+            $posicao = (int) $_POST['novo']['posicao'][$index];
+            $dica = $_POST['novo']['dica'][$index];
+
+            $stmt = $conexao->prepare("
             INSERT INTO quiz_rank_itens (quiz_id, posicao, nome, dica)
             VALUES (?, ?, ?, ?)
         ");
-        $stmt->bind_param("iiss", $quiz_id, $nova_posicao, $novo_nome, $nova_dica);
-        $stmt->execute();
+            $stmt->bind_param("iiss", $quiz_id, $posicao, $nome, $dica);
+            $stmt->execute();
+        }
     }
+
 
     header("Location: EditorQuizRank.php?id=$quiz_id");
     exit;
@@ -210,17 +219,35 @@ $resultItens = $conexao->query($sqlItens);
             <button type="submit" class="btn btn-salvar">Salvar Alterações</button>
 
             <div class="novo">
-                <h3>Adicionar novo item</h3>
+                <h3>Adicionar novos itens</h3>
 
-                <label>Posição</label>
-                <input type="number" name="novo_posicao">
+                <table>
+                    <tr>
+                        <th>Posição</th>
+                        <th>Nome</th>
+                        <th>Dica</th>
+                    </tr>
 
-                <label>Nome</label>
-                <input type="text" name="novo_nome">
+                    <?php for ($i = 0; $i < 5; $i++): ?>
+                        <tr>
+                            <td>
+                                <input type="number" name="novo[posicao][]" placeholder="Ex: 1">
+                            </td>
+                            <td>
+                                <input type="text" name="novo[nome][]" placeholder="Nome do item">
+                            </td>
+                            <td>
+                                <input type="text" name="novo[dica][]" placeholder="Dica (opcional)">
+                            </td>
+                        </tr>
+                    <?php endfor; ?>
+                </table>
 
-                <label>Dica</label>
-                <input type="text" name="novo_dica">
+                <p style="color:#aaa; font-size:14px">
+                    Preencha apenas os campos desejados. Campos vazios serão ignorados.
+                </p>
             </div>
+
         </form>
     </div>
 

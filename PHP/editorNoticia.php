@@ -12,6 +12,26 @@ $id = (int) $_GET['id'];
 $mensagem = "";
 
 /* ===============================
+   EXCLUIR NOTÍCIA
+================================ */
+if (isset($_POST['excluir'])) {
+
+    $stmtDelete = $conexao->prepare(
+        "DELETE FROM noticias WHERE id = ?"
+    );
+    $stmtDelete->bind_param("i", $id);
+
+    if ($stmtDelete->execute()) {
+        header("Location: Noticias.php?msg=excluida");
+        header("Location: noticias.php" );
+        exit;
+    } else {
+        $mensagem = "Erro ao excluir a notícia.";
+    }
+}
+
+
+/* ===============================
    ATUALIZAR NOTÍCIA
 ================================ */
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -39,6 +59,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if ($stmtUpdate->execute()) {
         $mensagem = "Notícia atualizada com sucesso!";
+        header("Location: noticias.php" );
+
     } else {
         $mensagem = "Erro ao atualizar a notícia.";
     }
@@ -195,6 +217,23 @@ $noticia = $result->fetch_assoc();
             <textarea name="texto" required><?= htmlspecialchars($noticia['texto']) ?></textarea>
 
             <button id="salvar" type="submit">Salvar Alterações</button>
+
+            <button type="submit" name="excluir"
+                onclick="return confirm('Tem certeza que deseja excluir esta notícia? Essa ação não pode ser desfeita!')"
+                style="
+        margin-top: 10px;
+        padding: 12px 20px;
+        background: #900;
+        border: none;
+        color: #fff;
+        font-size: 16px;
+        border-radius: 8px;
+        cursor: pointer;
+        width: 20%;
+    ">
+                Excluir Notícia
+            </button>
+
         </form>
     </div>
 

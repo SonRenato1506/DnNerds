@@ -42,7 +42,7 @@ $itens = $conexao->query($sqlItens);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <link rel="stylesheet" href="../Styles/Header.css?v=28">
-    <link rel="stylesheet" href="../Styles/NerdList.css">
+    <link rel="stylesheet" href="../Styles/NerdList.css?v=3">
 
 
 </head>

@@ -44,6 +44,7 @@ $busca = $_GET['q'] ?? '';
             <li><a href="Noticias.php">Notícias</a></li>
             <li><a href="NerdLists.php" class="ativo">NerdList</a></li>
             <li><a href="Quizzes.php">Quizzes</a></li>
+            <li><a href="Copinhas.php">Copinhas</a></li>
             <li><a href="criadorNerdList.php">Criar</a></li>
         </ul>
 

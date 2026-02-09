@@ -87,7 +87,7 @@ if ($resultPerguntas && $resultPerguntas->num_rows > 0) {
     <title><?= htmlspecialchars($quiz['titulo']) ?> - DnNerds</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <link rel="stylesheet" href="../Styles/quiz.css?v=7">
+    <link rel="stylesheet" href="../Styles/quiz.css?v=8">
     <link rel="stylesheet" href="../Styles/Header.css?v=29">
 
 </head>

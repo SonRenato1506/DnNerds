@@ -45,8 +45,19 @@ $relacionadas = $stmtRel->get_result();
     <title><?= htmlspecialchars($noticia['titulo']) ?> - DnNerds</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <link rel="stylesheet" href="../Styles/Header.css?v=27">
-    <link rel="stylesheet" href="../Styles/Noticia.css?v=12">
+    <link rel="stylesheet" href="../Styles/Header.css?v=28">
+    <link rel="stylesheet" href="../Styles/Noticia.css?v=14">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Merriweather:ital,opsz,wght@0,18..144,300..900;1,18..144,300..900&display=swap"
+        rel="stylesheet">
+
 </head>
 
 <body>
