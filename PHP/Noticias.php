@@ -1,5 +1,7 @@
 <?php
 include_once('config.php');
+include_once("header.php");
+
 
 /* ===============================
    CATEGORIAS
@@ -33,37 +35,10 @@ $resultDestaque = $conexao->query($sqlDestaque);
     <title>DnNerds</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <link rel="stylesheet" href="../Styles/Noticias.css?v=28">
-    <link rel="stylesheet" href="../Styles/Header.css?v=36">
+    <link rel="stylesheet" href="../Styles/Noticias.css?v=30">
 </head>
 
 <body>
-
-    <header>
-        <nav class="navbar">
-            <h1 class="title">
-                DnNerds <img src="../Imagens/favicon.png?v=2" alt="">
-            </h1>
-
-            <ul>
-                <li><a href="../PHP/Noticias.php" class="ativo">Notícias</a></li>
-                <li><a href="nerdlists.php">NerdList</a></li>
-                <li><a href="../PHP/Quizzes.php">Quizzes</a></li>
-                <li><a href="criadorNoticias.php">Criar</a></li>
-                <li><a href="copinhas.php">Copinhas</a></li>
-            </ul>
-
-            <form method="GET" action="Noticias.php" class="search-container">
-                <button type="submit" class="btn-lupa">🔍</button>
-                <input type="search" name="q" placeholder="Buscar..." value="<?= htmlspecialchars($_GET['q'] ?? '') ?>">
-            </form>
-
-
-            <button class="btn-navbar">
-                <a href="../PHP/FazerLogin.php">Fazer Login</a>
-            </button>
-        </nav>
-    </header>
 
     <main>
 

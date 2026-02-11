@@ -1,5 +1,7 @@
 <?php
 require_once __DIR__ . '/config.php';
+include_once("header.php");
+
 
 if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
     die("Quiz não encontrado.");
@@ -36,7 +38,6 @@ $resultItens = $conexao->query($sqlItens);
 <head>
     <meta charset="UTF-8">
     <title><?= htmlspecialchars($quiz['titulo']) ?></title>
-    <link rel="stylesheet" href="../Styles/Header.css">
 
     <style>
         body {
@@ -128,29 +129,7 @@ $resultItens = $conexao->query($sqlItens);
 </head>
 
 <body>
-    <header>
-        <nav class="navbar">
-            <h2 class="title">
-                DnNerds <img src="../Imagens/favicon.png?v=2" alt="">
-            </h2>
 
-            <ul>
-                <li><a href="Noticias.php">Notícias</a></li>
-                <li><a href="nerdlists.php">NerdList</a></li>
-                <li><a href="Quizzes.php" class="ativo">Quizzes</a></li>
-                <li>
-                    <a href="EditorQuizRank.php?id=<?= $quiz_id ?>">Editar</a>
-                </li>
-                <li><a href="copinhas.php" class="ativo">Copinhas</a></li>
-
-
-            </ul>
-
-            <button class="btn-navbar">
-                <a href="FazerLogin.php">Fazer Login</a>
-            </button>
-        </nav>
-    </header>
 
     <div class="container">
         <div class="topo-fixo">

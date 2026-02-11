@@ -101,7 +101,6 @@ $resultItens = $conexao->query($sqlItens);
 <head>
     <meta charset="UTF-8">
     <title>Editor Rank - <?= htmlspecialchars($quiz['titulo']) ?></title>
-    <link rel="stylesheet" href="../Styles/Header.css">
 
     <style>
         body {
@@ -167,22 +166,6 @@ $resultItens = $conexao->query($sqlItens);
 </head>
 
 <body>
-
-    <header>
-        <nav class="navbar">
-            <h2 class="title">DnNerds</h2>
-            <ul>
-                <li><a href="Noticias.php">Notícias</a></li>
-                <li><a href="nerdlists.php">NerdList</a></li>
-                <li><a href="Quizzes.php">Quizzes</a></li>
-                <li><a href="copinhas.php" class="ativo">Copinhas</a></li>
-            </ul>
-            <button class="btn-navbar">
-                <a href="FazerLogin.php">Fazer Login</a>
-            </button>
-        </nav>
-    </header>
-
     <div class="container">
         <h1>Editor de Ranking</h1>
         <p><?= htmlspecialchars($quiz['titulo']) ?></p>

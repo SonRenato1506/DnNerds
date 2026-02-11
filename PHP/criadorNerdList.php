@@ -10,30 +10,10 @@ include_once("config.php");
     <title>Criar NerdList - DnNerds</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <link rel="stylesheet" href="../Styles/Header.css">
     <link rel="stylesheet" href="../Styles/Criador.css">
 </head>
 
 <body>
-
-    <header>
-        <nav class="navbar">
-            <h2 class="title">
-                DnNerds <img src="../Imagens/anfitriao.png?v=2" alt="">
-            </h2>
-
-            <ul>
-                <li><a href="Noticias.php">Notícias</a></li>
-                <li><a href="nerdlists.php" class="ativo">NerdList</a></li>
-                <li><a href="Quizzes.php">Quizzes</a></li>
-                <li><a href="Copinhas.php">Copinhas</a></li>
-            </ul>
-
-            <button class="btn-navbar">
-                <a href="FazerLogin.php">Fazer Login</a>
-            </button>
-        </nav>
-    </header>
 
     <div class="container">
         <h2>🧠 Criar Nova NerdList</h2>
@@ -158,11 +138,11 @@ include_once("config.php");
     </footer>
 
     <script>
-function previewTierColor(select) {
-    select.style.backgroundColor = select.value;
-    select.style.color = "#000";
-}
-</script>
+        function previewTierColor(select) {
+            select.style.backgroundColor = select.value;
+            select.style.color = "#000";
+        }
+    </script>
 </body>
 
 </html>

@@ -1,5 +1,6 @@
 <?php
 include_once('config.php');
+include_once("header.php");
 
 /* ===============================
    VALIDAÇÃO DE ID
@@ -84,7 +85,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         if (!empty($_POST['novo']['nome'])) {
             foreach ($_POST['novo']['nome'] as $i => $nome) {
-                if (trim($nome) === '') continue;
+                if (trim($nome) === '')
+                    continue;
 
                 $imagem = $_POST['novo']['imagem'][$i] ?? '';
 
@@ -142,108 +144,92 @@ while ($row = $res->fetch_assoc()) {
 
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <title>Editar Copinha - <?= htmlspecialchars($copinha['titulo']) ?></title>
-    <link rel="stylesheet" href="../Styles/Header.css">
     <link rel="stylesheet" href="../Styles/Criador.css">
 </head>
 
 <body>
 
-<header>
-        <nav class="navbar">
-            <h2 class="title">DnNerds</h2>
-            <ul>
-                <li><a href="Noticias.php">Notícias</a></li>
-                <li><a href="nerdlists.php">NerdList</a></li>
-                <li><a href="Quizzes.php">Quizzes</a></li>
-                <li><a href="copinhas.php" class="ativo">Copinhas</a></li>
-            </ul>
-            <button class="btn-navbar">
-                <a href="FazerLogin.php">Fazer Login</a>
+    <div class="container">
+
+        <h2>Editar Copinha</h2>
+
+        <!-- COPINHA -->
+        <form method="POST">
+            <input type="hidden" name="salvar_copinha">
+
+            <label>Título</label>
+            <input type="text" name="titulo" value="<?= htmlspecialchars($copinha['titulo']) ?>" required>
+
+            <label>Imagem</label>
+            <input type="text" name="imagem" value="<?= htmlspecialchars($copinha['imagem']) ?>">
+
+            <button type="submit">Salvar Copinha</button>
+        </form>
+
+        <hr>
+
+        <!-- ITENS -->
+        <h3>Itens</h3>
+
+        <form method="POST">
+            <input type="hidden" name="salvar_itens">
+
+            <?php foreach ($itens as $item): ?>
+                <div class="pergunta">
+
+                    <label>Nome</label>
+                    <input type="text" name="item_nome[<?= $item['id'] ?>]" value="<?= htmlspecialchars($item['nome']) ?>">
+
+                    <label>Imagem</label>
+                    <input type="text" name="item_imagem[<?= $item['id'] ?>]"
+                        value="<?= htmlspecialchars($item['imagem']) ?>">
+
+                    <button type="submit" name="excluir_item" value="<?= $item['id'] ?>"
+                        onclick="return confirm('Excluir este item?')"
+                        style="background:#c0392b;color:#fff;margin-top:10px">
+                        🗑️ Excluir Item
+                    </button>
+
+                </div>
+            <?php endforeach; ?>
+
+            <button type="submit" class="btn-secundario">Salvar Itens</button>
+        </form>
+
+        <hr>
+
+        <!-- ADICIONAR -->
+        <h3>Adicionar Itens</h3>
+
+        <form method="POST">
+            <input type="hidden" name="adicionar_item">
+
+            <?php for ($i = 0; $i < 6; $i++): ?>
+                <div class="pergunta">
+                    <input type="text" name="novo[nome][]" placeholder="Nome">
+                    <input type="text" name="novo[imagem][]" placeholder="Imagem">
+                </div>
+            <?php endfor; ?>
+
+            <button type="submit">➕ Adicionar</button>
+        </form>
+
+        <hr>
+
+        <!-- EXCLUIR COPINHA -->
+        <form method="POST">
+            <input type="hidden" name="excluir_copinha">
+            <button type="submit" onclick="return confirm('Excluir a copinha e TODOS os itens?')"
+                style="background:#8e0000;color:#fff">
+                ❌ Excluir Copinha
             </button>
-        </nav>
-    </header>
+        </form>
 
-<div class="container">
-
-<h2>Editar Copinha</h2>
-
-<!-- COPINHA -->
-<form method="POST">
-    <input type="hidden" name="salvar_copinha">
-
-    <label>Título</label>
-    <input type="text" name="titulo" value="<?= htmlspecialchars($copinha['titulo']) ?>" required>
-
-    <label>Imagem</label>
-    <input type="text" name="imagem" value="<?= htmlspecialchars($copinha['imagem']) ?>">
-
-    <button type="submit">Salvar Copinha</button>
-</form>
-
-<hr>
-
-<!-- ITENS -->
-<h3>Itens</h3>
-
-<form method="POST">
-<input type="hidden" name="salvar_itens">
-
-<?php foreach ($itens as $item): ?>
-<div class="pergunta">
-
-    <label>Nome</label>
-    <input type="text" name="item_nome[<?= $item['id'] ?>]" value="<?= htmlspecialchars($item['nome']) ?>">
-
-    <label>Imagem</label>
-    <input type="text" name="item_imagem[<?= $item['id'] ?>]" value="<?= htmlspecialchars($item['imagem']) ?>">
-
-    <button type="submit"
-        name="excluir_item"
-        value="<?= $item['id'] ?>"
-        onclick="return confirm('Excluir este item?')"
-        style="background:#c0392b;color:#fff;margin-top:10px">
-        🗑️ Excluir Item
-    </button>
-
-</div>
-<?php endforeach; ?>
-
-<button type="submit" class="btn-secundario">Salvar Itens</button>
-</form>
-
-<hr>
-
-<!-- ADICIONAR -->
-<h3>Adicionar Itens</h3>
-
-<form method="POST">
-<input type="hidden" name="adicionar_item">
-
-<?php for ($i = 0; $i < 6; $i++): ?>
-<div class="pergunta">
-    <input type="text" name="novo[nome][]" placeholder="Nome">
-    <input type="text" name="novo[imagem][]" placeholder="Imagem">
-</div>
-<?php endfor; ?>
-
-<button type="submit">➕ Adicionar</button>
-</form>
-
-<hr>
-
-<!-- EXCLUIR COPINHA -->
-<form method="POST">
-    <input type="hidden" name="excluir_copinha">
-    <button type="submit"
-        onclick="return confirm('Excluir a copinha e TODOS os itens?')"
-        style="background:#8e0000;color:#fff">
-        ❌ Excluir Copinha
-    </button>
-</form>
-
-</div>
+    </div>
 </body>
+
 </html>

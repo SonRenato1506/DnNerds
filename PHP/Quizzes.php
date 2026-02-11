@@ -1,5 +1,6 @@
 <?php
 include_once('config.php');
+include_once("header.php");
 
 /* ===============================
    CATEGORIAS
@@ -88,39 +89,11 @@ if ($tipo === 'personalidade') {
 
     <!-- CSS -->
     <link rel="stylesheet" href="../Styles/Noticias.css?v=29">
-    <link rel="stylesheet" href="../Styles/Header.css?v=34">
 
-   
+
 </head>
 
 <body>
-
-    <header>
-        <nav class="navbar">
-            <h1 class="title">
-                DnNerds <img src="../Imagens/favicon.png?v=2" alt="">
-            </h1>
-
-            <ul>
-                <li><a href="../PHP/Noticias.php">Notícias</a></li>
-                <li><a href="nerdlists.php">NerdList</a></li>
-                <li><a href="../PHP/Quizzes.php" class="ativo">Quizzes</a></li>
-                <li><a href="<?= $linkEditor ?>">Criar</a></li>
-                <li><a href="copinhas.php">Copinha</a></li>
-
-            </ul>
-
-            <form method="GET" action="Noticias.php" class="search-container">
-                <button type="submit" class="btn-lupa">🔍</button>
-                <input type="search" name="q" placeholder="Buscar..." value="<?= htmlspecialchars($_GET['q'] ?? '') ?>">
-            </form>
-
-            <button class="btn-navbar">
-                <a href="../PHP/FazerLogin.php">Fazer Login</a>
-            </button>
-        </nav>
-    </header>
-
     <main>
 
         <!-- TIPOS DE QUIZ -->
@@ -167,7 +140,7 @@ if ($tipo === 'personalidade') {
                         <div id="caixa">
                             <img src="<?= htmlspecialchars($quiz['imagem'] ?: 'quizdefault.jpg') ?>">">
                             <p><b><?= htmlspecialchars($quiz['titulo']) ?></b></p>
-                            <small><?= htmlspecialchars(substr($quiz['descricao'], 0, 80)) ?>...</small>
+                            <!-- <small><?= htmlspecialchars(substr($quiz['descricao'], 0, 80)) ?>...</small> -->
                         </div>
                     </a>
                     <?php
@@ -204,7 +177,7 @@ if ($tipo === 'personalidade') {
                                     <div id="caixa">
                                         <img src="<?= htmlspecialchars($quiz['imagem'] ?: 'quizdefault.jpg') ?>">
                                         <p><b><?= htmlspecialchars($quiz['titulo']) ?></b></p>
-                                        <small><?= htmlspecialchars(substr($quiz['descricao'], 0, 80)) ?>...</small>
+                                        <!-- <small><?= htmlspecialchars(substr($quiz['descricao'], 0, 80)) ?>...</small> -->
                                     </div>
                                 </a>
                             <?php endwhile; ?>

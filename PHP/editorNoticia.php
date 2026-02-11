@@ -1,5 +1,6 @@
 <?php
 include_once('config.php');
+include_once("header.php");
 
 /* ===============================
    VALIDAR ID
@@ -23,7 +24,7 @@ if (isset($_POST['excluir'])) {
 
     if ($stmtDelete->execute()) {
         header("Location: Noticias.php?msg=excluida");
-        header("Location: noticias.php" );
+        header("Location: noticias.php");
         exit;
     } else {
         $mensagem = "Erro ao excluir a notícia.";
@@ -59,7 +60,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if ($stmtUpdate->execute()) {
         $mensagem = "Notícia atualizada com sucesso!";
-        header("Location: noticias.php" );
+        header("Location: noticias.php");
 
     } else {
         $mensagem = "Erro ao atualizar a notícia.";
@@ -91,7 +92,6 @@ $noticia = $result->fetch_assoc();
     <title>Editar Notícia - DnNerds</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <link rel="stylesheet" href="../Styles/Header.css">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -157,24 +157,6 @@ $noticia = $result->fetch_assoc();
 </head>
 
 <body>
-
-    <header>
-        <nav class="navbar">
-            <h2 class="title">
-                DnNerds <img src="../Imagens/favicon.png" alt="DnNerds">
-            </h2>
-            <ul>
-                <li><a href="Noticias.php">Notícias</a></li>
-                <li><a href="nerdlists.php">NerdList</a></li>
-                <li><a href="Quizzes.php">Quizzes</a></li>
-                <li><a href="copinhas.php" class="ativo">Copinhas</a></li>
-                <li><a href="editorNoticia.php?id=<?= $noticia['id'] ?>" class="btn-editar-noticia">Editor</a></li>
-            </ul>
-            <button class="btn-navbar">
-                <a href="FazerLogin.php">Fazer Login</a>
-            </button>
-        </nav>
-    </header>
     <div class="container">
         <h1>Editar Notícia</h1>
 

@@ -76,26 +76,16 @@ h2 {
 }
 
 #caixa {
-    position: relative;
-    height: 200px;
-    width: 200px;
-    margin-left: 2.5vw;
-    margin-top: 2vw;
-    border-radius: 10px;
-    overflow: hidden;
+    width: 320px;
+    margin-left: 2vw;
+    margin-top: 20px;
     cursor: pointer;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    transition: transform 0.25s ease;
 }
 
-#caixa img {
-    height: 100%;
-    width: 100%;
-    border-radius: 10px;
-    object-fit: cover;
-    display: block;
-    transition: 0.3s ease;
+#caixa:hover {
+    transform: translateY(-4px);
 }
-
 
 a {
     text-decoration: none;
@@ -103,41 +93,47 @@ a {
 
 #caixa:hover p {
     opacity: 1;
-    transform: translateY(0);
-}
-
-
-#caixa:hover {
-    transform: scale(1.05);
-    box-shadow: 0 0 30px var(--roxo2);
+    transform: none;
 }
 
 
 #caixa p {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background-color: rgba(75, 0, 75, 0.9);
-    /* fundo roxo translúcido */
-    color: orange;
-    font-size: 18px;
-    text-transform: uppercase;
-    padding: 10px;
-    border-radius: 0 0 10px 10px;
-    opacity: 0;
-    transform: translateY(100%);
-    transition: all 0.4s ease;
+    position: static;
+    margin-top: 8px;
+    padding: 0 4px;
+
+    color: #f1f1f1;
+    font-size: 21px;
+    font-weight: 600;
+    text-align: left;
+    text-transform: none;
+    text-shadow: none;
+    background: none;
+
+    display: -webkit-box;
+    -webkit-line-clamp: 2; /* máximo 2 linhas */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+
+    opacity: 1;
+    transform: none;
 }
 
 #caixa img {
-    height: 100%;
     width: 100%;
-    border-radius: 10px;
+    height: 180px;
     object-fit: cover;
-    display: block;
-    transition: 0.3s ease;
+    border-radius: 14px;
+    opacity: 1;
+    transition: transform 0.3s ease;
 }
+
+
+#caixa:hover img {
+    transform: scale(1.03);
+}
+
+
 
 .flex {
     display: flex;
@@ -268,6 +264,7 @@ a {
     height: 450px;
     object-fit: cover;
     border-radius: 20px;
+    opacity: 0.8;
 }
 
 .destaque-texto {
@@ -383,14 +380,13 @@ a {
 
 
 @media (max-width: 700px) {
-    .flex {
-        flex-direction: column;
-    }
-
     #caixa {
         width: 90vw;
-        height: 160px;
         margin-left: 3vw;
+    }
+
+    #caixa img {
+        height: 200px;
     }
 }
 

@@ -10,82 +10,62 @@ include_once("config.php");
     <title>Criar Copinha - DnNerds</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <link rel="stylesheet" href="../Styles/Header.css">
     <link rel="stylesheet" href="../Styles/Criador.css">
 </head>
 
 <body>
 
-<header>
-    <nav class="navbar">
-        <h2 class="title">
-            DnNerds <img src="../Imagens/anfitriao.png?v=2" alt="">
-        </h2>
+    <div class="container">
+        <h2>🏆 Criar Nova Copinha</h2>
 
-        <ul>
-            <li><a href="Noticias.php">Notícias</a></li>
-            <li><a href="nerdlists.php">NerdList</a></li>
-            <li><a href="Quizzes.php">Quizzes</a></li>
-            <li><a href="copinhas.php" class="ativo">Copinhas</a></li>
-        </ul>
+        <form action="salvarCopinha.php" method="POST">
 
-        <button class="btn-navbar">
-            <a href="FazerLogin.php">Fazer Login</a>
-        </button>
-    </nav>
-</header>
+            <label>Título da Copinha</label>
+            <input type="text" name="titulo" required>
 
-<div class="container">
-    <h2>🏆 Criar Nova Copinha</h2>
+            <label>Imagem da Copinha (URL)</label>
+            <input type="text" name="imagem">
 
-    <form action="salvarCopinha.php" method="POST">
+            <label>Categoria</label>
+            <select name="categoria" required>
+                <option value="">Selecione</option>
+                <option value="games">Games</option>
+                <option value="animes">Animes</option>
+                <option value="filmes_series">Filmes & Séries</option>
+                <option value="rpg">RPG</option>
+                <option value="esporte">Esporte</option>
+                <option value="musica">Música</option>
+                <option value="outros">Outros</option>
+            </select>
 
-        <label>Título da Copinha</label>
-        <input type="text" name="titulo" required>
+            <hr>
 
-        <label>Imagem da Copinha (URL)</label>
-        <input type="text" name="imagem">
+            <h3>🎮 Itens da Copinha</h3>
 
-        <label>Categoria</label>
-        <select name="categoria" required>
-            <option value="">Selecione</option>
-            <option value="games">Games</option>
-            <option value="animes">Animes</option>
-            <option value="filmes_series">Filmes & Séries</option>
-            <option value="rpg">RPG</option>
-            <option value="esporte">Esporte</option>
-            <option value="musica">Música</option>
-            <option value="outros">Outros</option>
-        </select>
+            <div id="itens">
+                <div class="item">
+                    <label>Nome do Item</label>
+                    <input type="text" name="item_nome[]" required>
 
-        <hr>
-
-        <h3>🎮 Itens da Copinha</h3>
-
-        <div id="itens">
-            <div class="item">
-                <label>Nome do Item</label>
-                <input type="text" name="item_nome[]" required>
-
-                <label>Imagem do Item (URL)</label>
-                <input type="text" name="item_imagem[]">
+                    <label>Imagem do Item (URL)</label>
+                    <input type="text" name="item_imagem[]">
+                </div>
             </div>
-        </div>
 
-        <button type="button" onclick="adicionarItem()">➕ Adicionar Item</button>
+            <button type="button" onclick="adicionarItem()">➕ Adicionar Item</button>
 
-        <br><br>
+            <br><br>
 
-        <button type="submit">Criar Copinha</button>
-    </form>
-</div>
+            <button type="submit">Criar Copinha</button>
+        </form>
+    </div>
 
-<script>
-function adicionarItem() {
-    const div = document.createElement("div");
-    div.classList.add("item");
+    <script>
+        function adicionarItem() {
+            const div = document.createElement("div");
+            div.classList.add("item");
 
-    div.innerHTML = `
+            div.innerHTML = `
         <label>Nome do Item</label>
         <input type="text" name="item_nome[]" required>
 
@@ -93,15 +73,16 @@ function adicionarItem() {
         <input type="text" name="item_imagem[]">
     `;
 
-    document.getElementById("itens").appendChild(div);
-}
-</script>
+            document.getElementById("itens").appendChild(div);
+        }
+    </script>
 
-<footer class="footer">
-    <div class="footer-container">
-        <p>2025 DnNerds — Renato Matos, Natalia Macedo, Arthur Simões, Diego Toscano, Yuri Reis, Enzo Niglia</p>
-    </div>
-</footer>
+    <footer class="footer">
+        <div class="footer-container">
+            <p>2025 DnNerds — Renato Matos, Natalia Macedo, Arthur Simões, Diego Toscano, Yuri Reis, Enzo Niglia</p>
+        </div>
+    </footer>
 
 </body>
+
 </html>

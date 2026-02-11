@@ -1,0 +1,204 @@
+:root {
+    --vermelho1: #b3001b;
+    --vermelho2: #ff0000;
+    --vermelhoGlow: #ff1a1a;
+
+    --bg: #08090d;
+    --card: #111217;
+    --input: #1a1b22;
+
+    --texto: #e5e5e5;
+
+    --danger: #cc0000;
+    --danger-hover: #ff0000;
+}
+
+/* =========================
+   BASE
+========================= */
+
+body {
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    background: radial-gradient(circle at top, #161821, var(--bg));
+    padding-top: 100px;
+    color: var(--texto);
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 90vh;
+}
+
+/* =========================
+   CARD PERFIL
+========================= */
+
+.perfil-box {
+    background: var(--card);
+    padding: 40px;
+    border-radius: 18px;
+    width: 420px;
+
+    border: 1px solid rgba(255, 0, 0, 0.15);
+
+    box-shadow:
+        0 0 60px rgba(255, 0, 0, 0.25),
+        inset 0 0 15px rgba(255, 255, 255, 0.02);
+
+    text-align: center;
+    animation: fadeIn 0.35s ease;
+}
+
+h1 {
+    margin-bottom: 20px;
+    font-weight: 800;
+    color: var(--vermelho2);
+
+    text-shadow:
+        0 0 12px rgba(255, 0, 0, 0.7);
+}
+
+/* =========================
+   FOTO
+========================= */
+
+.foto-perfil {
+    margin: 20px 0;
+}
+
+.foto-perfil img {
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    object-fit: cover;
+
+    border: 3px solid var(--vermelho2);
+
+    box-shadow:
+        0 0 35px rgba(255, 0, 0, 0.9);
+}
+
+/* =========================
+   INPUTS
+========================= */
+
+label {
+    display: block;
+    text-align: left;
+    margin-top: 15px;
+    font-size: 14px;
+    opacity: 0.65;
+}
+
+input {
+    width: 100%;
+    padding: 12px;
+    margin-top: 6px;
+
+    border-radius: 10px;
+    border: 1px solid rgba(255,255,255,0.05);
+
+    background: var(--input);
+    color: white;
+
+    outline: none;
+    transition: 0.2s;
+}
+
+input:focus {
+    border-color: var(--vermelho2);
+
+    box-shadow:
+        0 0 15px rgba(255, 0, 0, 0.6);
+}
+
+/* =========================
+   BOTÕES
+========================= */
+
+.btn {
+    width: 100%;
+    padding: 14px;
+
+    border: none;
+    border-radius: 12px;
+
+    margin-top: 20px;
+
+    font-weight: 600;
+    cursor: pointer;
+
+    transition: 0.2s;
+}
+
+.salvar {
+    background: linear-gradient(45deg, var(--vermelho1), var(--vermelho2));
+    color: white;
+}
+
+.salvar:hover {
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 0 30px rgba(255, 0, 0, 0.85);
+}
+
+.actions {
+    margin-top: 10px;
+    display: flex;
+    gap: 10px;
+}
+
+.logout {
+    background: #1f2028;
+    color: white;
+}
+
+.logout:hover {
+    background: #2b2c36;
+}
+
+.delete {
+    background: var(--danger);
+    color: white;
+}
+
+.delete:hover {
+    background: var(--danger-hover);
+
+    box-shadow:
+        0 0 25px rgba(255, 0, 0, 0.8);
+}
+
+/* =========================
+   MENSAGEM
+========================= */
+
+.mensagem {
+    background: rgba(255, 0, 0, 0.08);
+
+    padding: 10px;
+    border-radius: 10px;
+
+    margin-bottom: 10px;
+
+    border: 1px solid rgba(255, 0, 0, 0.25);
+}
+
+/* =========================
+   ANIMAÇÃO
+========================= */
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.96);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}

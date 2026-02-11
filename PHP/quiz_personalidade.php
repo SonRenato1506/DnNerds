@@ -1,5 +1,6 @@
 <?php
 include_once('config.php');
+include_once("header.php");
 
 /* ===============================
    VALIDAÇÃO DO ID
@@ -107,37 +108,9 @@ if ($resultPerguntas && $resultPerguntas->num_rows > 0) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <link rel="stylesheet" href="../Styles/quiz.css?v=1">
-    <link rel="stylesheet" href="../Styles/Header.css?v=27">
 </head>
 
 <body>
-
-    <header>
-        <nav class="navbar">
-            <h2 class="title">
-                DnNerds <img src="../Imagens/favicon.png?v=2" alt="">
-            </h2>
-
-            <ul>
-                <li><a href="Noticias.php">Notícias</a></li>
-                <li><a href="nerdlists.php">NerdList</a></li>
-                <li><a href="Quizzes.php" class="ativo">Quizzes</a></li>
-                <li>
-                    <?php if (isset($quiz_id)): ?>
-                        <a href="EditorPersonalidade.php?id=<?= $quiz_id ?>">Editar</a>
-                    <?php else: ?>
-                        <a href="EditorPersonalidade.php">Editor</a>
-                    <?php endif; ?>
-                </li>
-                            <li><a href="copinhas.php" class="ativo">Copinhas</a></li>
-
-            </ul>
-
-            <button class="btn-navbar">
-                <a href="../PHP/FazerLogin.php">Fazer Login</a>
-            </button>
-        </nav>
-    </header>
 
     <main class="conteudo">
 

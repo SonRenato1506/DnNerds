@@ -158,25 +158,10 @@ $itens = $conexao->query("SELECT * FROM nerdlist_itens WHERE nerdlist_id=$id");
 <head>
     <meta charset="UTF-8">
     <title>Editar NerdList</title>
-    <link rel="stylesheet" href="../Styles/Header.css">
     <link rel="stylesheet" href="../Styles/Criador.css">
 </head>
 
 <body>
-
-    <!-- 🔒 HEADER MANTIDO INTACTO -->
-    <header>
-        <nav class="navbar">
-            <h2 class="title">DnNerds <img src="../Imagens/anfitriao.png?v=2"></h2>
-            <ul>
-                <li><a href="Noticias.php">Notícias</a></li>
-                <li><a href="nerdlists.php">NerdList</a></li>
-                <li><a href="Quizzes.php">Quizzes</a></li>
-                <li><a href="Copinhas.php">Copinhas</a></li>
-            </ul>
-            <button class="btn-navbar"><a href="FazerLogin.php">Fazer Login</a></button>
-        </nav>
-    </header>
 
     <div class="container">
         <form method="POST">

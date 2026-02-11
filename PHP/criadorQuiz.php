@@ -8,29 +8,10 @@
     <title>Criar Quiz - DnNerds</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <link rel="stylesheet" href="../Styles/Header.css">
     <link rel="stylesheet" href="../Styles/Criador.css">
 </head>
 
 <body>
-
-    <header>
-        <nav class="navbar">
-            <h2 class="title">
-                DnNerds <img src="../Imagens/anfitriao.png?v=2" alt="DnNerds">
-            </h2>
-            <ul>
-                <li><a href="Noticias.php">Notícias</a></li>
-                <li><a href="nerdlists.php">NerdList</a></li>
-                <li><a href="Quizzes.php">Quizzes</a></li>
-                <li><a href="copinhas.php" class="ativo">Copinhas</a></li>
-
-            </ul>
-            <button class="btn-navbar">
-                <a href="FazerLogin.php">Fazer Login</a>
-            </button>
-        </nav>
-    </header>
 
     <!-- ===================== -->
     <!-- 🧠 Criador de Quiz -->

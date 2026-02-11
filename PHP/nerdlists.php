@@ -1,5 +1,6 @@
 <?php
 include_once('config.php');
+include_once("header.php");
 
 /* ===============================
    CATEGORIAS
@@ -27,38 +28,11 @@ $busca = $_GET['q'] ?? '';
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <!-- CSS (MESMO DOS QUIZZES) -->
-    <link rel="stylesheet" href="../Styles/Noticias.css?v=28">
-    <link rel="stylesheet" href="../Styles/Header.css?v=32">
+    <link rel="stylesheet" href="../Styles/Noticias.css?v=30">
 
 </head>
 
 <body>
-
-<header>
-    <nav class="navbar">
-        <h1 class="title">
-            DnNerds <img src="../Imagens/favicon.png?v=2" alt="">
-        </h1>
-
-        <ul>
-            <li><a href="Noticias.php">Notícias</a></li>
-            <li><a href="NerdLists.php" class="ativo">NerdList</a></li>
-            <li><a href="Quizzes.php">Quizzes</a></li>
-            <li><a href="Copinhas.php">Copinhas</a></li>
-            <li><a href="criadorNerdList.php">Criar</a></li>
-        </ul>
-
-        <form method="GET" class="search-container">
-            <button type="submit" class="btn-lupa">🔍</button>
-            <input type="search" name="q" placeholder="Buscar NerdList..."
-                value="<?= htmlspecialchars($busca) ?>">
-        </form>
-
-        <button class="btn-navbar">
-            <a href="FazerLogin.php">Fazer Login</a>
-        </button>
-    </nav>
-</header>
 
 <main>
 
@@ -91,7 +65,7 @@ if (!empty($busca)) {
                 <div id="caixa">
                     <img src="<?= htmlspecialchars($list['imagem'] ?: 'nerdlistdefault.jpg') ?>">
                     <p><b><?= htmlspecialchars($list['titulo']) ?></b></p>
-                    <small><?= htmlspecialchars(substr($list['descricao'], 0, 80)) ?>...</small>
+                    <!-- <small><?= htmlspecialchars(substr($list['descricao'], 0, 80)) ?>...</small> -->
                 </div>
             </a>
             <?php
@@ -139,7 +113,7 @@ if (!empty($busca)) {
                         <div id="caixa">
                             <img src="<?= htmlspecialchars($list['imagem'] ?: 'nerdlistdefault.jpg') ?>">
                             <p><b><?= htmlspecialchars($list['titulo']) ?></b></p>
-                            <small><?= htmlspecialchars(substr($list['descricao'], 0, 80)) ?>...</small>
+                            <!-- <small><?= htmlspecialchars(substr($list['descricao'], 0, 80)) ?>...</small> -->
                         </div>
                     </a>
                 <?php endwhile; ?>

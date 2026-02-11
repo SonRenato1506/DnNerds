@@ -27,11 +27,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             header("Location: ../PHP/noticias.php");
             exit;
-
-        } else {
-            $_SESSION['erro'] = "Senha incorreta!";
         }
 
+        $_SESSION['erro'] = "Senha incorreta!";
     } else {
         $_SESSION['erro'] = "Usuário não encontrado!";
     }
@@ -39,6 +37,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     header("Location: FazerLogin.php");
     exit;
 }
+
+include_once("header.php");
 ?>
 
 
@@ -51,7 +51,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DnNerds</title>
     <link rel="stylesheet" href="../Styles/FazerLogin.css?v=7">
-    <link rel="stylesheet" href="../Styles/Header.css?v=27">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
@@ -61,39 +60,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </head>
 
 <body>
-
-    <header>
-        <!--Navegar-->
-        <nav class="navbar">
-            <h2 class="title">DnNerds <img src="../Imagens/favicon.png?v=2?v=2" alt=""></h2>
-            <!--img da logo aqui-->
-
-            <ul>
-
-
-                <li>
-                    
-                    <a href="../PHP/noticias.php">Notícias</a>
-                </li>
-                <li>
-                    
-                    <a href="">NerdList</a>
-                </li>
-                <li>
-                    
-                    <a href="Quizzes.php">Quizzes</a>
-                </li>
-                <li><a href="nerdlists.php">NerdList</a></li>
-                <li><a href="copinhas.php" class="ativo">Copinhas</a></li>
-
-            </ul>
-
-
-            <!-- Botão para criar a conta -->
-            <button class="btn-navbar"><a href="../PHP/CriarConta.php">Criar Conta</a></button>
-        </nav>
-
-    </header>
 
     <main class="container"></main>
 
@@ -118,18 +84,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 
     </main>
-    <footer class="footer">
-        <div class="footer-container">
-            <p>2025 DnNerds — Renato Matos, Natalia Macedo, Arthur Simões, Diego Toscano, Yuri Reis, Enzo Niglia </p>
-            <div class="footer-links"> <a href="https://www.youtube.com/" target="_blank" title="YouTube"><img
-                        src="../Imagens/youtube.png" alt="YouTube"></a> <a href="https://www.instagram.com/DnNerds"
-                    target="_blank" title="Instagram"><img src="../Imagens/instagram.jpeg" alt="Instagram"></a> <a
-                    href="https://www.facebook.com/" target="_blank" title="Facebook"><img src="../Imagens/facebook.png"
-                        alt="Facebook"></a> <a href="https://www.tiktok.com/" target="_blank" title="TikTok"><img
-                        src="../Imagens/tiktok.jpeg" alt="TikTok"></a> </div>
-        </div>
-    </footer>
-
 </body>
 
 </html>

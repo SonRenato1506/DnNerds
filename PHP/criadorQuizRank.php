@@ -7,26 +7,11 @@
     <meta charset="UTF-8">
     <title>Criar Quiz Rank - DnNerds</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <link rel="stylesheet" href="../Styles/Header.css">
     <link rel="stylesheet" href="../Styles/Criador.css">
 </head>
 
 <body>
 
-    <header>
-        <nav class="navbar">
-            <h2 class="title">
-                DnNerds <img src="../Imagens/anfitriao.png" alt="">
-            </h2>
-            <ul>
-                <li><a href="Noticias.php">Notícias</a></li>
-                <li><a href="nerdlists.php">NerdList</a></li>
-                <li><a href="Quizzes.php?tipo=rank">QuizRank</a></li>
-                <li><a href="copinhas.php" class="ativo">Copinhas</a></li>
-            </ul>
-        </nav>
-    </header>
 
     <div class="container">
 

@@ -1,5 +1,6 @@
 <?php
 include_once('config.php');
+include_once("header.php");
 
 
 if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
@@ -41,37 +42,12 @@ $itens = $conexao->query($sqlItens);
     <title><?= htmlspecialchars($nerdlist['titulo']) ?> - DnNerds</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <link rel="stylesheet" href="../Styles/Header.css?v=28">
     <link rel="stylesheet" href="../Styles/NerdList.css?v=3">
 
 
 </head>
 
 <body>
-
-    <header>
-        <nav class="navbar">
-            <h2 class="title">
-                DnNerds <img src="../Imagens/anfitriao.png?v=2" alt="DnNerds">
-            </h2>
-            <ul>
-                <li><a href="Noticias.php">Notícias</a></li>
-                <li><a href="nerdlists.php">NerdList</a></li>
-                <li><a href="Quizzes.php">Quizzes</a></li>
-                <li><a href="Copinhas.php">Copinhas</a></li>
-                <li>
-                    <?php if (isset($nerdlist_id)): ?>
-                        <a href="editorNerdList.php?id=<?= $nerdlist_id ?>">Editar</a>
-                    <?php else: ?>
-                        <a href="editorNerdList.php">Editor</a>
-                    <?php endif; ?>
-                </li>
-            </ul>
-            <button class="btn-navbar">
-                <a href="FazerLogin.php">Fazer Login</a>
-            </button>
-        </nav>
-    </header>
     <main class="tierlist-container">
 
         <h1><?= htmlspecialchars($nerdlist['titulo']) ?></h1>

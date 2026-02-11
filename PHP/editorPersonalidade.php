@@ -1,5 +1,6 @@
 <?php
 include_once('config.php');
+include_once("header.php");
 
 /* ===============================
    VALIDAÇÃO DO ID
@@ -200,105 +201,85 @@ while ($row = $res->fetch_assoc()) {
 
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <title>Editar Quiz de Personalidade</title>
-    <link rel="stylesheet" href="../Styles/Header.css">
     <link rel="stylesheet" href="../Styles/EditorPersonalidade.css?v=2">
 </head>
 
 <body>
 
-<!-- HEADER NÃO FOI ALTERADO -->
+    <div class="container">
 
-<header>
-    <nav class="navbar">
-        <h2 class="title">
-            DnNerds <img src="../Imagens/favicon.png" alt="DnNerds">
-        </h2>
-        <ul>
-            <li><a href="Noticias.php">Notícias</a></li>
-            <li><a href="nerdlists.php">NerdList</a></li>
-            <li><a href="Quizzes.php">Quizzes</a></li>
-            <li><a href="copinhas.php" class="ativo">Copinhas</a></li>
-            <li><a href="editorNoticia.php?id=<?= $noticia['id'] ?>" class="btn-editar-noticia">Editor</a></li>
-        </ul>
-        <button class="btn-navbar">
-            <a href="FazerLogin.php">Fazer Login</a>
-        </button>
-    </nav>
-</header>
+        <h2>Editar Quiz: <?= htmlspecialchars($quiz['titulo']) ?></h2>
 
-<div class="container">
+        <form method="POST">
+            <input type="hidden" name="salvar_quiz">
+            <label>Título</label>
+            <input type="text" name="titulo" value="<?= $quiz['titulo'] ?>">
 
-    <h2>Editar Quiz: <?= htmlspecialchars($quiz['titulo']) ?></h2>
+            <label>Descrição</label>
+            <textarea name="descricao"><?= $quiz['descricao'] ?></textarea>
 
-    <form method="POST">
-        <input type="hidden" name="salvar_quiz">
-        <label>Título</label>
-        <input type="text" name="titulo" value="<?= $quiz['titulo'] ?>">
+            <label>Imagem</label>
+            <input type="text" name="imagem" value="<?= $quiz['imagem'] ?>">
 
-        <label>Descrição</label>
-        <textarea name="descricao"><?= $quiz['descricao'] ?></textarea>
-
-        <label>Imagem</label>
-        <input type="text" name="imagem" value="<?= $quiz['imagem'] ?>">
-
-        <button>Salvar Quiz</button>
-    </form>
-
-    <form method="POST" onsubmit="return confirm('Excluir o quiz inteiro?');">
-        <input type="hidden" name="excluir_quiz">
-        <button class="btn-excluir">Excluir Quiz</button>
-    </form>
-
-    <hr>
-
-    <?php foreach ($resultados as $res): ?>
-        <form method="POST" class="resultado-linha">
-            <span><?= $res['titulo'] ?></span>
-            <input type="hidden" name="resultado_id" value="<?= $res['id'] ?>">
-            <button name="excluir_resultado">Excluir Resultado</button>
+            <button>Salvar Quiz</button>
         </form>
-    <?php endforeach; ?>
 
-    <hr>
+        <form method="POST" onsubmit="return confirm('Excluir o quiz inteiro?');">
+            <input type="hidden" name="excluir_quiz">
+            <button class="btn-excluir">Excluir Quiz</button>
+        </form>
 
-    <form method="POST">
-        <input type="hidden" name="salvar_perguntas">
+        <hr>
 
-        <?php foreach ($perguntas as $pid => $p): ?>
-            <div class="pergunta">
-
-                <input type="text" name="pergunta[<?= $pid ?>]" value="<?= $p['texto'] ?>">
-
-                <form method="POST">
-                    <input type="hidden" name="pergunta_id" value="<?= $pid ?>">
-                    <button name="excluir_pergunta">Excluir Pergunta</button>
-                </form>
-
-                <?php foreach ($p['respostas'] as $rid => $r): ?>
-                    <div class="opcao-personalidade">
-                        <input type="text" name="resposta[<?= $pid ?>][<?= $rid ?>]" value="<?= $r['texto'] ?>">
-
-                        <form method="POST">
-                            <input type="hidden" name="resposta_id" value="<?= $rid ?>">
-                        </form>
-
-                        <?php foreach ($resultados as $res): ?>
-                            <input type="number"
-                                name="pontos[<?= $pid ?>][<?= $rid ?>][<?= $res['id'] ?>]"
-                                value="<?= $r['pontos'][$res['id']] ?? 0 ?>">
-                        <?php endforeach; ?>
-                    </div>
-                <?php endforeach; ?>
-
-            </div>
+        <?php foreach ($resultados as $res): ?>
+            <form method="POST" class="resultado-linha">
+                <span><?= $res['titulo'] ?></span>
+                <input type="hidden" name="resultado_id" value="<?= $res['id'] ?>">
+                <button name="excluir_resultado">Excluir Resultado</button>
+            </form>
         <?php endforeach; ?>
 
-        <button>Salvar Perguntas</button>
-    </form>
+        <hr>
 
-</div>
+        <form method="POST">
+            <input type="hidden" name="salvar_perguntas">
+
+            <?php foreach ($perguntas as $pid => $p): ?>
+                <div class="pergunta">
+
+                    <input type="text" name="pergunta[<?= $pid ?>]" value="<?= $p['texto'] ?>">
+
+                    <form method="POST">
+                        <input type="hidden" name="pergunta_id" value="<?= $pid ?>">
+                        <button name="excluir_pergunta">Excluir Pergunta</button>
+                    </form>
+
+                    <?php foreach ($p['respostas'] as $rid => $r): ?>
+                        <div class="opcao-personalidade">
+                            <input type="text" name="resposta[<?= $pid ?>][<?= $rid ?>]" value="<?= $r['texto'] ?>">
+
+                            <form method="POST">
+                                <input type="hidden" name="resposta_id" value="<?= $rid ?>">
+                            </form>
+
+                            <?php foreach ($resultados as $res): ?>
+                                <input type="number" name="pontos[<?= $pid ?>][<?= $rid ?>][<?= $res['id'] ?>]"
+                                    value="<?= $r['pontos'][$res['id']] ?? 0 ?>">
+                            <?php endforeach; ?>
+                        </div>
+                    <?php endforeach; ?>
+
+                </div>
+            <?php endforeach; ?>
+
+            <button>Salvar Perguntas</button>
+        </form>
+
+    </div>
 </body>
+
 </html>

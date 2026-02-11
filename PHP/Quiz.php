@@ -1,9 +1,7 @@
 <?php
 include_once('config.php');
+include_once("header.php");
 
-/* ===============================
-   VALIDAÇÃO DO ID
-================================ */
 if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
     echo "Quiz não encontrado.";
     exit;
@@ -11,9 +9,6 @@ if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
 
 $quiz_id = (int) $_GET['id'];
 
-/* ===============================
-   QUIZ PRINCIPAL
-================================ */
 $sqlQuiz = "SELECT * FROM quizzes WHERE id = $quiz_id LIMIT 1";
 $resultQuiz = $conexao->query($sqlQuiz);
 
@@ -23,23 +18,8 @@ if (!$resultQuiz || $resultQuiz->num_rows === 0) {
 }
 
 $quiz = $resultQuiz->fetch_assoc();
-$categoria = $quiz['categoria'];
 
-/* ===============================
-   QUIZZES RELACIONADOS
-================================ */
-$sqlRelacionados = "
-    SELECT * FROM quizzes
-    WHERE categoria = '$categoria'
-      AND id != $quiz_id
-    ORDER BY id DESC
-    LIMIT 6
-";
-$relacionados = $conexao->query($sqlRelacionados);
-
-/* ===============================
-   PERGUNTAS E RESPOSTAS
-================================ */
+/* PERGUNTAS */
 $sqlPerguntas = "
     SELECT 
         p.id   AS pergunta_id,
@@ -55,9 +35,6 @@ $sqlPerguntas = "
 
 $resultPerguntas = $conexao->query($sqlPerguntas);
 
-/* ===============================
-   ORGANIZAÇÃO DOS DADOS
-================================ */
 $perguntas = [];
 
 if ($resultPerguntas && $resultPerguntas->num_rows > 0) {
@@ -72,7 +49,6 @@ if ($resultPerguntas && $resultPerguntas->num_rows > 0) {
         }
 
         $perguntas[$pid]['respostas'][] = [
-            'id' => $row['resposta_id'],
             'texto' => $row['resposta_texto'],
             'correta' => $row['correta']
         ];
@@ -84,57 +60,17 @@ if ($resultPerguntas && $resultPerguntas->num_rows > 0) {
 
 <head>
     <meta charset="UTF-8">
-    <title><?= htmlspecialchars($quiz['titulo']) ?> - DnNerds</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <link rel="stylesheet" href="../Styles/quiz.css?v=8">
-    <link rel="stylesheet" href="../Styles/Header.css?v=29">
-
+    <title><?= htmlspecialchars($quiz['titulo']) ?></title>
+    <link rel="stylesheet" href="../Styles/quiz.css?v=2">
 </head>
 
 <body>
-
-    <header>
-        <nav class="navbar">
-            <h2 class="title">
-                DnNerds <img src="../Imagens/favicon.png?v=2" alt="">
-            </h2>
-
-            <ul>
-                <li><a href="Noticias.php">Notícias</a></li>
-                <li><a href="nerdlists.php">NerdList</a></li>
-                <li><a href="Quizzes.php" class="ativo">Quizzes</a></li>
-                <li>
-                    <?php if (isset($quiz_id)): ?>
-                        <a href="EditorQuiz.php?id=<?= $quiz_id ?>">Editar</a>
-                    <?php else: ?>
-                        <a href="EditorQuiz.php">Editor</a>
-                    <?php endif; ?>
-                </li>
-                <li><a href="copinhas.php" class="ativo">Copinhas</a></li>
-
-            </ul>
-
-            <button class="btn-navbar">
-                <a href="FazerLogin.php">Fazer Login</a>
-            </button>
-        </nav>
-    </header>
-
     <main class="conteudo">
-
-        <!-- QUIZ -->
         <article class="quiz">
-
-            <img class="quiz_img" src="<?= htmlspecialchars($quiz['imagem'] ?: 'quizdefault.jpg') ?>"
-                alt="<?= htmlspecialchars($quiz['titulo']) ?>">
-
+            <img class="quiz_img" src="<?= htmlspecialchars($quiz['imagem']) ?>">
             <p><?= htmlspecialchars($quiz['descricao']) ?></p>
-
             <div id="quiz-container"></div>
-
         </article>
-
     </main>
 
     <script>
@@ -146,81 +82,119 @@ if ($resultPerguntas && $resultPerguntas->num_rows > 0) {
             return array;
         }
 
-
         const perguntas = <?= json_encode(array_values($perguntas)) ?>;
+
         let indice = 0;
         let pontuacao = 0;
 
         const container = document.getElementById("quiz-container");
-        const cores = ["ps-blue", "ps-pink", "ps-red", "ps-green"];
 
         function mostrarPergunta() {
+
+            container.classList.remove("quiz-animar");
+            void container.offsetWidth; // reset da animação
+            container.classList.add("quiz-animar");
+
             container.innerHTML = "";
 
             const pergunta = perguntas[indice];
-
-            // 🔀 Embaralha as respostas
-            const respostasEmbaralhadas = embaralhar([...pergunta.respostas]);
+            const respostas = embaralhar([...pergunta.respostas]);
 
             const h2 = document.createElement("h2");
             h2.textContent = pergunta.texto;
             container.appendChild(h2);
 
-            respostasEmbaralhadas.forEach((resposta, i) => {
+            const estilosPS = ["ps-blue", "ps-pink", "ps-red", "ps-green"];
+
+            respostas.forEach((resposta, i) => {
                 const btn = document.createElement("button");
                 btn.textContent = resposta.texto;
-                btn.classList.add(cores[i % cores.length]);
+
+                // ✅ adiciona estilo PlayStation
+                btn.classList.add(estilosPS[i % estilosPS.length]);
 
                 btn.onclick = () => {
                     const botoes = container.querySelectorAll("button");
                     botoes.forEach(b => b.disabled = true);
 
                     if (resposta.correta == 1) {
-                        btn.style.backgroundColor = "green";
+                        btn.classList.add("correta");
                         pontuacao++;
                     } else {
-                        btn.style.backgroundColor = "red";
+                        btn.classList.add("errada");
+
+                        // ✅ destaca a correta
+                        botoes.forEach(b => {
+                            const texto = b.textContent;
+
+                            respostas.forEach(r => {
+                                if (r.texto === texto && r.correta == 1) {
+                                    b.classList.add("correta");
+                                }
+                            });
+                        });
                     }
 
                     setTimeout(() => {
                         indice++;
-                        indice < perguntas.length
-                            ? mostrarPergunta()
-                            : mostrarResultado();
-                    }, 1000);
+                        indice < perguntas.length ? mostrarPergunta() : mostrarResultado();
+                    }, 700);
                 };
 
                 container.appendChild(btn);
             });
+
         }
 
 
         function mostrarResultado() {
+
             container.innerHTML = `
-        <h2>Você acertou ${pontuacao} de ${perguntas.length} perguntas!</h2>
-        <button onclick="location.reload()">Refazer o quiz</button>
-        <button onclick="history.back()">Voltar</button>
+        <div class="vitoria">
+            <h2>🏆 Você acertou ${pontuacao} de ${perguntas.length}!</h2>
+            <div id="ranking"></div>
+            <div class="botoes">
+                <button onclick="location.reload()">Refazer</button>
+                <button onclick="history.back()">Voltar</button>
+            </div>
+
+        </div>
     `;
+
+            salvarResultado();
+        }
+
+
+        function salvarResultado() {
+            fetch("salvar_resultado.php", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    quiz_id: <?= $quiz_id ?>,
+                    pontuacao: pontuacao,
+                    total: perguntas.length
+                })
+            })
+                .then(res => res.json())
+                .then(data => mostrarRanking(data.ranking));
+        }
+
+        function mostrarRanking(ranking) {
+            if (!ranking.length) return;
+
+            let html = "<h3>🏆 Top 3 Global</h3>";
+
+            ranking.forEach((player, i) => {
+                html += `<p>${i + 1}º ${player.nome} — ${player.pontuacao}/${player.total}</p>`;
+            });
+
+            document.getElementById("ranking").innerHTML = html;
         }
 
         perguntas.length > 0
             ? mostrarPergunta()
-            : container.innerHTML = "<h2>Este quiz ainda não possui perguntas.</h2>";
+            : container.innerHTML = "<h2>Quiz sem perguntas</h2>";
     </script>
-
-    <footer class="footer">
-        <div class="footer-container">
-            <p>2025 DnNerds — Renato Matos, Natalia Macedo, Arthur Simões, Diego Toscano, Yuri Reis, Enzo Niglia </p>
-            <div class="footer-links"> <a href="https://www.youtube.com/" target="_blank" title="YouTube"><img
-                        src="../Imagens/youtube.png" alt="YouTube"></a> <a href="https://www.instagram.com/DnNerds"
-                    target="_blank" title="Instagram"><img src="../Imagens/instagram.jpeg" alt="Instagram"></a> <a
-                    href="https://www.facebook.com/" target="_blank" title="Facebook"><img src="../Imagens/facebook.png"
-                        alt="Facebook"></a> <a href="https://www.tiktok.com/" target="_blank" title="TikTok"><img
-                        src="../Imagens/tiktok.jpeg" alt="TikTok"></a> </div>
-        </div>
-    </footer>
-
-
 </body>
 
 </html>

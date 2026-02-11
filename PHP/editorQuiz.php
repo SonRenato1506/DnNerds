@@ -1,5 +1,6 @@
 <?php
 include_once('config.php');
+include_once("header.php");
 
 /* ===============================
    VALIDAÇÃO DE ID
@@ -163,26 +164,10 @@ while ($row = $result->fetch_assoc()) {
 <head>
     <meta charset="UTF-8">
     <title>Editar Quiz</title>
-    <link rel="stylesheet" href="../Styles/Header.css">
     <link rel="stylesheet" href="../Styles/Criador.css">
 </head>
 
 <body>
-
-<header>
-        <nav class="navbar">
-            <h2 class="title">DnNerds</h2>
-            <ul>
-                <li><a href="Noticias.php">Notícias</a></li>
-                <li><a href="nerdlists.php">NerdList</a></li>
-                <li><a href="Quizzes.php">Quizzes</a></li>
-                <li><a href="copinhas.php" class="ativo">Copinhas</a></li>
-            </ul>
-            <button class="btn-navbar">
-                <a href="FazerLogin.php">Fazer Login</a>
-            </button>
-        </nav>
-    </header>
 
 <div class="container">
 
