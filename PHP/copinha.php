@@ -60,6 +60,12 @@ while ($row = $resItens->fetch_assoc()) {
 
     </main>
 
+    <a href="editorCopinha.php?id=<?= $copinha['id'] ?>">
+        <button id="editor">
+            Edite essa Copinha
+        </button>
+    </a>
+
     <script>
         /* ===============================
            DADOS VINDOS DO PHP

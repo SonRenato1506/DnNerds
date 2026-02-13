@@ -127,6 +127,12 @@ $itens = $conexao->query($sqlItens);
         </div>
     </div>
 
+    <a href="editorNerdList.php?id=<?= $nerdlist['id'] ?>">
+        <button id="editor">
+            Edite essa NerdList
+        </button>
+    </a>
+
     <script>
         let activeTier = null;
 

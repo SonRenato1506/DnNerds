@@ -98,6 +98,8 @@ if ($tipo === 'personalidade') {
 
         <!-- TIPOS DE QUIZ -->
         <div id="tipoQuiz">
+
+
             <a href="Quizzes.php?tipo=normal" class="tipo-link <?= $tipo === 'normal' ? 'ativo' : '' ?>">
                 Quizzes
             </a>
@@ -109,6 +111,7 @@ if ($tipo === 'personalidade') {
             <a href="Quizzes.php?tipo=rank" class="tipo-link <?= $tipo === 'rank' ? 'ativo' : '' ?>">
                 Quiz Rank
             </a>
+
         </div>
 
 
@@ -205,6 +208,8 @@ if ($tipo === 'personalidade') {
                 carousel.scrollBy({ left: 250, behavior: "smooth" });
         });
     </script>
+
+
 
     <footer class="footer">
         <div class="footer-container">

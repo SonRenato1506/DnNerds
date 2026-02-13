@@ -164,7 +164,7 @@ while ($row = $result->fetch_assoc()) {
 <head>
     <meta charset="UTF-8">
     <title>Editar Quiz</title>
-    <link rel="stylesheet" href="../Styles/Criador.css">
+    <link rel="stylesheet" href="../Styles/Criador.css?v=3">
 </head>
 
 <body>

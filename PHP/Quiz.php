@@ -61,7 +61,7 @@ if ($resultPerguntas && $resultPerguntas->num_rows > 0) {
 <head>
     <meta charset="UTF-8">
     <title><?= htmlspecialchars($quiz['titulo']) ?></title>
-    <link rel="stylesheet" href="../Styles/quiz.css?v=2">
+    <link rel="stylesheet" href="../Styles/quiz.css?v=3">
 </head>
 
 <body>
@@ -72,6 +72,12 @@ if ($resultPerguntas && $resultPerguntas->num_rows > 0) {
             <div id="quiz-container"></div>
         </article>
     </main>
+
+    <a href="editorQuiz.php?id=<?= $quiz['id'] ?>">
+        <button id="editor">
+            Edite esse Quiz
+        </button>
+    </a>
 
     <script>
         function embaralhar(array) {

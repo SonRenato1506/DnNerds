@@ -143,7 +143,7 @@ $categorias = [
 
         });
     </script>
-
+    
     <footer class="footer">
         <div class="footer-container">
             <p>2025 DnNerds — Renato Matos, Natalia Macedo, Arthur Simões, Diego Toscano, Yuri Reis, Enzo Niglia</p>

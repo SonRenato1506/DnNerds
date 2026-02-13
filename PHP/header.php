@@ -7,7 +7,7 @@ if (session_status() === PHP_SESSION_NONE) {
 
 $paginaAtual = basename($_SERVER['PHP_SELF']);
 
-$paginasComBusca = ['Noticias.php', 'Quizzes.php', 'Copinhas.php', 'nerdlists.php'];
+$paginasComBusca = ['Noticias.php', 'Quizzes.php', 'copinhas.php', 'nerdlists.php'];
 
 $temBusca = in_array($paginaAtual, $paginasComBusca);
 
@@ -36,7 +36,10 @@ if (isset($_SESSION['id'])) {
         --vermelho2: #B8000E;
         --vermelho-hover: #FF1A1A;
 
-        --texto: #ffffff;
+        --roxo: #531574;
+
+        --texto-h2: #b429ff;
+        --texto-header: #ffffff;
         --texto-secundario: #ff4d4d;
 
         --preto: #0f0f0f;
@@ -57,6 +60,7 @@ if (isset($_SESSION['id'])) {
     * {
         margin: 0;
         padding: 0;
+        box-sizing: border-box;
     }
 
     /* ===================== */
@@ -69,11 +73,14 @@ if (isset($_SESSION['id'])) {
     /* ===================== */
     /* 📝 Textos do Header */
     header h1,
-    header h2,
     header p,
     header a {
-        color: var(--texto);
-        text-shadow: 0 0 4px rgba(230, 0, 18, 0.6);
+        color: var(--texto-header);
+        /* text-shadow: 0 0 4px rgba(230, 0, 18, 0.6); */
+        text-transform: uppercase;
+    }
+    header h2 {
+        color: var(--texto-h2);
         text-transform: uppercase;
     }
 
@@ -88,8 +95,8 @@ if (isset($_SESSION['id'])) {
         top: 0;
         width: 100%;
         z-index: 10;
-        box-shadow: 0 0 35px var(--vermelho1);
-        border-bottom: 3px solid var(--vermelho1);
+        box-shadow: 0 0 95px var(--preto-escuro);
+        border-bottom: 3px solid var(--preto-escuro);
         gap: 20px;
     }
 
@@ -122,7 +129,7 @@ if (isset($_SESSION['id'])) {
 
     /* Hover links */
     .navbar ul li a:hover {
-        background-color: var(--vermelho1);
+        background-color: var(--roxo);
         color: var(--branco);
         border-radius: 30px;
         transition: background-color 0.3s, color 0.3s;
@@ -130,8 +137,8 @@ if (isset($_SESSION['id'])) {
 
     /* Link ativo */
     .navbar ul li a.ativo {
-        background-color: var(--vermelho2);
-        box-shadow: 0 0 10px var(--vermelho1);
+        background-color: var(--roxo);
+        box-shadow: 0 0 10px var(--roxo);
         border-radius: 30px;
     }
 
@@ -163,7 +170,7 @@ if (isset($_SESSION['id'])) {
     .search-container {
         display: flex;
         align-items: center;
-        background-color: white;
+        background-color: var(--cinza-medio);
         border-radius: 10px;
         overflow: hidden;
         height: 38px;
@@ -172,7 +179,7 @@ if (isset($_SESSION['id'])) {
 
     /* Botão lupa */
     .btn-lupa {
-        background-color: white;
+        background-color: var(--cinza-medio);
         color: white;
         border: none;
         padding: 6px 10px;
@@ -185,11 +192,12 @@ if (isset($_SESSION['id'])) {
         padding: 6px 10px;
         outline: none;
         width: 180px;
+        background-color: var(--cinza-medio);
     }
 
     /* Foco */
     .search-container:focus-within {
-        box-shadow: 0 0 10px var(--vermelho-hover);
+        box-shadow: 0 0 10px var(--roxo);
     }
 
     /* ===================== */
@@ -298,7 +306,7 @@ if (isset($_SESSION['id'])) {
         transform: translateX(-50%);
         width: 80%;
         height: 2px;
-        background: linear-gradient(90deg, transparent, var(--texto), transparent);
+        background: linear-gradient(90deg, transparent, var(--texto-header), transparent);
         opacity: 0.4;
     }
 
@@ -372,26 +380,33 @@ if (isset($_SESSION['id'])) {
     .user-photo:hover {
         transform: scale(1.1);
     }
+
+    #logo {
+        border-radius: 100%;
+    }
 </style>
 
 <header>
     <nav class="navbar <?= $temBusca ? 'has-search' : '' ?>">
 
         <h2 class="title">
-            DnNerds <img src="../Imagens/favicon.png" alt="">
+            DnNerds <img id="logo" src="../Imagens/logo.jpeg" alt="">
         </h2>
 
         <ul>
             <li><a class="<?= $paginaAtual == 'Noticias.php' ? 'ativo' : '' ?>" href="Noticias.php">Notícias</a></li>
             <li><a class="<?= $paginaAtual == 'Quizzes.php' ? 'ativo' : '' ?>" href="Quizzes.php">Quizzes</a></li>
             <li><a class="<?= $paginaAtual == 'nerdlists.php' ? 'ativo' : '' ?>" href="nerdlists.php">NerdList</a></li>
-            <li><a class="<?= $paginaAtual == 'Copinhas.php' ? 'ativo' : '' ?>" href="Copinhas.php">Copinhas</a></li>
+            <li><a class="<?= $paginaAtual == 'copinhas.php' ? 'ativo' : '' ?>" href="copinhas.php">Copinhas</a></li>
+            <?php if (isset($_SESSION['id'])): ?>
+            <li><a class="<?= $paginaAtual == 'criador.php' ? 'ativo' : '' ?>" href="criador.php">Criador</a></li>
+             <?php endif; ?>
         </ul>
 
         <?php if ($temBusca): ?>
-            <form class="search-container" action="buscar.php" method="GET">
+            <form class="search-container" action="<?= $paginaAtual ?>" method="GET">
                 <button class="btn-lupa">🔍</button>
-                <input type="text" name="q" placeholder="Buscar..." required>
+                <input type="text" name="q" placeholder="Buscar..." required autocomplete="off">
             </form>
         <?php endif; ?>
 
@@ -405,7 +420,6 @@ if (isset($_SESSION['id'])) {
                         class="user-photo">
                 </a>
 
-                <span><?php echo $_SESSION['nome']; ?></span>
             </div>
 
         <?php else: ?>

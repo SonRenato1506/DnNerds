@@ -1,6 +1,6 @@
 <?php
+session_start();
 include_once('config.php');
-include_once("header.php");
 
 if (empty($_GET['palavrachave'])) {
     die("Notícia inválida.");
@@ -71,6 +71,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['comentario'])) {
     exit;
 }
 
+include_once("header.php");
 
 /* ===============================
    BUSCAR COMENTÁRIOS
@@ -198,6 +199,13 @@ $comentarios = $stmtComents->get_result();
         </aside>
 
     </main>
+
+    <a href="editorNoticia.php?id=<?= $noticia['id'] ?>">
+        <button id="editor">
+            Edite essa Notícia
+        </button>
+    </a>
+
 
     <footer class="footer">
         <div class="footer-container">

@@ -20,7 +20,7 @@ body{
     text-align: center;
     margin-bottom: 30px;
     color: var(--texto-secundario);
-    text-shadow: 0 0 4px var(--texto);
+    /* text-shadow: 0 0 4px var(--texto); */
 }
 
 /* ===================== */
@@ -130,7 +130,7 @@ form button:hover {
 .pergunta h3 {
     margin-bottom: 18px;
     color: var(--texto-secundario);
-    text-shadow: 0 0 6px var(--texto);
+    /* text-shadow: 0 0 6px var(--texto); */
     font-size: 18px;
 }
 
@@ -203,7 +203,7 @@ hr {
     margin-top: 35px;
     margin-bottom: 15px;
     color: var(--texto-secundario);
-    text-shadow: 0 0 6px var(--texto);
+    /* text-shadow: 0 0 6px var(--texto); */
     font-size: 20px;
 }
 
@@ -349,7 +349,7 @@ h4 {
 .resultado-bloco h4 {
     margin-bottom: 10px;
     font-size: 16px;
-    text-shadow: 0 0 6px var(--texto);
+    /* text-shadow: 0 0 6px var(--texto); */
 }
 
 /* Linha de pontuação */

@@ -127,6 +127,12 @@ if ($resultPerguntas && $resultPerguntas->num_rows > 0) {
 
     </main>
 
+    <a href="editorPersonalidade.php?id=<?= $quiz['id'] ?>">
+        <button id="editor">
+            Edite esse Quiz
+        </button>
+    </a>
+
     <script>
         const perguntas = <?= json_encode(array_values($perguntas)) ?>;
         const resultados = <?= json_encode($resultados) ?>;

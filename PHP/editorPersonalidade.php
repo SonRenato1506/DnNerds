@@ -205,7 +205,7 @@ while ($row = $res->fetch_assoc()) {
 <head>
     <meta charset="UTF-8">
     <title>Editar Quiz de Personalidade</title>
-    <link rel="stylesheet" href="../Styles/EditorPersonalidade.css?v=2">
+    <link rel="stylesheet" href="../Styles/EditorPersonalidade.css?v=3">
 </head>
 
 <body>

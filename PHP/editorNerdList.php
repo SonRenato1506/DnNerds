@@ -1,5 +1,6 @@
 <?php
 include_once("config.php");
+include_once("header.php");
 
 /* ===============================
    PROCESSAR EXCLUSÃO
@@ -158,7 +159,7 @@ $itens = $conexao->query("SELECT * FROM nerdlist_itens WHERE nerdlist_id=$id");
 <head>
     <meta charset="UTF-8">
     <title>Editar NerdList</title>
-    <link rel="stylesheet" href="../Styles/Criador.css">
+    <link rel="stylesheet" href="../Styles/Criador.css?v=3">
 </head>
 
 <body>

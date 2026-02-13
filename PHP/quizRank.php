@@ -2,7 +2,6 @@
 require_once __DIR__ . '/config.php';
 include_once("header.php");
 
-
 if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
     die("Quiz não encontrado.");
 }
@@ -22,7 +21,7 @@ if ($resultQuiz->num_rows === 0) {
 $quiz = $resultQuiz->fetch_assoc();
 
 /* ===============================
-   BUSCAR ITENS DO RANK
+   BUSCAR ITENS
 ================================ */
 $sqlItens = "
     SELECT posicao, nome, dica
@@ -32,6 +31,7 @@ $sqlItens = "
 ";
 $resultItens = $conexao->query($sqlItens);
 ?>
+
 <!DOCTYPE html>
 <html lang="pt-br">
 
@@ -54,13 +54,8 @@ $resultItens = $conexao->query($sqlItens);
             padding: 20px;
         }
 
-        h1 {
-            margin-bottom: 5px;
-        }
-
-        p {
-            color: #aaa;
-        }
+        h1 { margin-bottom: 5px; }
+        p { color: #aaa; }
 
         input {
             width: 100%;
@@ -71,6 +66,20 @@ $resultItens = $conexao->query($sqlItens);
             border-radius: 6px;
         }
 
+        #desistir {
+            width: 100%;
+            padding: 10px;
+            background: #ff4444;
+            border: none;
+            border-radius: 6px;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            margin-bottom: 10px;
+        }
+
+        #desistir:hover { background: red; }
+
         .linha {
             display: flex;
             align-items: center;
@@ -78,31 +87,23 @@ $resultItens = $conexao->query($sqlItens);
             padding: 8px 0;
         }
 
-        .posicao {
-            width: 50px;
-            color: #888;
-        }
-
-        .nome {
-            flex: 1;
-            text-align: center;
-        }
-
-        .dica {
-            width: 220px;
-            text-align: right;
-            color: #666;
-        }
+        .posicao { width: 50px; color: #888; }
+        .nome { flex: 1; text-align: center; }
+        .dica { width: 220px; text-align: right; color: #666; }
 
         .acertou {
             color: #00ff88;
             font-weight: bold;
         }
 
+        .erro {
+            color: red;
+            font-weight: bold;
+        }
+
         .topo-fixo {
             position: sticky;
             top: 90px;
-            /* abaixo do header */
             background: #111;
             z-index: 10;
             padding-bottom: 10px;
@@ -110,84 +111,194 @@ $resultItens = $conexao->query($sqlItens);
 
         #lista {
             max-height: 55vh;
-            /* controla quanto pode rolar */
             overflow-y: auto;
             margin-top: 10px;
             padding-right: 5px;
         }
 
-        /* scrollbar estilizada (opcional) */
-        #lista::-webkit-scrollbar {
-            width: 6px;
+        /* ================= VITÓRIA ================= */
+
+        #vitoria {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.85);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 999;
         }
 
-        #lista::-webkit-scrollbar-thumb {
-            background: #333;
-            border-radius: 4px;
+        .vitoria-box {
+            background: #1b1b1b;
+            padding: 30px;
+            border-radius: 12px;
+            text-align: center;
+            width: 320px;
+            position: relative;
         }
+
+        #fechar-vitoria {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            cursor: pointer;
+            color: #888;
+        }
+
+        #fechar-vitoria:hover { color: white; }
+
+        .vitoria-box button {
+            margin-top: 10px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            background: #00ff88;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        /* ================= TOAST ================= */
+
+        #toast {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #00ff88;
+            color: black;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-weight: bold;
+            display: none;
+            z-index: 1000;
+        }
+
     </style>
 </head>
 
 <body>
 
+<div id="toast"></div>
 
-    <div class="container">
-        <div class="topo-fixo">
-            <h1><?= htmlspecialchars($quiz['titulo']) ?></h1>
-            <p><?= htmlspecialchars($quiz['descricao']) ?></p>
+<div class="container">
 
-            <input type="text" id="resposta" placeholder="Digite um nome..." autocomplete="off" autofocus>
-        </div>
+    <div class="topo-fixo">
+        <h1><?= htmlspecialchars($quiz['titulo']) ?></h1>
+        <p><?= htmlspecialchars($quiz['descricao']) ?></p>
 
-        <div id="lista">
+        <input type="text" id="resposta" placeholder="Digite um nome..." autocomplete="off" autofocus>
 
-            <?php while ($item = $resultItens->fetch_assoc()): ?>
-                <div class="linha" data-nome="<?= htmlspecialchars(strtolower($item['nome'])) ?>">
-                    <div class="posicao"><?= $item['posicao'] ?></div>
-                    <div class="nome">---</div>
-                    <div class="dica"><?= htmlspecialchars($item['dica']) ?></div>
-                </div>
+    </div>
+    
+    <div id="lista">
+        <?php while ($item = $resultItens->fetch_assoc()): ?>
+            <div class="linha" data-nome="<?= htmlspecialchars($item['nome']) ?>">
+                <div class="posicao"><?= $item['posicao'] ?></div>
+                <div class="nome">---</div>
+                <div class="dica"><?= htmlspecialchars($item['dica']) ?></div>
+            </div>
             <?php endwhile; ?>
         </div>
+        <button id="desistir">Desistir</button>
     </div>
 
-    <script>
-        const input = document.getElementById('resposta');
-        const linhas = document.querySelectorAll('.linha');
+<!-- MODAL VITÓRIA -->
+<div id="vitoria">
+    <div class="vitoria-box">
+        <span id="fechar-vitoria">✖</span>
+        <h2>🎉 Parabéns!</h2>
+        <p>Você completou o quiz!</p>
 
-        function normalizar(txt) {
-            return txt
-                .toLowerCase()
-                .normalize("NFD")
-                .replace(/[\u0300-\u036f]/g, "");
+        <a href="Quizzes.php?tipo=rank">
+            <button>Voltar</button>
+        </a>
+    </div>
+</div>
+
+<a href="editorQuizRank.php?id=<?= $quiz_id ?>">
+    <button id="editor">Edite esse Quiz</button>
+</a>
+
+<script>
+    const input = document.getElementById('resposta');
+    const linhas = document.querySelectorAll('.linha');
+    const modalVitoria = document.getElementById('vitoria');
+    const fecharVitoria = document.getElementById('fechar-vitoria');
+    const desistirBtn = document.getElementById('desistir');
+    const toast = document.getElementById('toast');
+
+    function normalizar(txt) {
+        return txt.toLowerCase()
+            .normalize("NFD")
+            .replace(/[\u0300-\u036f]/g, "");
+    }
+
+    function mostrarToast(texto) {
+        toast.innerText = texto.toUpperCase();
+        toast.style.display = "block";
+
+        setTimeout(() => {
+            toast.style.display = "none";
+        }, 1000);
+    }
+
+    function checarVitoria() {
+        const restantes = [...linhas].filter(l =>
+            l.querySelector('.nome').innerHTML === '---'
+        );
+
+        if (restantes.length === 0) {
+            modalVitoria.style.display = "flex";
         }
+    }
 
-        input.addEventListener('keyup', () => {
-            const valor = normalizar(input.value.trim());
-            if (valor.length < 2) return;
+    input.addEventListener('keyup', () => {
 
-            const palavrasDigitadas = valor.split(" ");
+        const valor = normalizar(input.value.trim());
+        if (valor.length < 2) return;
 
-            linhas.forEach(linha => {
-                const campoNome = linha.querySelector('.nome');
-                if (campoNome.innerHTML !== '---') return;
+        const palavrasDigitadas = valor.split(" ");
 
-                const nomeCompleto = normalizar(linha.dataset.nome);
-                const palavrasNome = nomeCompleto.split(" ");
+        linhas.forEach(linha => {
 
-                const acertou = palavrasDigitadas.some(p =>
-                    palavrasNome.includes(p)
-                );
+            const campoNome = linha.querySelector('.nome');
+            if (campoNome.innerHTML !== '---') return;
 
-                if (acertou) {
-                    campoNome.innerHTML = linha.dataset.nome.toUpperCase();
-                    campoNome.classList.add('acertou');
-                    input.value = '';
-                }
-            });
+            const nomeCompleto = normalizar(linha.dataset.nome);
+            const palavrasNome = nomeCompleto.split(" ");
+
+            const acertou = palavrasDigitadas.some(p =>
+                palavrasNome.includes(p)
+            );
+
+            if (acertou) {
+                campoNome.innerHTML = linha.dataset.nome;
+                campoNome.classList.add('acertou');
+
+                mostrarToast(linha.dataset.nome);
+
+                input.value = '';
+
+                checarVitoria();
+            }
         });
-    </script>
+    });
+
+    desistirBtn.onclick = () => {
+        linhas.forEach(linha => {
+            const campoNome = linha.querySelector('.nome');
+
+            if (campoNome.innerHTML === '---') {
+                campoNome.innerHTML = linha.dataset.nome;
+                campoNome.classList.add('erro');
+            }
+        });
+    };
+
+    fecharVitoria.onclick = () => {
+        modalVitoria.style.display = "none";
+    };
+</script>
 
 </body>
-
 </html>
