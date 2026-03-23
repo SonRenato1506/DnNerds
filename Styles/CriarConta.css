@@ -110,11 +110,11 @@ input {
     flex: 1;
     height: 100vh;
 
-    background-image: url("../Imagens/fundo.png");
+    background-image: url("../Imagens/fundo.jfif");
     background-repeat: repeat-y;
     background-size: cover;
 
-    animation: scrollFundo 30s linear infinite;
+    /* animation: scrollFundo 30s linear infinite; */
 
 }
 
