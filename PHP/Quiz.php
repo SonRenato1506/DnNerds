@@ -61,13 +61,16 @@ if ($resultPerguntas && $resultPerguntas->num_rows > 0) {
 <head>
     <meta charset="UTF-8">
     <title><?= htmlspecialchars($quiz['titulo']) ?></title>
-    <link rel="stylesheet" href="../Styles/quiz.css?v=3">
+    <link rel="stylesheet" href="../Styles/quiz.css?v=4">
 </head>
 
 <body>
     <main class="conteudo">
         <article class="quiz">
             <img class="quiz_img" src="<?= htmlspecialchars($quiz['imagem']) ?>">
+            <div class="barra">
+                <div id="barra-progresso"></div>
+            </div>
             <p><?= htmlspecialchars($quiz['descricao']) ?></p>
             <div id="quiz-container"></div>
         </article>
@@ -80,6 +83,9 @@ if ($resultPerguntas && $resultPerguntas->num_rows > 0) {
     </a>
 
     <script>
+        const somAcerto = new Audio("../Audios/acerto.mp3");
+        const somErro = new Audio("../Audios/erro.mp3");
+
         function embaralhar(array) {
             for (let i = array.length - 1; i > 0; i--) {
                 const j = Math.floor(Math.random() * (i + 1));
@@ -97,6 +103,13 @@ if ($resultPerguntas && $resultPerguntas->num_rows > 0) {
 
         function mostrarPergunta() {
 
+            const barra = document.getElementById("barra-progresso");
+
+            if (barra) {
+                barra.style.width =
+                    ((indice) / perguntas.length) * 100 + "%";
+            }
+
             container.classList.remove("quiz-animar");
             void container.offsetWidth; // reset da animação
             container.classList.add("quiz-animar");
@@ -105,6 +118,14 @@ if ($resultPerguntas && $resultPerguntas->num_rows > 0) {
 
             const pergunta = perguntas[indice];
             const respostas = embaralhar([...pergunta.respostas]);
+
+            const progresso = document.createElement("p");
+            progresso.textContent = `Pergunta ${indice + 1} de ${perguntas.length}`;
+            progresso.style.gridColumn = "span 2";
+            progresso.style.textAlign = "center";
+            progresso.style.opacity = "0.7";
+
+            container.appendChild(progresso);
 
             const h2 = document.createElement("h2");
             h2.textContent = pergunta.texto;
@@ -122,6 +143,12 @@ if ($resultPerguntas && $resultPerguntas->num_rows > 0) {
                 btn.onclick = () => {
                     const botoes = container.querySelectorAll("button");
                     botoes.forEach(b => b.disabled = true);
+
+                    if (resposta.correta == 1) {
+                        somAcerto.play();
+                    } else {
+                        somErro.play();
+                    }
 
                     if (resposta.correta == 1) {
                         btn.classList.add("correta");
