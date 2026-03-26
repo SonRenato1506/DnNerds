@@ -1,261 +1,294 @@
 <?php
 session_start();
-require_once __DIR__ . '/config.php';
+require_once "config.php";
 include_once("header.php");
 
-/* =====================
-   INICIALIZAÇÃO
-===================== */
-if (!isset($_SESSION['passo'])) {
-    $_SESSION['passo'] = 1;
+if (!isset($_SESSION['id'])) {
+    die("Login necessário");
 }
 
-$passo = $_SESSION['passo'];
+if ($_POST) {
 
-/* =====================
-   RESET DO QUIZ
-===================== */
-if (isset($_GET['reset'])) {
-    session_destroy();
-    header("Location: criadorPersonalidade.php");
-    exit;
-}
+    $criador = $_SESSION['id'];
 
-/* =====================
-   PROCESSAMENTOS
-===================== */
+    $titulo = $_POST['titulo'];
+    $descricao = $_POST['descricao'];
+    $imagem = $_POST['imagem'];
+    $categoria = $_POST['categoria'];
 
-/* PASSO 1 – CRIAR QUIZ */
-if (isset($_POST['criar_quiz'])) {
+    $conexao->begin_transaction();
+
+    /* QUIZ */
 
     $stmt = $conexao->prepare(
-        "INSERT INTO personalidade (titulo, descricao, imagem, categoria)
-         VALUES (?, ?, ?, ?)"
+        "INSERT INTO personalidade
+        (titulo, descricao, imagem, categoria, criador)
+        VALUES (?,?,?,?,?)"
     );
+
     $stmt->bind_param(
-        "ssss",
-        $_POST['titulo'],
-        $_POST['descricao'],
-        $_POST['imagem'],
-        $_POST['categoria']
+        "ssssi",
+        $titulo,
+        $descricao,
+        $imagem,
+        $categoria,
+        $criador
     );
+
     $stmt->execute();
 
-    $_SESSION['personalidade_id'] = $conexao->insert_id;
-    $_SESSION['passo'] = 2;
+    $quiz_id = $stmt->insert_id;
 
-    header("Location: criadorPersonalidade.php");
-    exit;
-}
 
-/* PASSO 2 – RESULTADOS */
-if (isset($_POST['criar_resultado'])) {
+    /* RESULTADOS */
 
-    $stmt = $conexao->prepare(
-        "INSERT INTO personalidade_resultados
-         (personalidade_id, titulo, descricao, imagem)
-         VALUES (?, ?, ?, ?)"
-    );
-    $stmt->bind_param(
-        "isss",
-        $_SESSION['personalidade_id'],
-        $_POST['titulo'],
-        $_POST['descricao'],
-        $_POST['imagem']
-    );
-    $stmt->execute();
-}
+    $resultadoIds = [];
 
-if (isset($_POST['ir_perguntas'])) {
-    $_SESSION['passo'] = 3;
-    header("Location: criadorPersonalidade.php");
-    exit;
-}
+    foreach ($_POST['resultados'] as $r) {
 
-/* PASSO 3 – PERGUNTAS */
-if (isset($_POST['criar_pergunta'])) {
-
-    $stmt = $conexao->prepare(
-        "INSERT INTO personalidade_perguntas (personalidade_id, texto)
-         VALUES (?, ?)"
-    );
-    $stmt->bind_param(
-        "is",
-        $_SESSION['personalidade_id'],
-        $_POST['texto']
-    );
-    $stmt->execute();
-}
-
-if (isset($_POST['ir_respostas'])) {
-    $_SESSION['passo'] = 4;
-    header("Location: criadorPersonalidade.php");
-    exit;
-}
-
-/* PASSO 4 – RESPOSTAS */
-if (isset($_POST['criar_resposta'])) {
-
-    $stmt = $conexao->prepare(
-        "INSERT INTO personalidade_respostas (pergunta_id, texto)
-         VALUES (?, ?)"
-    );
-    $stmt->bind_param(
-        "is",
-        $_POST['pergunta_id'],
-        $_POST['texto']
-    );
-    $stmt->execute();
-
-    $resposta_id = $conexao->insert_id;
-
-    foreach ($_POST['pontos'] as $resultado_id => $pontos) {
         $stmt = $conexao->prepare(
-            "INSERT INTO personalidade_respostas_pontuacao
-             (resposta_id, resultado_id, pontos)
-             VALUES (?, ?, ?)"
+            "INSERT INTO personalidade_resultados
+            (personalidade_id, titulo)
+            VALUES (?,?)"
         );
+
         $stmt->bind_param(
-            "iii",
-            $resposta_id,
-            $resultado_id,
-            $pontos
+            "is",
+            $quiz_id,
+            $r
         );
+
         $stmt->execute();
+
+        $resultadoIds[] = $stmt->insert_id;
     }
+
+
+    /* PERGUNTAS */
+
+    foreach ($_POST['perguntas'] as $p) {
+
+        $stmt = $conexao->prepare(
+            "INSERT INTO personalidade_perguntas
+            (personalidade_id, texto)
+            VALUES (?,?)"
+        );
+
+        $stmt->bind_param(
+            "is",
+            $quiz_id,
+            $p['texto']
+        );
+
+        $stmt->execute();
+
+        $pergunta_id = $stmt->insert_id;
+
+
+        foreach ($p['respostas'] as $resp) {
+
+            $stmt = $conexao->prepare(
+                "INSERT INTO personalidade_respostas
+                (pergunta_id, texto)
+                VALUES (?,?)"
+            );
+
+            $stmt->bind_param(
+                "is",
+                $pergunta_id,
+                $resp['texto']
+            );
+
+            $stmt->execute();
+
+            $resposta_id = $stmt->insert_id;
+
+            $resultado_id = $resultadoIds[$resp['resultado']];
+
+            $stmt = $conexao->prepare(
+                "INSERT INTO personalidade_respostas_pontuacao
+                (resposta_id, resultado_id, pontos)
+                VALUES (?,?,?)"
+            );
+
+            $stmt->bind_param(
+                "iii",
+                $resposta_id,
+                $resultado_id,
+                $resp['pontos']
+            );
+
+            $stmt->execute();
+        }
+    }
+
+    $conexao->commit();
+
+    echo "<script>alert('Quiz criado!');</script>";
 }
 ?>
 
-<!DOCTYPE html>
-<html lang="pt-br">
+<style>
 
-<head>
-    <meta charset="UTF-8">
-    <title>Criador de Quiz de Personalidade - DnNerds</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+.container {
+    max-width: 900px;
+    margin: auto;
+    padding: 20px;
+}
 
-    <link rel="stylesheet" href="../Styles/Criador.css?v=3">
-</head>
+input, textarea, select {
 
-<body>
+    width: 100%;
+    padding: 8px;
+    margin: 5px 0 10px 0;
 
-    <!-- ===================== -->
-    <!-- 🧠 CONTEÚDO -->
-    <!-- ===================== -->
-    <div class="container">
+}
 
-        <?php if ($passo == 1): ?>
+button {
 
-            <h2>🧠 Passo 1 – Criar Quiz</h2>
-            <form method="post">
-                <label>Título</label>
-                <input name="titulo" required>
+    padding: 8px 12px;
+    margin: 5px;
+    cursor: pointer;
+}
 
-                <label>Descrição</label>
-                <textarea name="descricao"></textarea>
+.box {
 
-                <label>Imagem</label>
-                <input name="imagem">
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-bottom: 10px;
+}
 
-                <label>Categoria</label>
-                <select name="categoria" required>
-                    <option value="">Selecione</option>
-                    <option>Anime</option>
-                    <option>Games</option>
-                    <option>Filmes</option>
-                    <option>Series</option>
-                    <option>Livros</option>
-                    <option>Variados</option>
-                </select>
+h2 {
 
-                <button name="criar_quiz">Próximo</button>
-            </form>
+    margin-top: 30px;
+}
 
-        <?php elseif ($passo == 2): ?>
-
-            <h2>🎯 Passo 2 – Resultados</h2>
-
-            <form method="post">
-                <input name="titulo" placeholder="Título do resultado" required>
-                <textarea name="descricao" placeholder="Descrição"></textarea>
-                <input name="imagem" placeholder="Imagem">
-                <button name="criar_resultado">Salvar esse Resultado</button>
-            </form>
-
-            <form method="post">
-                <button name="ir_perguntas">Ir para Perguntas</button>
-            </form>
-
-        <?php elseif ($passo == 3): ?>
-
-            <h2>❓ Passo 3 – Perguntas</h2>
-
-            <form method="post">
-                <input name="texto" placeholder="Digite a pergunta" required>
-                <button name="criar_pergunta">Salvar essa Pergunta</button>
-            </form>
-
-            <form method="post">
-                <button name="ir_respostas">Ir para Respostas</button>
-            </form>
-
-        <?php elseif ($passo == 4): ?>
-
-            <?php
-            $perguntas = $conexao->query(
-                "SELECT id, texto FROM personalidade_perguntas
-     WHERE personalidade_id = {$_SESSION['personalidade_id']}"
-            );
-
-            $resultados = $conexao->query(
-                "SELECT id, titulo FROM personalidade_resultados
-     WHERE personalidade_id = {$_SESSION['personalidade_id']}"
-            );
-            ?>
-
-            <h2>📝 Passo 4 – Respostas</h2>
-
-            <form method="post">
-
-                <h4>Escolha a Pergunta</h4>
-                <div class="lista-perguntas">
-                    <?php while ($p = $perguntas->fetch_assoc()): ?>
-                        <label class="opcao-pergunta">
-                            <input type="radio" name="pergunta_id" value="<?= $p['id'] ?>" required>
-                            <?= htmlspecialchars($p['texto']) ?>
-                            <br>
-                        </label>
-                    <?php endwhile; ?>
-                </div>
+</style>
 
 
-                <label>Resposta</label>
-                <input name="texto" required>
+<div class="container">
 
-                <h4>Pontuação</h4>
+<form method="post">
 
-                <?php while ($r = $resultados->fetch_assoc()): ?>
-                    <label>
-                        <?= htmlspecialchars($r['titulo']) ?>
-                        <input type="number" name="pontos[<?= $r['id'] ?>]" min="-1" max="3" value="0">
-                    </label>
-                <?php endwhile; ?>
+<h2>Quiz</h2>
 
-                <button name="criar_resposta">Salvar Resposta</button>
-            </form>
+<input name="titulo" placeholder="Título" required>
 
-            <hr style="margin:30px 0;">
+<input name="descricao" placeholder="Descrição">
 
-            <a href="criadorPersonalidade.php?reset=1" class="btn-reset">
-                ➕ Criar novo quiz de personalidade
-            </a>
+<input name="imagem" placeholder="Imagem">
 
-        <?php endif; ?>
+<select name="categoria">
+
+<option>Anime</option>
+<option>Games</option>
+<option>Filmes</option>
+<option>Series</option>
+<option>Livros</option>
+<option>Variados</option>
+
+</select>
+
+
+<h2>Resultados</h2>
+
+<div id="resultados"></div>
+
+<button type="button" onclick="addResultado()">
++ Resultado
+</button>
+
+
+
+<h2>Perguntas</h2>
+
+<div id="perguntas"></div>
+
+<button type="button" onclick="addPergunta()">
++ Pergunta
+</button>
+
+
+<br><br>
+
+<button>Salvar Quiz</button>
+
+</form>
+
+</div>
+
+
+
+<script>
+
+let r = 0;
+let p = 0;
+
+function addResultado() {
+
+    document.getElementById("resultados").innerHTML += `
+
+    <div class="box">
+
+    Resultado:
+    <input name="resultados[]">
 
     </div>
 
-</body>
+    `;
 
-</html>
+}
+
+
+function addPergunta() {
+
+    let id = p++;
+
+    document.getElementById("perguntas").innerHTML += `
+
+    <div class="box">
+
+    Pergunta:
+    <input name="perguntas[${id}][texto]">
+
+    <div id="resp${id}"></div>
+
+    <button type="button"
+    onclick="addResposta(${id})">
+
+    + Resposta
+
+    </button>
+
+    </div>
+
+    `;
+
+}
+
+
+function addResposta(id) {
+
+    document.getElementById("resp"+id).innerHTML += `
+
+    <div class="box">
+
+    Resposta:
+    <input name="perguntas[${id}][respostas][][texto]">
+
+    Resultado index:
+    <input name="perguntas[${id}][respostas][][resultado]">
+
+    Pontos:
+    <input name="perguntas[${id}][respostas][][pontos]">
+
+    </div>
+
+    `;
+
+}
+
+</script>
+
 
 <?php include_once("footer.php"); ?>
