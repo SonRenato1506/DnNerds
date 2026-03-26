@@ -1,4 +1,5 @@
 <?php
+session_start();
 include_once('config.php');
 include_once("header.php");
 
@@ -9,7 +10,13 @@ if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
 
 $quiz_id = (int) $_GET['id'];
 
-$sqlQuiz = "SELECT * FROM quizzes WHERE id = $quiz_id LIMIT 1";
+$sqlQuiz = "
+SELECT q.*, u.nome AS criador_nome
+FROM quizzes q
+JOIN usuarios u ON u.id = q.criador
+WHERE q.id = $quiz_id
+LIMIT 1
+";
 $resultQuiz = $conexao->query($sqlQuiz);
 
 if (!$resultQuiz || $resultQuiz->num_rows === 0) {
@@ -18,6 +25,19 @@ if (!$resultQuiz || $resultQuiz->num_rows === 0) {
 }
 
 $quiz = $resultQuiz->fetch_assoc();
+
+$podeEditar = false;
+
+if (isset($_SESSION['id'])) {
+
+    if (
+        $_SESSION['id'] == $quiz['criador']
+        || (isset($_SESSION['adm']) && $_SESSION['adm'] == 1)
+    ) {
+        $podeEditar = true;
+    }
+
+}
 
 /* PERGUNTAS */
 $sqlPerguntas = "
@@ -76,11 +96,15 @@ if ($resultPerguntas && $resultPerguntas->num_rows > 0) {
         </article>
     </main>
 
-    <a href="editorQuiz.php?id=<?= $quiz['id'] ?>">
-        <button id="editor">
-            Edite esse Quiz
-        </button>
-    </a>
+    <?php if ($podeEditar): ?>
+
+        <a href="editorQuiz.php?id=<?= $quiz['id'] ?>">
+            <button id="editor">
+                Edite esse Quiz
+            </button>
+        </a>
+
+    <?php endif; ?>
 
     <script>
         const somAcerto = new Audio("../Audios/acerto.mp3");

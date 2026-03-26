@@ -1,4 +1,5 @@
 <?php
+session_start();
 include_once("config.php");
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
@@ -9,29 +10,29 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $categoria = $_POST['categoria'];
     $palavrachave = $_POST['palavrachave'];
 
-    // 📅 DATA GERADA PELO PHP
+    $criador = $_SESSION['id']; // ✅ usuario logado
+
     date_default_timezone_set('America/Sao_Paulo');
     $data_publicacao = date("Y-m-d H:i:s");
 
-    $sql = "INSERT INTO noticias 
-            (titulo, texto, imagem, categoria, palavrachave, data_publicacao)
-            VALUES (?, ?, ?, ?, ?, ?)";
+    $sql = "INSERT INTO noticias
+    (titulo, texto, imagem, categoria, palavrachave, data_publicacao, criador)
+    VALUES (?, ?, ?, ?, ?, ?, ?)";
 
     $stmt = $conexao->prepare($sql);
+
     $stmt->bind_param(
-        "ssssss",
+        "ssssssi",
         $titulo,
         $texto,
         $imagem,
         $categoria,
         $palavrachave,
-        $data_publicacao
+        $data_publicacao,
+        $criador
     );
 
     if ($stmt->execute()) {
-        echo "<script>alert('✅ Notícia publicada com sucesso!'); window.location.href='Noticias.php';</script>";
-    } else {
-        echo "Erro ao salvar notícia.";
+        echo "<script>alert('Notícia publicada com sucesso!'); window.location.href='Noticias.php';</script>";
     }
 }
-?>

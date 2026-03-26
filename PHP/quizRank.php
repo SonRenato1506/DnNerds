@@ -1,4 +1,5 @@
 <?php
+session_start();
 require_once __DIR__ . '/config.php';
 include_once("header.php");
 
@@ -8,17 +9,43 @@ if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
 
 $quiz_id = (int) $_GET['id'];
 
+
 /* ===============================
-   BUSCAR QUIZ
+   BUSCAR QUIZ + CRIADOR
 ================================ */
-$sqlQuiz = "SELECT titulo, descricao FROM quizzes_rank WHERE id = $quiz_id LIMIT 1";
+$sqlQuiz = "
+SELECT q.*, u.nome AS criador_nome
+FROM quizzes_rank q
+JOIN usuarios u ON u.id = q.criador
+WHERE q.id = $quiz_id
+LIMIT 1
+";
+
 $resultQuiz = $conexao->query($sqlQuiz);
 
-if ($resultQuiz->num_rows === 0) {
+if (!$resultQuiz || $resultQuiz->num_rows === 0) {
     die("Quiz não encontrado.");
 }
 
 $quiz = $resultQuiz->fetch_assoc();
+
+
+/* ===============================
+   PERMISSÃO EDITAR
+================================ */
+$podeEditar = false;
+
+if (isset($_SESSION['id'])) {
+
+    if (
+        $_SESSION['id'] == $quiz['criador']
+        || (isset($_SESSION['adm']) && $_SESSION['adm'] == 1)
+    ) {
+        $podeEditar = true;
+    }
+
+}
+
 
 /* ===============================
    BUSCAR ITENS
@@ -29,6 +56,7 @@ $sqlItens = "
     WHERE quiz_id = $quiz_id
     ORDER BY posicao ASC
 ";
+
 $resultItens = $conexao->query($sqlItens);
 ?>
 
@@ -215,9 +243,13 @@ $resultItens = $conexao->query($sqlItens);
     </div>
 </div>
 
+<?php if ($podeEditar): ?>
+
 <a href="editorQuizRank.php?id=<?= $quiz_id ?>">
     <button id="editor">Edite esse Quiz</button>
 </a>
+
+<?php endif; ?>
 
 <script>
     const input = document.getElementById('resposta');
