@@ -9,11 +9,16 @@ if (empty($_GET['palavrachave'])) {
 $chave = $_GET['palavrachave'];
 
 /* ===============================
-   BUSCAR NOTÍCIA
+   BUSCAR NOTÍCIA + CRIADOR
 ================================ */
 $stmt = $conexao->prepare(
-    "SELECT * FROM noticias WHERE palavrachave = ? LIMIT 1"
+    "SELECT n.*, u.nome AS criador_nome
+     FROM noticias n
+     JOIN usuarios u ON u.id = n.criador
+     WHERE n.palavrachave = ?
+     LIMIT 1"
 );
+
 $stmt->bind_param("s", $chave);
 $stmt->execute();
 $result = $stmt->get_result();
@@ -25,6 +30,7 @@ if ($result->num_rows === 0) {
 $noticia = $result->fetch_assoc();
 $categoria = $noticia['categoria'];
 
+
 /* ===============================
    RELACIONADAS
 ================================ */
@@ -34,9 +40,11 @@ $stmtRel = $conexao->prepare(
      ORDER BY data_publicacao DESC
      LIMIT 6"
 );
+
 $stmtRel->bind_param("ss", $categoria, $chave);
 $stmtRel->execute();
 $relacionadas = $stmtRel->get_result();
+
 
 /* ===============================
    INSERIR COMENTÁRIO
@@ -66,12 +74,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['comentario'])) {
         $stmtComent->execute();
     }
 
-    /* ✅ ESSA LINHA É A MÁGICA */
     header("Location: noticia.php?palavrachave=" . urlencode($chave));
     exit;
 }
 
 include_once("header.php");
+
 
 /* ===============================
    BUSCAR COMENTÁRIOS
@@ -94,117 +102,203 @@ $comentarios = $stmtComents->get_result();
 
 <head>
     <meta charset="UTF-8">
-    <title><?= htmlspecialchars($noticia['titulo']) ?> - DnNerds</title>
+
+    <title>
+        <?= htmlspecialchars($noticia['titulo']) ?> - DnNerds
+    </title>
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <link rel="stylesheet" href="../Styles/Noticia.css?v=16">
-
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Merriweather:ital,opsz,wght@0,18..144,300..900;1,18..144,300..900&display=swap"
-        rel="stylesheet">
+    <link rel="stylesheet" href="../Styles/Noticia.css?v=18">
 
 </head>
 
 <body>
 
-    <main class="conteudo">
+<main class="conteudo">
 
-        <div class="coluna-principal">
-            <article class="noticia-detalhe">
-                <img src="<?= htmlspecialchars($noticia['imagem']) ?>"
-                    alt="<?= htmlspecialchars($noticia['titulo']) ?>">
+<div class="coluna-principal">
 
-                <h1><?= htmlspecialchars($noticia['titulo']) ?></h1>
+<article class="noticia-detalhe">
 
-                <p><?= nl2br(htmlspecialchars($noticia['texto'])) ?></p>
+<img
+src="<?= htmlspecialchars($noticia['imagem']) ?>"
+alt="<?= htmlspecialchars($noticia['titulo']) ?>"
+>
 
-                <time datetime="<?= $noticia['data_publicacao'] ?>">
-                    Publicado em: <?= date("d/m/Y", strtotime($noticia['data_publicacao'])) ?>
-                </time>
-            </article>
-
-            <section class="comentarios">
-
-                <h2>💬 Comentários</h2>
-
-                <?php if (isset($_SESSION['id'])): ?>
-
-                    <form method="POST" class="comentario-form">
-                        <textarea name="comentario" placeholder="Escreva seu comentário..." required></textarea>
-                        <button type="submit">Comentar</button>
-                    </form>
-
-                <?php else: ?>
-
-                    <p>👉 <a href="FazerLogin.php">Faça login</a> para comentar.</p>
-
-                <?php endif; ?>
-
-                <div class="lista-comentarios">
-
-                    <?php if ($comentarios->num_rows > 0): ?>
-                        <?php while ($coment = $comentarios->fetch_assoc()): ?>
-
-                            <div class="comentario-item">
-
-                                <img src="<?= !empty($coment['foto']) ? $coment['foto'] : '../Imagens/user.png' ?>">
-
-                                <div class="comentario-conteudo">
-                                    <strong><?= htmlspecialchars($coment['nome']) ?></strong>
-                                    <p><?= nl2br(htmlspecialchars($coment['comentario'])) ?></p>
-
-                                    <span>
-                                        <?= date("d/m/Y H:i", strtotime($coment['data_comentario'])) ?>
-                                    </span>
-                                </div>
-
-                            </div>
-
-                        <?php endwhile; ?>
-                    <?php else: ?>
-                        <p>Nenhum comentário ainda.</p>
-                    <?php endif; ?>
-
-                </div>
-
-            </section>
-        </div>
+<h1>
+<?= htmlspecialchars($noticia['titulo']) ?>
+</h1>
 
 
-        <aside class="noticias-relacionadas">
-            <h2>Mais em <?= htmlspecialchars($categoria) ?></h2>
+<p class="autor">
+Criado por
+<?= htmlspecialchars($noticia['criador_nome']) ?>
+</p>
 
-            <div class="relacionadas-grid">
-                <?php if ($relacionadas->num_rows > 0): ?>
-                    <?php while ($row = $relacionadas->fetch_assoc()): ?>
-                        <a href="noticia.php?palavrachave=<?= urlencode($row['palavrachave']) ?>" class="relacionada-item">
 
-                            <div class="caixa-relacionada">
-                                <img src="<?= htmlspecialchars($row['imagem']) ?>"
-                                    alt="<?= htmlspecialchars($row['titulo']) ?>">
-                                <p><?= htmlspecialchars($row['titulo']) ?></p>
-                            </div>
-                        </a>
-                    <?php endwhile; ?>
-                <?php else: ?>
-                    <p>Nenhuma notícia relacionada.</p>
-                <?php endif; ?>
-            </div>
-        </aside>
+<p>
+<?= nl2br(htmlspecialchars($noticia['texto'])) ?>
+</p>
 
-    </main>
 
-    <a href="editorNoticia.php?id=<?= $noticia['id'] ?>">
-        <button id="editor">
-            Edite essa Notícia
-        </button>
-    </a>
+<time>
+Publicado em:
+<?= date("d/m/Y", strtotime($noticia['data_publicacao'])) ?>
+</time>
+
+</article>
+
+
+<section class="comentarios">
+
+<h2>💬 Comentários</h2>
+
+<?php if (isset($_SESSION['id'])): ?>
+
+<form method="POST" class="comentario-form">
+
+<textarea
+name="comentario"
+placeholder="Escreva seu comentário..."
+required
+></textarea>
+
+<button type="submit">
+Comentar
+</button>
+
+</form>
+
+<?php else: ?>
+
+<p>
+👉 <a href="FazerLogin.php">Faça login</a>
+para comentar.
+</p>
+
+<?php endif; ?>
+
+
+<div class="lista-comentarios">
+
+<?php if ($comentarios->num_rows > 0): ?>
+
+<?php while ($coment = $comentarios->fetch_assoc()): ?>
+
+<div class="comentario-item">
+
+<img
+src="<?= !empty($coment['foto']) ? $coment['foto'] : '../Imagens/user.png' ?>"
+>
+
+<div class="comentario-conteudo">
+
+<strong>
+<?= htmlspecialchars($coment['nome']) ?>
+</strong>
+
+<p>
+<?= nl2br(htmlspecialchars($coment['comentario'])) ?>
+</p>
+
+<span>
+<?= date("d/m/Y H:i", strtotime($coment['data_comentario'])) ?>
+</span>
+
+</div>
+
+</div>
+
+<?php endwhile; ?>
+
+<?php else: ?>
+
+<p>Nenhum comentário ainda.</p>
+
+<?php endif; ?>
+
+</div>
+
+</section>
+
+</div>
+
+
+
+<aside class="noticias-relacionadas">
+
+<h2>
+Mais em
+<?= htmlspecialchars($categoria) ?>
+</h2>
+
+<div class="relacionadas-grid">
+
+<?php if ($relacionadas->num_rows > 0): ?>
+
+<?php while ($row = $relacionadas->fetch_assoc()): ?>
+
+<a
+href="noticia.php?palavrachave=<?= urlencode($row['palavrachave']) ?>"
+class="relacionada-item"
+>
+
+<div class="caixa-relacionada">
+
+<img
+src="<?= htmlspecialchars($row['imagem']) ?>"
+alt="<?= htmlspecialchars($row['titulo']) ?>"
+>
+
+<p>
+<?= htmlspecialchars($row['titulo']) ?>
+</p>
+
+</div>
+
+</a>
+
+<?php endwhile; ?>
+
+<?php else: ?>
+
+<p>Nenhuma notícia relacionada.</p>
+
+<?php endif; ?>
+
+</div>
+
+</aside>
+
+</main>
+
+
+
+<?php
+if (isset($_SESSION['id'])) {
+
+    $ehCriador =
+        $_SESSION['id'] == $noticia['criador'];
+
+    $ehAdmin =
+        isset($_SESSION['adm']) &&
+        $_SESSION['adm'] == 1;
+
+    if ($ehCriador || $ehAdmin):
+?>
+
+<a href="editorNoticia.php?id=<?= $noticia['id'] ?>">
+<button id="editor">
+Editar Notícia
+</button>
+</a>
+
+<?php
+    endif;
+}
+?>
+
 
 </body>
 

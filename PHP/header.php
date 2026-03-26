@@ -32,6 +32,7 @@ if (isset($_SESSION['id'])) {
         --vermelho1: #E60012;
         --vermelho2: #B8000E;
         --vermelho-hover: #FF1A1A;
+        --purple: #7a0099;
 
         --roxo: #531574;
 
@@ -340,6 +341,49 @@ if (isset($_SESSION['id'])) {
             grid-template-columns: 1fr auto;
         }
     }
+
+    
+/* ===============================
+   BOTÃO EDITAR NOTÍCIA
+================================ */
+
+#editor {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+
+    background: var(--purple);
+    color: white;
+
+    border: none;
+    padding: 14px 22px;
+    border-radius: 12px;
+
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+
+    cursor: pointer;
+
+    box-shadow: 0 8px 25px rgba(0,0,0,0.7);
+
+    transition: 
+        transform 0.2s ease,
+        box-shadow 0.2s ease,
+        background 0.2s ease;
+}
+
+/* Hover */
+#editor:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 35px rgba(0,0,0,0.9);
+    background: #9300c0;
+}
+
+/* Clique */
+#editor:active {
+    transform: scale(0.95);
+}
 </style>
 
 
