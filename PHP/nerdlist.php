@@ -133,6 +133,10 @@ $itens = $conexao->query($sqlItens);
         </button>
     </a>
 
+    <button onclick="baixarTierMaker()">
+        Baixar estilo TierMaker
+    </button>
+
     <script>
         let activeTier = null;
         let isDragging = false;
@@ -364,8 +368,46 @@ $itens = $conexao->query($sqlItens);
         document.addEventListener("keydown", e => {
             if (e.key === "Escape") closeSettings();
         });
-    </script>
 
+        function baixarImagem() {
+            const area = document.querySelector(".tierlist-container");
+
+            html2canvas(area, {
+                backgroundColor: null, // mantém fundo transparente (ou remove se quiser branco)
+                scale: 2 // melhora qualidade
+            }).then(canvas => {
+                const link = document.createElement("a");
+                link.download = "tierlist.png";
+                link.href = canvas.toDataURL("image/png");
+                link.click();
+            });
+        }
+
+        function baixarTierMaker() {
+            const area = document.querySelector(".tierlist-container");
+
+            // ativa modo exportação
+            document.body.classList.add("exportando");
+
+            window.scrollTo(0, 0);
+
+            setTimeout(() => {
+                html2canvas(area, {
+                    backgroundColor: "#111",
+                    scale: 3
+                }).then(canvas => {
+                    const link = document.createElement("a");
+                    link.download = "tiermaker.png";
+                    link.href = canvas.toDataURL("image/png");
+                    link.click();
+
+                    // remove modo exportação
+                    document.body.classList.remove("exportando");
+                });
+            }, 300);
+        }
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 </body>
 
 </html>

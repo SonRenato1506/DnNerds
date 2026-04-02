@@ -270,6 +270,7 @@ button:disabled {
         transform: rotate(0deg) translateY(0);
         opacity: 1;
     }
+
     100% {
         transform: rotate(-25deg) translateY(300px);
         opacity: 0;
@@ -281,6 +282,7 @@ button:disabled {
         transform: rotate(0deg) translateY(0);
         opacity: 1;
     }
+
     100% {
         transform: rotate(25deg) translateY(300px);
         opacity: 0;
@@ -293,4 +295,75 @@ button:disabled {
 
 .cair-direita {
     animation: cairDireita 0.5s forwards;
+}
+
+#bracket-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 80px;
+    background: #0a0a23;
+    padding: 40px;
+    overflow-x: auto;
+}
+
+.lado {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+}
+
+.round {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.match {
+    background: #1a1a1a;
+    padding: 10px;
+    border-radius: 10px;
+    min-width: 180px;
+    position: relative;
+}
+
+.player {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 5px;
+    color: white;
+}
+
+.player img {
+    width: 30px;
+    height: 30px;
+    border-radius: 5px;
+}
+
+.winner {
+    border-left: 4px solid gold;
+}
+
+/* FINAL */
+#final {
+    text-align: center;
+    color: white;
+}
+
+#final-match {
+    background: #222;
+    padding: 15px;
+    border-radius: 10px;
+}
+
+/* LINHAS */
+.match::after {
+    content: "";
+    position: absolute;
+    right: -40px;
+    top: 50%;
+    width: 40px;
+    height: 2px;
+    background: #00eaff;
 }

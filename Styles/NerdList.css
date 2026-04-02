@@ -258,3 +258,25 @@ p {
 .move-buttons img {
     background: none;
 }
+
+.exportando .settings-panel,
+.exportando #editor,
+.exportando .add-item-area,
+.exportando h2 {
+    display: none !important;
+}
+
+.exportando {
+    background: #111;
+    padding: 20px;
+}
+
+.exportando .tier {
+    margin-bottom: 10px;
+}
+
+.exportando .item img {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+}
